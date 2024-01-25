@@ -8,7 +8,7 @@ import {Outlet, Link} from "react-router-dom"
 const NotLoggedInLayout = () => {
     return (
         <>
-        <nav class = "bg-teal-500">
+        <nav class = "bg-teal-500 ">
             <ul>
                 <li>
                     <Link to = "/">Home</Link>

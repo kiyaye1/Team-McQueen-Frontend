@@ -11,7 +11,7 @@ import NotLoggedInLayout from './navigation/Layout'
 export default function App() {
   return (
     // need a conditional for if the user is logged in or not 
-      <BrowserRouter class = "bg-teal-500">
+      <BrowserRouter>
         <Routes>
           <Route path = "/" element = {<NotLoggedInLayout/>}>
             <Route index element={<Homepage/>}/>
