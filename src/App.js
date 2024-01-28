@@ -7,10 +7,14 @@ import Register from './main-screens/Register';
 import AboutUs from './main-screens/About-us';
 import Contact from './main-screens/Contact';
 import NotLoggedInLayout from './navigation/Layout'
+import { useState } from 'react';
+
 
 export default function App() {
+
   return (
     // need a conditional for if the user is logged in or not 
+
       <BrowserRouter>
         <Routes>
           <Route path = "/" element = {<NotLoggedInLayout/>}>
