@@ -6,6 +6,8 @@ import logo from './gyrogogo-logo.png'
 
 
 const NotLoggedInLayout = () => {
+    
+
     return (
         <>
         <div class = "content-center p-4 shadow-lg">
