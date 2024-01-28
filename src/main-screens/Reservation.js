@@ -1,7 +1,7 @@
 function Reservation() {
     return (
-      <><div className="Reservation">
-        <h1>Reservation</h1>
+      <><div >
+        <h1 class = "font-medium">Reservation</h1>
       </div></>
   
     );
