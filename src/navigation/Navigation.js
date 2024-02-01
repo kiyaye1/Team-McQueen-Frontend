@@ -7,10 +7,22 @@ import Register from '../main-screens/Register';
 import AboutUs from '../main-screens/About-us';
 import Contact from '../main-screens/Contact';
 import Layout from './Layout'
+import Profile from '../main-screens/Profile'
+import Reservation from '../main-screens/Reservation'
 import { useState } from 'react';
 
+//reservations (home), FAQ, contact us, about us, My account
+
+// export const userLogin = () => {
+//     const [isLoggedIn, setIsLoggedIn] = useState()
+    
+//     function toggleLogIn(login) {
+//         setIsLoggedIn(login)
+//     }
+// }
+
 function Navigation() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState()
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
@@ -27,10 +39,11 @@ function Navigation() {
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
                     <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} />}/>
+                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn}/>}/>
+                    <Route path = "reserve" element = {<Reservation/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>
-            <p>Logged in: {String(isLoggedIn)}</p>
         </div>
     );
 }
