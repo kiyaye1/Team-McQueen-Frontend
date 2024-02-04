@@ -9,7 +9,6 @@ import Contact from './main-screens/Contact';
 import NotLoggedInLayout from './navigation/Layout'
 import { useState } from 'react';
 
-
 export default function App() {
 
   return (
