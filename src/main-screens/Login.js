@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 //import theme from "../theme/Theme"
 import {ThemeProvider} from "@mui/material/styles";
 import { createTheme } from "@mui/material"
+import {Link} from "react-router-dom"
 
 const theme = createTheme({
   palette: {
@@ -13,7 +14,6 @@ const theme = createTheme({
       purple_accent: 'f2f2ff'
   }
 });
-import {Link} from "react-router-dom"
 
 function Login({toggleLogIn}) {
     return (
