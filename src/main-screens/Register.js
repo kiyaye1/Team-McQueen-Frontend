@@ -5,11 +5,12 @@ import {FormProvider} from '../context/FormContext'
 function Register() {
  
   return (
-      <><div className="Register">
-        <h1 class = "text-2xl">Register</h1>
-        <FormProvider>
-          <Form/>
-        </FormProvider>
+      <><div class="text-center m-8">
+        <h1 class = "text-section-head">Sign Up</h1>
+            <FormProvider>
+              <Form/>
+            </FormProvider>
+
       </div></>
   
     );

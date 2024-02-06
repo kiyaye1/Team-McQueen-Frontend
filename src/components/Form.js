@@ -11,15 +11,17 @@ const Form = () => {
     const content = (
         <form>
             <header>
-                <h2>{title[page]}</h2>
-                <div>
-                    <Button variant = "text" onClick = {handlePrev}>Previous</Button>
-                    <Button variant = "text" onClick = {handleNext}>Next</Button>
-                    {/* <button type="submit" className={`button ${submitHide}`} disabled={!canSubmit}>Submit</button> */}
-                </div>
+            {/* will be progress bar */}
+            
             </header>
 
             <FormInputs/>
+            <div>
+                    {/* <Button variant = "text" onClick = {handlePrev}>Previous</Button> */}
+                    <Button variant = "text" onClick = {handleNext}>Continue</Button>
+
+                    {/* <button type="submit" className={`button ${submitHide}`} disabled={!canSubmit}>Submit</button> */}
+            </div>
 
         </form>
     )
