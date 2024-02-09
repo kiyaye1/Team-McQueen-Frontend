@@ -6,24 +6,15 @@ const CustomerInfo = ({ data, handleChange }) => {
       <div class = "flex justify-center my-8">
       <div class = "w-full md:w-1/2 lg:w-1/4 xl:w-1/4 2xl:w-1/4 grid grid-cols-3 gap-8">
           <div class = "col-span-2">
-          <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Jane"
-              pattern="([A-Z])[\w+.]{1,}"
-              value={data.firstName}
-              onChange={handleChange}
-                    />
-            {/* <TextField 
-              // name = "firstName"
+            <TextField 
+              name = "firstName"
               variant = "standard" 
               label = "First Name" 
               sx = {{marginRight:1, width: '100%'}}
-              value = {customerData.firstName} 
+              value = {data.firstName} 
               onChange = {handleChange} 
-              // required 
-            /> */}
+              required 
+            />
           </div>
           <div class = "col-span-1">
             <TextField 
@@ -33,7 +24,6 @@ const CustomerInfo = ({ data, handleChange }) => {
               variant = "standard" 
               label = "MI" 
               sx = {{marginRight:1, width: '100%'}}
-              required 
             />
           </div>
           <div class = "col-span-2">

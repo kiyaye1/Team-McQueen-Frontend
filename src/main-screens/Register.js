@@ -12,7 +12,7 @@ function Register() {
             {/* <FormProvider>
               <Form/>
             </FormProvider> */}
-            <CustomerInfo/>
+            <Form/>
 
       </div></>
   

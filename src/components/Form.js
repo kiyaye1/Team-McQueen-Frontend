@@ -9,13 +9,13 @@ const Form = () => {
 
     const [customerData, setCustomerData] = useState({
         firstName: "",
-        mi: " ",
-        lastName: " ",
-        suffix: " ",
-        mailingAddress: " ",
-        phoneNumber: " ",
-        emailAddress: " ",
-        password: " "
+        mi: "",
+        lastName: "",
+        suffix: "",
+        mailingAddress: "",
+        phoneNumber: "",
+        emailAddress: "",
+        password: ""
     })
 
     const handleSubmit = e => {
