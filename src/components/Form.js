@@ -1,11 +1,21 @@
 import FormInputs from "./FormInputs";
 import useFormContext from "../context/useFormContext";
-import { Button } from "@mui/material";
+import { Button, formLabelClasses } from "@mui/material";
 import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 
 const Form = () => {
     //const {page, setPage, data, title, prevHide, nextHide, submitHide} = useFormContext()
+
+    function validateInput() {
+        // validate before submitting and moving on 
+        if(customerData.password == customerData.passwordRetype) {
+            return true
+        } else {
+            return false
+        }
+    }
+
 
     const [customerData, setCustomerData] = useState({
         firstName: "",
@@ -15,11 +25,17 @@ const Form = () => {
         mailingAddress: "",
         phoneNumber: "",
         emailAddress: "",
-        password: ""
+        password: "",
+        passwordRetype: ""
     })
 
     const handleSubmit = e => {
         e.preventDefault()
+        if(validateInput()) {
+            console.log(JSON.stringify(customerData))
+        } else {
+            console.log("Not validated")
+        }
 
     }
 
@@ -38,8 +54,7 @@ const Form = () => {
     // not required
     // information in everything except these two values
     const {mi, suffix, ...otherProps} = customerData
-    const canSave = [...Object.values(otherProps)].every(Boolean) // every value in this array has something
-    
+    var canSave = [...Object.values(otherProps)].every(Boolean) // every value in this array has something
     // const handlePrev = () => setPage(prev => prev - 1)
     // // this needs to also call validation
     // const handleNext = () => setPage(prev => prev + 1)

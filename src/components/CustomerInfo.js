@@ -92,7 +92,15 @@ const CustomerInfo = ({ data, handleChange }) => {
             />            
           </div>
           <div class = "col-span-3">
-            <TextField variant = "standard" label = "Retype Password" required sx = {{width: '100%'}}/>
+            <TextField 
+                onChange = {handleChange} 
+                value = {data.passwordRetype}
+                name = "passwordRetype"
+                variant = "standard" 
+                label = "Password" 
+                sx = {{width: '100%'}}
+                required
+              />              
           </div>
       </div>
     </div>
