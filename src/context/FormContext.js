@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react"
+import { createContext, useState } from "react"
 
 
 // Global states, all pages on form cam view states 
@@ -7,52 +7,90 @@ const FormContext = createContext({})
 // Children -- all nested components in the form provider tags 
 export const FormProvider = ({children}) => {
     // define all the things we want to pass within the form provider
+    
+    // title for each page of the form 
     const title = {
         0: "Create Account",
         1: "Drivers License",
         2: "Payment Cards",
-        3: "Approval Awaits"
     }
 
+    // keep track of page number that the user is on
     const [page, setPage] = useState(0)
 
-    const[data, setData] = useState({
-        firstName: "",
-        lastName: "",
-        middleInitial: "",
-        suffix: "",
-        emailAddress: "",
-        password: "",
+    // all data 
+    const [data, setData] = useState({
+        customer_firstName: "",
+        customer_mi: "",
+        customer_lastName: "",
+        customer_suffix: "",
+        customer_mailingAddress: "",
+        customer_phoneNumber: "",
+        customer_emailAddress: "",
+        customer_password: "",
+        customer_passwordRetype: "",
         dlNumber: "",
         dlState: "",
-        paymentCards: {
-            0: {
-                cardName: "",
-                cardNumber: "",
-                expirationDate: "",
-                cvc: ""
-            }
-        }
+        cardName: "",
+        cardNumber: "",
+        cardExpirationDate: "",
+        cardccv: ""
     })
 
-    // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page === Object.keys(title).length - 1
+    // will eventually need to be able to add mult cards, just adding one for now
+    // paymentCards: {
+    //     0: {
+    //         cardName: "",
+    //         cardNumber: "",
+    //         expirationDate: "",
+    //         cvc: ""
+    //     }
+    // }
 
-    // const canNextPage1 = Object.keys(data)
-    //     .filter(key => key.startsWith('bill') && key !== 'billAddress2')
-    //     .map(key => data[key])
-    //     .every(Boolean)
+    const handleChange = e => {
+        const type = e.target.type
+        const name = e.target.name
 
-    // const canNextPage2 = Object.keys(data)
-    //     .filter(key => key.startsWith('ship') && key !== 'shipAddress2')
-    //     .map(key => data[key])
-    //     .every(Boolean)
+        const value = type == "checkbox"
+            ? e.target.checked
+            : e.target.value 
 
-    // const disablePrev = page === 0
+    
+        setData(prevData => ({...prevData, [name] : value}))
+    }
 
-    // const disableNext =
-    //     (page === Object.keys(title).length - 1)
-    //     || (page === 0 && !canNextPage1)
-    //     || (page === 1 && !canNextPage2)
+    // mi and suffix - not required
+    // requiredInputs - everything else not defined before (all req inputs)
+    // returns a boolean on if otherProps is fully filled in
+    const {
+        customer_mi, 
+        customer_suffix, 
+        ...requiredInputs
+    } = data
+    
+    // can submit when required inputs are all fulled in, and when the user is on last page
+    const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
+
+    // checking all inputs that start with 'customer', except for non required ones
+    // determine if user can go to next page
+    const canNextPage1 = Object.keys(data)
+        .filter(key => key.startsWith('customer') && key !== 'mi' && key !== "suffix")
+        .map(key => data[key])
+        .every(Boolean)
+
+    // checking all inputs that start with 'dl', except for non required ones
+    // determine if user can go to next page
+    const canNextPage2 = Object.keys(data)
+        .filter(key => key.startsWith('dl'))
+        .map(key => data[key])
+        .every(Boolean)
+        
+    const disablePrev = page === 0
+
+    const disableNext =
+        (page === Object.keys(title).length - 1)
+        || (page === 0 && !canNextPage1)
+        || (page === 1 && !canNextPage2)
 
     const prevHide = page === 0 && "remove-button"
 
@@ -61,7 +99,18 @@ export const FormProvider = ({children}) => {
     const submitHide = page !== Object.keys(title).length - 1 && "remove-button"
        
     return (
-        <FormContext.Provider value = {{title, page, setPage, data, setData, prevHide, nextHide, submitHide}}>
+        // pass values that will be available to child components
+        <FormContext.Provider value = {{
+            title, 
+            page, 
+            setPage, 
+            data, 
+            setData, 
+            handleChange, 
+            canSubmit, 
+            disableNext, 
+            disablePrev
+        }}>
             {children} 
         </FormContext.Provider>
     )
@@ -70,4 +119,3 @@ export const FormProvider = ({children}) => {
 
 export default FormContext;
 
-//5:16 https://www.youtube.com/watch?v=QSBc8bABwE0&list=PL0Zuz27SZ-6PrE9srvEn8nbhOOyxnWXfp&index=51&t=61s

@@ -1,17 +1,19 @@
 import { TextField } from "@mui/material";
-import Form from "./Form";
+import useFormContext from "../hooks/useFormContext";
 
-const CustomerInfo = ({ data, handleChange }) => {
+const CustomerInfo = () => {
+    const {data, handleChange} = useFormContext()
+
     const content = (
       <div class = "flex justify-center my-8">
       <div class = "w-full md:w-1/2 lg:w-1/4 xl:w-1/4 2xl:w-1/4 grid grid-cols-3 gap-8">
           <div class = "col-span-2">
             <TextField 
-              name = "firstName"
+              name = "customer_firstName"
               variant = "standard" 
               label = "First Name" 
               sx = {{marginRight:1, width: '100%'}}
-              value = {data.firstName} 
+              value = {data.customer_firstName} 
               onChange = {handleChange} 
               required 
             />
@@ -19,8 +21,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-1">
             <TextField 
               onChange = {handleChange} 
-              value = {data.mi} 
-              name = "mi"
+              value = {data.customer_mi} 
+              name = "customer_mi"
               variant = "standard" 
               label = "MI" 
               sx = {{marginRight:1, width: '100%'}}
@@ -29,8 +31,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-2">
             <TextField 
               onChange = {handleChange} 
-              value = {data.lastName} 
-              name = "lastName"
+              value = {data.customer_lastName} 
+              name = "customer_lastName"
               variant = "standard" 
               label = "Last Name"
               sx = {{marginRight:1, width: '100%'}}
@@ -40,8 +42,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-1">
             <TextField 
               onChange = {handleChange} 
-              value = {data.suffix} 
-              name = "suffix"
+              value = {data.customer_suffix} 
+              name = "customer_suffix"
               variant = "standard" 
               label = "Suffix" 
               sx = {{width: '100%'}}
@@ -50,8 +52,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-3">
             <TextField 
               onChange = {handleChange} 
-              value = {data.mailingAddress}
-              name = "mailingAddress"
+              value = {data.customer_mailingAddress}
+              name = "customer_mailingAddress"
               variant = "standard" 
               label = "Mailing Address"
               sx = {{width: '100%'}}
@@ -61,8 +63,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-3">
             <TextField 
               onChange = {handleChange} 
-              value = {data.phoneNumber}
-              name = "phoneNumber"
+              value = {data.customer_phoneNumber}
+              name = "customer_phoneNumber"
               variant = "standard" 
               label = "Phone Number" 
               sx = {{width: '100%'}}
@@ -72,8 +74,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-3">
             <TextField 
               onChange = {handleChange} 
-              value = {data.emailAddress}
-              name = "emailAddress"
+              value = {data.customer_emailAddress}
+              name = "customer_emailAddress"
               variant = "standard" 
               label = "Email Address" 
               sx = {{width: '100%'}}
@@ -83,8 +85,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-3">
             <TextField 
               onChange = {handleChange} 
-              value = {data.password}
-              name = "password"
+              value = {data.customer_password}
+              name = "customer_password"
               variant = "standard" 
               label = "Password" 
               sx = {{width: '100%'}}
@@ -94,8 +96,8 @@ const CustomerInfo = ({ data, handleChange }) => {
           <div class = "col-span-3">
             <TextField 
                 onChange = {handleChange} 
-                value = {data.passwordRetype}
-                name = "passwordRetype"
+                value = {data.customer_passwordRetype}
+                name = "customer_passwordRetype"
                 variant = "standard" 
                 label = "Password" 
                 sx = {{width: '100%'}}
