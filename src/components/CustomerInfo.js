@@ -1,8 +1,13 @@
 import { TextField } from "@mui/material";
 import useFormContext from "../hooks/useFormContext";
+import { useRef, useState, useEffect } from "react";
+
 
 const CustomerInfo = () => {
     const {data, handleChange} = useFormContext()
+
+    const name_regex = /^([A-Z])[\w+.]{1,}$/
+    const email_regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]$/
 
     const content = (
       <div class = "flex justify-center my-8">
@@ -14,7 +19,10 @@ const CustomerInfo = () => {
               label = "First Name" 
               sx = {{marginRight:1, width: '100%'}}
               value = {data.customer_firstName} 
-              onChange = {handleChange} 
+              onChange = {
+               handleChange
+              } 
+              error = {name_regex.test(data.customer_firstName)}
               required 
             />
           </div>
@@ -78,6 +86,7 @@ const CustomerInfo = () => {
               name = "customer_emailAddress"
               variant = "standard" 
               label = "Email Address" 
+              error = {email_regex.test(data.customer_emailAddress)}
               sx = {{width: '100%'}}
               required
             />

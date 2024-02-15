@@ -29,12 +29,15 @@ export const FormProvider = ({children}) => {
         customer_emailAddress: "",
         customer_password: "",
         customer_passwordRetype: "",
+        validated_customer: false, 
         dlNumber: "",
         dlState: "",
+        validated_dl: false, 
         cardName: "",
         cardNumber: "",
         cardExpirationDate: "",
-        cardccv: ""
+        cardccv: "",
+        validated_card: false
     })
 
     // will eventually need to be able to add mult cards, just adding one for now
@@ -50,6 +53,15 @@ export const FormProvider = ({children}) => {
     const handleChange = e => {
         const type = e.target.type
         const name = e.target.name
+
+        // const pwd_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
+        // const email_regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/
+        // const name_regex = /^[a-zA-Z]{2,}$/
+
+        // const validPassword = pwd_regex.test(data.customer_password)
+        // const validName = name_regex.test(data.customer_firstName)
+        // console.log("valid password: " + validPassword)
+        // console.log("valid name" + validName)
 
         const value = type == "checkbox"
             ? e.target.checked
@@ -92,12 +104,11 @@ export const FormProvider = ({children}) => {
         || (page === 0 && !canNextPage1)
         || (page === 1 && !canNextPage2)
 
-    const prevHide = page === 0 && "remove-button"
+    // const prevHide = page === 0 && "remove-button"
+    // const nextHide = page === Object.keys(title).length - 1 && "remove-button"
+    // const submitHide = page !== Object.keys(title).length - 1 && "remove-button"
 
-    const nextHide = page === Object.keys(title).length - 1 && "remove-button"
 
-    const submitHide = page !== Object.keys(title).length - 1 && "remove-button"
-       
     return (
         // pass values that will be available to child components
         <FormContext.Provider value = {{
