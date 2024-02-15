@@ -35,16 +35,9 @@ function Faq() {
         </div>
         <div class = "w-full bg-purple-accent px-16 py-16">
           <h1 class = "text-subhead">Can't find what you're looking for? Contact us.</h1>
-          <div class = "grid grid-cols-1 lg:grid-cols-3 md: grid-cols-2 py-8 gap-16">
+          <div>
             <ContactForm/>
-            <div class = "col-span-1 lg:col-span-2">
-              <p class = "text-body-copy">Our Customer Service staff will be happy to answer any questions you may have.
-                <br/><br/>Office hours
-                <br/>Mon - Fri
-                <br/>8:00 AM – 8:00 PM EST.
-                <br/><br/>Members will receive a 24-hour emergency service number in their rental confirmation.
-              </p>
-            </div>
+
           </div>
         </div>
       </div></>
