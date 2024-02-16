@@ -33,7 +33,7 @@ function Faq() {
             );
           })}
         </div>
-        <div class = "w-full bg-purple-accent px-16 py-16">
+        <div class = "w-full bg-purple-accent px-16 py-8">
           <h1 class = "text-subhead">Can't find what you're looking for? Contact us.</h1>
           <div>
             <ContactForm/>
