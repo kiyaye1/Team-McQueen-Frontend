@@ -22,7 +22,6 @@ const CustomerInfo = () => {
               onChange = {
                handleChange
               } 
-              error = {name_regex.test(data.customer_firstName)}
               required 
             />
           </div>
@@ -86,7 +85,6 @@ const CustomerInfo = () => {
               name = "customer_emailAddress"
               variant = "standard" 
               label = "Email Address" 
-              error = {email_regex.test(data.customer_emailAddress)}
               sx = {{width: '100%'}}
               required
             />

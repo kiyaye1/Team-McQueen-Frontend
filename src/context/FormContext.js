@@ -81,7 +81,8 @@ export const FormProvider = ({children}) => {
     } = data
     
     // can submit when required inputs are all fulled in, and when the user is on last page
-    const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
+    // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
+    const canSubmit = page == Object.keys(title).length - 1
 
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
