@@ -20,7 +20,10 @@ function Layout({isLoggedIn}) {
                 </div>
             </div>
             
+           
             <Outlet/>
+
+          
     
             </>
         )

@@ -11,15 +11,6 @@ import Profile from '../main-screens/Profile'
 import Reservation from '../main-screens/Reservation'
 import { useState } from 'react';
 
-//reservations (home), FAQ, contact us, about us, My account
-
-// export const userLogin = () => {
-//     const [isLoggedIn, setIsLoggedIn] = useState()
-    
-//     function toggleLogIn(login) {
-//         setIsLoggedIn(login)
-//     }
-// }
 
 function Navigation() {
     const [isLoggedIn, setIsLoggedIn] = useState()
