@@ -17,21 +17,37 @@ import {Link} from "react-router-dom"
 
 function Login({toggleLogIn}) {
     return (
-     
-        <div class = "text-center p-8">
-          <div class = "font-medium text-section-head">Login</div>
-          <div>
-            <div><TextField variant = "standard" label = "Email Address"/></div>
-            <div class = "p-2"><TextField variant = "standard" label = "Password"/></div>
-            <div>
-              <Link to = "/reserve">
-                <Button variant = "contained" onClick = { () => toggleLogIn(true)}>Log In</Button>
-              </Link>
-            
-            </div>
+      <div class = "text-center m-16">
+        <form>
+          <div class = "flex justify-center">
+          <div class = "w-full md:w-1/2 lg:w-1/4 xl:w-1/4 2xl:w-1/4 grid grid-cols-1 gap-y-32">
+              <div class = "text-section-head">Login</div>
+              <div class = "">
+                <TextField 
+                  variant = "standard" 
+                  label = "Email Address"
+                  sx = {{margin:1, width: '100%'}}
+                />
+                <TextField 
+                  variant = "standard" 
+                  type = "password"
+                  label = "Password"
+                  sx = {{margin:1, width: '100%'}}
+                />
+              </div>
+              <div class = "text-center">
+                <Link to = "/reserve">
+                  <Button sx = {{backgroundColor: '#000180'}} variant = "contained" onClick = { () => toggleLogIn(true)}>Log In</Button>
+                </Link>
+              </div>
+
+          </div>
           </div>
           
+        </form>
+          
       </div>
+ 
       
   
     );

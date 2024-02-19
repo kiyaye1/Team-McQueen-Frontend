@@ -9,6 +9,7 @@ module.exports = {
       'body': ['Poppins']
     },
     fontSize: {
+      'xs': ['12px', {fontWeight: '600'}],
       'sm': ['14px', {fontWeight: '400'}],
       'body': ['16px', {fontWeight: '400'}],
       'card-title': ['20px', {fontWeight: '600'}],

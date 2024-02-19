@@ -96,6 +96,7 @@ const CustomerInfo = () => {
               name = "customer_password"
               variant = "standard" 
               label = "Password" 
+              type = "password"
               sx = {{width: '100%'}}
               required
             />            
@@ -107,6 +108,7 @@ const CustomerInfo = () => {
                 name = "customer_passwordRetype"
                 variant = "standard" 
                 label = "Password" 
+                type = "password"
                 sx = {{width: '100%'}}
                 required
               />              

@@ -51,12 +51,11 @@ function CreditCardInfo() {
                 required
               /> 
           </div>
-          <div class = "col-span-3" >
-              <Button variant="contained" sx={{m:1}}>Save Card</Button>
-              <Button variant="text">Add New Card</Button>
+          <div class = "col-span-3 text-left" >
+              <Button variant="contained" sx={{m:1, backgroundColor: '#000180'}}>Save Card</Button>
+              <Button variant="text" sx = {{color: '#000180'}}>Add New Card</Button>
           </div>
       </div>
-
     </div>
 
   

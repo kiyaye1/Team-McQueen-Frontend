@@ -87,7 +87,7 @@ export const FormProvider = ({children}) => {
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
     const canNextPage1 = Object.keys(data)
-        .filter(key => key.startsWith('customer') && key !== 'mi' && key !== "suffix")
+        .filter(key => key.startsWith('customer') && key !== 'customer_mi' && key !== "customer_suffix")
         .map(key => data[key])
         .every(Boolean)
 
