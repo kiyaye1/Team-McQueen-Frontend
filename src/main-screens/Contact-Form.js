@@ -29,7 +29,7 @@ const ContactForm = () => {
     }
 
     const handleSubmit = e => {
-        //e.preventDefault()
+        e.preventDefault()
         console.log("name: " + name)
         console.log("email: " + email)
         console.log("reason: " + reason)
