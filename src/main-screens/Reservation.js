@@ -1,7 +1,9 @@
+import MapComponent from "../components/MapComponent";
+
 function Reservation() {
     return (
       <><div >
-        <h1 class = "font-medium">Reservation</h1>
+        <MapComponent/>
       </div></>
   
     );
