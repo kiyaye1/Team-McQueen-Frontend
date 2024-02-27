@@ -2,14 +2,37 @@ import React from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
 const libraries = ['places'];
+
 const mapContainerStyle = {
   width: '100vw',
   height: '100vh',
 };
-const center = {
-  lat: 7.2905715, // default latitude
-  lng: 80.6337262, // default longitude
+
+const nw = {
+  lat: 43.20663,
+  lng: -77.68602, 
 };
+
+const ne = {
+    lat: 43.21223, 
+    lng: -77.45218, 
+};
+
+const cc = {
+    lat: 43.15752, 
+    lng: -77.61197, 
+};
+
+const se = {
+    lat: 43.06997, 
+    lng: -77.44159, 
+};
+
+const airport = {
+    lat: 43.10884, 
+    lng: -77.67537, 
+};
+
 
 const MapComponent = () => {
   const { isLoaded, loadError } = useLoadScript({
@@ -29,10 +52,14 @@ const MapComponent = () => {
     <div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={10}
-        center={center}
+        zoom={11}
+        center={cc}
       >
-        <Marker position={center} />
+        <Marker position={nw} />
+        <Marker position={ne} />
+        <Marker position={cc} />
+        <Marker position={se} />
+        <Marker position={airport} />
       </GoogleMap>
     </div>
   );
