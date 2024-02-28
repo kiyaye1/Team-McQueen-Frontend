@@ -5,21 +5,31 @@ const ProgressBar = () => {
     const {page, title} = useFormContext()
     const interval = 100 / Object.keys(title).length
     const progress = ((page + 1) * interval).toFixed(2)
+
     const steps = Object.keys(title).map((step, i) => {
+    
         return <div>
-                <div key={i}>{title[i]}</div>
-                {/* <span class = "h-6 w-6 rounded-full bg-teal-secondary"> </span> */}
+                <div class>
+                    <svg height="16" width = "96">
+                        <circle
+                            cx="48"
+                            cy="8"
+                            r="8"
+                            fill = {title[i] == title[page]? "#33adad" : "#cccccc"}
+                        />
+                    </svg>
+                </div>
+                <div class = "w-24 mt-4 text-xs text-body-copy" key={i}>{title[i]}</div>
             </div>
     })
 
     return (
         <section>
-            <div class = "flex justify-center my-8">
-            <div class = "w-full md:w-1/2 lg:w-1/4 xl:w-1/4 2xl:w-1/4 ">
-                <div class = "flex space-evenly">
+            <div class = "flex justify-center my-12">
+            <div class = "w-76">
+                <div class = "grid grid-cols-3 gap-4">
                     {steps}
                 </div>
-                <LinearProgress variant="determinate" value={progress} />
             </div>
             </div>
         </section>

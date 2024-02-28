@@ -2,7 +2,14 @@ import { TextField, Button } from "@mui/material";
 import useFormContext from "../hooks/useFormContext";
 
 function CreditCardInfo() {
-    const {data, handleChange} = useFormContext()
+    const {
+      data, 
+      handleChange, 
+      cardNameError,
+      cardNumberError,
+      expDateError,
+      cardccvError
+    } = useFormContext()
 
     return (
       <div class = "flex justify-center my-8">
@@ -17,6 +24,7 @@ function CreditCardInfo() {
                 sx = {{width: '100%'}}
                 required
               /> 
+              <div className = "text-red text-sm">{cardNameError}</div>
           </div>
           <div class = "col-span-3">
             <TextField 
@@ -28,6 +36,7 @@ function CreditCardInfo() {
                 sx = {{width: '100%'}}
                 required
               /> 
+              <div className = "text-red text-sm">{cardNumberError}</div>
           </div>
           <div class = "col-span-2">
             <TextField 
@@ -39,6 +48,7 @@ function CreditCardInfo() {
                 sx = {{width: '100%'}}
                 required
               /> 
+              <div className = "text-red text-sm">{expDateError}</div>
           </div>
           <div class = "col-span-1">
             <TextField 
@@ -50,16 +60,14 @@ function CreditCardInfo() {
                 sx = {{width: '100%'}}
                 required
               /> 
+              <div className = "text-red text-sm">{cardccvError}</div>
           </div>
-          <div class = "col-span-3" >
-              <Button variant="contained" sx={{m:1}}>Save Card</Button>
-              <Button variant="text">Add New Card</Button>
+          <div class = "col-span-3 text-left" >
+              <Button variant="contained" sx={{m:1, backgroundColor: '#000180'}}>Save Card</Button>
+              <Button variant="text" sx = {{color: '#000180'}}>Add New Card</Button>
           </div>
       </div>
-
-    </div>
-
-  
+    </div> 
     );
   }
   

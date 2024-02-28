@@ -1,8 +1,20 @@
 import { TextField } from "@mui/material";
 import useFormContext from "../hooks/useFormContext";
+import { StateList } from "../data/state-list";
+import {Select} from "@mui/material";
+import {MenuItem} from "@mui/material";
+import InputLabel from '@mui/material/InputLabel';
+import {FormControl} from "@mui/material";
+
+// select isnt working properly
 
 function DriversLicenseInfo() {
-    const {data, handleChange} = useFormContext()
+  const {
+    data, 
+    handleChange, 
+    dlNumberError, 
+    dlStateError
+  } = useFormContext()
 
     return (
       <div class = "flex justify-center my-8">
@@ -17,17 +29,27 @@ function DriversLicenseInfo() {
                 sx = {{width: '100%'}}
                 required
               />
+              <div className = "text-red text-sm">{dlNumberError}</div>
             </div>
             <div class = "col-span-3">
-              <TextField 
-                  name = "dlState"
-                  onChange = {handleChange} 
-                  value = {data.dlState}
-                  variant = "standard" 
-                  label = "State Issued" 
-                  sx = {{width: '100%'}}
-                  required
-                />
+              <FormControl required fullWidth>
+                <InputLabel id="state-select">State</InputLabel>
+                  <Select
+                      labelId = "state-select"
+                      name = "dlState"
+                      value = {data.dlState}
+                      label = "State"
+                      onChange = {handleChange}
+                      required
+                  >
+                  {StateList.map((data, key) => {
+                      return (
+                        <MenuItem value = {data.state} key = {key}>{data.state}</MenuItem>
+                      )
+                  })};
+                  </Select>
+              </FormControl>
+              <div className = "text-red text-sm">{dlStateError}</div>
             </div>
         </div>
       </div>
