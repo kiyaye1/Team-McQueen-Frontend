@@ -110,7 +110,7 @@ const Form = () => {
             <FormInputs/>
             
             <div>
-                {<Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button>}
+                {/* <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button> */}
                 <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handleNext} disabled = {disableNext}>Continue</Button>
                 <Button sx = {{backgroundColor: '#000180'}} type = "submit" variant="contained" disabled = {!canSubmit}>Submit</Button>
             </div>
