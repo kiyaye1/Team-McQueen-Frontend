@@ -16,9 +16,6 @@ const CustomerInfo = () => {
     customer_passwordRetypeError
   } = useFormContext()
 
-    const name_regex = /^([A-Z])[\w+.]{1,}$/
-    const email_regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]$/
-
     const content = (
       <div class = "flex justify-center my-8">
       <div class = "w-full md:w-1/2 lg:w-1/4 xl:w-1/4 2xl:w-1/4 grid grid-cols-3 gap-8">
@@ -111,6 +108,7 @@ const CustomerInfo = () => {
               label = "Password" 
               type = "password"
               sx = {{width: '100%'}}
+              helperText = "Min 8 characters, 1+ uppercase letter, lowercase letter & number, 1 special character"
               required
             /> 
             <div className = "text-red text-sm">{customer_passwordError}</div>           
@@ -124,6 +122,7 @@ const CustomerInfo = () => {
                 label = "Password" 
                 type = "password"
                 sx = {{width: '100%'}}
+                helperText = "Please retype the same password."
                 required
               />
               <div className = "text-red text-sm">{customer_passwordRetypeError}</div>              

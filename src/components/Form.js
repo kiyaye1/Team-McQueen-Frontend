@@ -123,5 +123,3 @@ const Form = () => {
 
 export default Form;
 
-/// 6:13 in this video
-/// https://www.youtube.com/watch?v=FGM6FQmdX8I&list=PL0Zuz27SZ-6PrE9srvEn8nbhOOyxnWXfp&index=50
