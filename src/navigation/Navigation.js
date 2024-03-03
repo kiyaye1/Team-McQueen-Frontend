@@ -9,6 +9,10 @@ import Contact from '../main-screens/Contact';
 import Layout from './Layout'
 import Profile from '../main-screens/Profile'
 import Reservation from '../main-screens/Reservation'
+import CustomerService from '../employee-dashboards/CustomerService';
+import Manager from '../employee-dashboards/Manager';
+import Admin from '../employee-dashboards/Admin';
+import Mechanic from '../employee-dashboards/Mechanic';
 import { useState } from 'react';
 
 
@@ -19,19 +23,29 @@ function Navigation() {
         setIsLoggedIn(login)
     }
 
+    const [isEmployee, setIsEmployee] = useState(false)
+
+    function loginEmployee(employ) {
+        setIsEmployee(employ)
+    }
+
     return (
         <div>
             <BrowserRouter>
                 <Routes>
-                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
+                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn} isEmployee = {isEmployee}/>}>
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
-                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} />}/>
-                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn}/>}/>
+                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
+                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
+                    <Route path = "customerservice" element = {<CustomerService/>}/>
+                    <Route path = "manager" element = {<Manager/>}/>
+                    <Route path = "mechanic" element = {<Mechanic/>}/>
+                    <Route path = "admin" element = {<Admin/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>
