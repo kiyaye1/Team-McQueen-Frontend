@@ -15,7 +15,7 @@ import {Link} from "react-router-dom"
 //   }
 // });
 
-function Login({toggleLogIn}) {
+function Login({toggleLogIn, loginEmployee}) {
     return (
      
         <div class = "text-center p-8">
@@ -26,6 +26,9 @@ function Login({toggleLogIn}) {
             <div>
               <Link to = "/reserve">
                 <Button variant = "contained" onClick = { () => toggleLogIn(true)}>Log In</Button>
+              </Link>
+              <Link to = "/account">
+                <Button variant = "outlined" onClick = {() => loginEmployee(true)}>Employee Login</Button>
               </Link>
             
             </div>
