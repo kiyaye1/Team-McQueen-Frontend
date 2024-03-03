@@ -9,6 +9,7 @@ import Contact from '../main-screens/Contact';
 import Layout from './Layout'
 import Profile from '../main-screens/Profile'
 import Reservation from '../main-screens/Reservation'
+import Confirmation from '../components/FormConfirmation';
 import { useState } from 'react';
 
 
@@ -23,7 +24,7 @@ function Navigation() {
         <div>
             <BrowserRouter>
                 <Routes>
-                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
+                <Route path = "/home" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
@@ -32,6 +33,7 @@ function Navigation() {
                     <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} />}/>
                     <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
+                    <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>

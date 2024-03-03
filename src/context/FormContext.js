@@ -57,15 +57,6 @@ export const FormProvider = ({children}) => {
         const type = e.target.type
         const name = e.target.name
 
-        // const pwd_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
-        // const email_regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/
-        // const name_regex = /^[a-zA-Z]{2,}$/
-
-        // const validPassword = pwd_regex.test(data.customer_password)
-        // const validName = name_regex.test(data.customer_firstName)
-        // console.log("valid password: " + validPassword)
-        // console.log("valid name" + validName)
-
         const value = type == "checkbox"
             ? e.target.checked
             : e.target.value 

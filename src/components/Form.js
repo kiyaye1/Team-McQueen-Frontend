@@ -96,7 +96,7 @@ const Form = () => {
             setExpDateError("")
             setCardccvError("")
 
-            navigate('/login');
+            navigate('/registration-confirmation');
         }   
     }
 
