@@ -1,7 +1,7 @@
 
-import CreateAccount from './CreateAccount';
+import CreateAccount from '../components/HowItWorks';
 import { Button } from '@mui/material';
-import carPhoto from '../images/teal-car.png'
+import carPhoto from '../assets/teal-car.png'
 
 const Homepage = () => {
   return (
