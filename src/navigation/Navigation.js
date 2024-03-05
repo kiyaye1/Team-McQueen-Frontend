@@ -9,6 +9,7 @@ import Contact from '../main-screens/Contact';
 import Layout from './Layout'
 import Profile from '../main-screens/Profile'
 import Reservation from '../main-screens/Reservation'
+import Confirmation from '../components/FormConfirmation';
 import CustomerService from '../employee-dashboards/CustomerService';
 import Manager from '../employee-dashboards/Manager';
 import Admin from '../employee-dashboards/Admin';
@@ -33,7 +34,7 @@ function Navigation() {
         <div>
             <BrowserRouter>
                 <Routes>
-                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn} isEmployee = {isEmployee}/>}>
+                <Route path = "/home" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
@@ -42,6 +43,7 @@ function Navigation() {
                     <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
                     <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
+                    <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
                     <Route path = "mechanic" element = {<Mechanic/>}/>

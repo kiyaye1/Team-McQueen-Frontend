@@ -4,10 +4,17 @@ import { useRef, useState, useEffect } from "react";
 
 
 const CustomerInfo = () => {
-    const {data, handleChange} = useFormContext()
-
-    const name_regex = /^([A-Z])[\w+.]{1,}$/
-    const email_regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]$/
+  const {
+    data, 
+    handleChange, 
+    customer_firstNameError,
+    customer_lastNameError,
+    customer_mailingAddressError,
+    customer_phoneNumberError,
+    customer_emailAddressError,
+    customer_passwordError,
+    customer_passwordRetypeError
+  } = useFormContext()
 
     const content = (
       <div class = "flex justify-center my-8">
@@ -19,11 +26,10 @@ const CustomerInfo = () => {
               label = "First Name" 
               sx = {{marginRight:1, width: '100%'}}
               value = {data.customer_firstName} 
-              onChange = {
-               handleChange
-              } 
+              onChange = {handleChange} 
               required 
             />
+            <div className = "text-red text-sm">{customer_firstNameError}</div>
           </div>
           <div class = "col-span-1">
             <TextField 
@@ -45,6 +51,7 @@ const CustomerInfo = () => {
               sx = {{marginRight:1, width: '100%'}}
               required
             />
+            <div class = "text-red text-sm">{customer_lastNameError}</div>
           </div>
           <div class = "col-span-1">
             <TextField 
@@ -66,6 +73,7 @@ const CustomerInfo = () => {
               sx = {{width: '100%'}}
               required 
             />
+            <div className = "text-red text-sm">{customer_mailingAddressError}</div>
           </div>
           <div class = "col-span-3">
             <TextField 
@@ -77,6 +85,7 @@ const CustomerInfo = () => {
               sx = {{width: '100%'}}
               required
             />
+            <div className = "text-red text-sm">{customer_phoneNumberError}</div>
           </div>
           <div class = "col-span-3">
             <TextField 
@@ -88,6 +97,7 @@ const CustomerInfo = () => {
               sx = {{width: '100%'}}
               required
             />
+            <div className = "text-red text-sm">{customer_emailAddressError}</div>
           </div>
           <div class = "col-span-3">
             <TextField 
@@ -96,9 +106,12 @@ const CustomerInfo = () => {
               name = "customer_password"
               variant = "standard" 
               label = "Password" 
+              type = "password"
               sx = {{width: '100%'}}
+              helperText = "Min 8 characters, 1+ uppercase letter, lowercase letter & number, 1 special character"
               required
-            />            
+            /> 
+            <div className = "text-red text-sm">{customer_passwordError}</div>           
           </div>
           <div class = "col-span-3">
             <TextField 
@@ -107,9 +120,12 @@ const CustomerInfo = () => {
                 name = "customer_passwordRetype"
                 variant = "standard" 
                 label = "Password" 
+                type = "password"
                 sx = {{width: '100%'}}
+                helperText = "Please retype the same password."
                 required
-              />              
+              />
+              <div className = "text-red text-sm">{customer_passwordRetypeError}</div>              
           </div>
       </div>
     </div>

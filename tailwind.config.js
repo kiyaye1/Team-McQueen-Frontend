@@ -9,6 +9,7 @@ module.exports = {
       'body': ['Poppins']
     },
     fontSize: {
+      'xs': ['12px', {fontWeight: '600'}],
       'sm': ['14px', {fontWeight: '400'}],
       'body': ['16px', {fontWeight: '400'}],
       'card-title': ['20px', {fontWeight: '600'}],
@@ -17,6 +18,7 @@ module.exports = {
       'hero': ['72px', {fontWeight: '800'}]
     },
     colors: {
+      'red': '#ff0000',
       'blue-primary': '#000180',
       'blue-primary_accent': '4a4cda',
       'teal-secondary': '#33adad',
