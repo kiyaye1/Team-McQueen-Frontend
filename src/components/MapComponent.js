@@ -6,7 +6,8 @@ const libraries = ['places'];
 const mapContainerStyle = {
   position: "relative",
   maxWidth: "1600px",
-  height: "100vh"
+  height: "100vh",
+  borderRadius: "8px"
 };
 
 const nw = {
