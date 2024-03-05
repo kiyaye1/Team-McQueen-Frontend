@@ -30,7 +30,7 @@ function Reservation() {
         
         {/* Search field */}
         <div class = "col-span-2 lg:border lg:rounded-lg">
-          <section class = "grid grid-cols-1 lg:grid-cols-6 gap-8 px-8 py-4">
+          <section class = "grid grid-cols-1 lg:grid-cols-7 gap-8 px-8 py-4">
             <FormControl>
               <InputLabel id="location-select">Pick Up Location</InputLabel>
               <Select
@@ -55,6 +55,23 @@ function Reservation() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimePicker label = "Pick Up Time" slotProps={{textField: {variant: 'standard'}}}/>
             </LocalizationProvider>
+
+            <FormControl>
+              <InputLabel id="drop-off-select">Drop off Location</InputLabel>
+              <Select
+                labelId = "drop-off-select"
+                // value = {reason}
+                label = "Drop Off Location"
+                variant = "standard"
+              >
+                <MenuItem value = "Northeast">Northeast</MenuItem>
+                <MenuItem value = "Northeast">Northwest</MenuItem>
+                <MenuItem value = "Northeast">Center City</MenuItem>
+                <MenuItem value = "Northeast">Southeast</MenuItem>
+                <MenuItem value = "Northeast">Airport</MenuItem>
+
+              </Select>
+            </FormControl>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/>
