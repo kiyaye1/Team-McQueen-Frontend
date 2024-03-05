@@ -34,7 +34,7 @@ function Navigation() {
         <div>
             <BrowserRouter>
                 <Routes>
-                <Route path = "/home" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
+                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn}/>}>
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
