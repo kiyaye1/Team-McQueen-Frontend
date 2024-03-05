@@ -1,8 +1,14 @@
 import {Outlet, Link} from "react-router-dom"
 import logo from './gyrogogo-logo.png'
+import { useState } from "react"
+import { Button } from "@mui/material"
 
 
-function Layout({isLoggedIn}) {
+// TODO: on login --- put a login as employee button and function same as 
+// the way we are simulating customer login rn 
+
+
+function Layout({isLoggedIn, isEmployee}) {
 
     if(isLoggedIn) {
         return (
@@ -28,6 +34,29 @@ function Layout({isLoggedIn}) {
             </>
         )
 
+    } else if(isEmployee) {
+        return (
+            <>
+            <div class = "content-center p-4 shadow-lg">
+                <div class = "flex justify-between">
+                    <Link to = "/"><img class =  "h-auto w-16 md:w-20 lg:w-24" src ={logo} alt = "Logo"/></Link>
+                    <div class = "text-right font-medium text-sm">
+                        <Link to = "/customerservice" class = "p-4">CS Dash</Link>
+                        <Link to = "/manager" class = "p-4">Manager Dash</Link>
+                        <Link to = "/mechanic" class = "p-4">Mechanic Dash</Link>
+                        <Link to = "/admin" class = "p-4">Admin Dash</Link>
+                        <Link to = "/account" class = "p-4">Profile</Link>
+                    </div>
+                </div>
+            </div>
+            
+           
+            <Outlet/>
+
+          
+    
+            </>
+        )
     } else {
         return (
             <>

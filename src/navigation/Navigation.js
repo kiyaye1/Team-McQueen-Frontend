@@ -10,6 +10,10 @@ import Layout from './Layout'
 import Profile from '../main-screens/Profile'
 import Reservation from '../main-screens/Reservation'
 import Confirmation from '../components/FormConfirmation';
+import CustomerService from '../employee-dashboards/CustomerService';
+import Manager from '../employee-dashboards/Manager';
+import Admin from '../employee-dashboards/Admin';
+import Mechanic from '../employee-dashboards/Mechanic';
 import { useState } from 'react';
 
 
@@ -18,6 +22,12 @@ function Navigation() {
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
+    }
+
+    const [isEmployee, setIsEmployee] = useState(false)
+
+    function loginEmployee(employ) {
+        setIsEmployee(employ)
     }
 
     return (
@@ -30,10 +40,14 @@ function Navigation() {
                     <Route path = "contact" element = {<Contact/>}/>
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
-                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} />}/>
-                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn}/>}/>
+                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
+                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
+                    <Route path = "customerservice" element = {<CustomerService/>}/>
+                    <Route path = "manager" element = {<Manager/>}/>
+                    <Route path = "mechanic" element = {<Mechanic/>}/>
+                    <Route path = "admin" element = {<Admin/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>
