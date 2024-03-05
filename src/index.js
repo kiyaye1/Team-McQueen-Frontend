@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode> google map markers not working in strict mode
     <App />
-  </React.StrictMode>
+  // </React.StrictMode> 
 );
 
 // If you want to start measuring performance in your app, pass a function
