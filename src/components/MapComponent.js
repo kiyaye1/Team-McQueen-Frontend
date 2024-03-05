@@ -4,8 +4,9 @@ import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 const libraries = ['places'];
 
 const mapContainerStyle = {
-  width: '100vw',
-  height: '100vh',
+  position: "relative",
+  maxWidth: "1600px",
+  height: "100vh"
 };
 
 const nw = {
@@ -49,7 +50,7 @@ const MapComponent = () => {
   }
 
   return (
-    <div>
+    <div class = "">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={11}
