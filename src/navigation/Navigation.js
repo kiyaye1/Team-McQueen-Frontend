@@ -35,7 +35,11 @@ function Navigation() {
         <div>
             <BrowserRouter>
                 <Routes>
+
+
+
                 <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn} isEmployee = {isEmployee}/>}>
+
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
