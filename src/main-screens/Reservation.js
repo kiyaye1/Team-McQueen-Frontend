@@ -3,12 +3,8 @@ import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import {IconButton} from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import MapResults from "../components/MapResults";
-import SearchResult from "../components/SearchResult";
-import MapComponent from "../components/MapComponent";
 
 function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
@@ -29,8 +25,8 @@ function Reservation() {
         </section>
         
         {/* Search field */}
-        <div class = "col-span-2 lg:border lg:rounded-lg">
-          <section class = "grid grid-cols-1 lg:grid-cols-7 gap-8 px-8 py-4">
+        <div class = "col-span-2 lg:border border-border lg:rounded-lg">
+          <section class = "grid grid-cols-1 lg:grid-cols-6 gap-8 px-8 py-8">
             <FormControl>
               <InputLabel id="location-select">Pick Up Location</InputLabel>
               <Select
