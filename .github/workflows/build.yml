@@ -24,6 +24,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
+      env:
+        CI: false
       run: |
         npm install
         npm run build
