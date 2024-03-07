@@ -1,6 +1,7 @@
 name: "npm build app"
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
