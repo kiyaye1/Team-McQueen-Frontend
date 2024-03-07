@@ -36,4 +36,9 @@ jobs:
         path: ./build
         compression-level: 0
         overwrite: true
-          
+    - uses: shallwefootball/s3-upload-action@master
+      with:
+        aws_key_id: AKIAVIJGNWVSO7SPPZGB
+        aws_secret_access_key: 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
+        aws_bucket: gyrocar-static-files
+        source_dir: 'build'
