@@ -1,4 +1,4 @@
-name: npm build app
+name: "npm build app"
 
 on:
   push:
