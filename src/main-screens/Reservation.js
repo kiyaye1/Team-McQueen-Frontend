@@ -8,10 +8,14 @@ import MapResults from "../components/MapResults";
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import dayjs from 'dayjs';
 
+
+// todo: show user location on map
+// todo: log data to console & send to reservation details page & then the payment 
+
 function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
-    const [pickUp, setPickUp] = useState(dayjs('2022-04-17T15:30'));
-    const [dropOff, setDropOff] = useState(dayjs('2022-04-17T15:30'));
+    const [pickUp, setPickUp] = useState(dayjs());
+    const [dropOff, setDropOff] = useState(dayjs());
     
     const searchHandler = () => setIsSearch(true);
 
@@ -48,24 +52,6 @@ function Reservation() {
               </Select>
             </FormControl>
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
-                <DateTimeField
-                  label="Pick up Date"
-                  value={pickUp}
-                  onChange={(newValue) => setPickUp(newValue)}
-                 />
-            </LocalizationProvider>
-
-            
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Pick Up Date" slotProps={{textField: {variant: 'standard'}}}/>
-            </LocalizationProvider>
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker label = "Pick Up Time" slotProps={{textField: {variant: 'standard'}}}/>
-            </LocalizationProvider> */}
-
             <FormControl>
               <InputLabel id="drop-off-select">Drop off Location</InputLabel>
               <Select
@@ -86,17 +72,22 @@ function Reservation() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
                 <DateTimeField
+                  label="Pick up Date"
+                  slotProps={{textField: {variant: 'standard'}}}
+                  value={pickUp}
+                  onChange={(newValue) => setPickUp(newValue)}
+                 />
+            </LocalizationProvider>
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
+                <DateTimeField
                   label="Drop off Date"
+                  slotProps={{textField: {variant: 'standard'}}}
                   value={dropOff}
                   onChange={(newValue) => setDropOff(newValue)}
                  />
             </LocalizationProvider>
-{/* 
-            <div class = "justify-center">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker label = "Drop Off Time" slotProps={{textField: {variant: 'standard'}}}/>
-              </LocalizationProvider>
-            </div> */}
 
             <div class = "flex items-center">
               <Button 
