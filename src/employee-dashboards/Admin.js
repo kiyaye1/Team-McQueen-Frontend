@@ -1,4 +1,6 @@
 import DashCard from "../employee-components/DashCard";
+import { Link } from "react-router-dom";
+
 function Admin() {
     return (
       <>
@@ -6,19 +8,22 @@ function Admin() {
         Admin Dashboard
       </div>
       <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-        <DashCard
-          title = "Customer Approval Requests"
-          dataPoints = {[
-            {
-              number: "47",
-              caption: "New Tickets"
-            },
-            {
-              number: "10",
-              caption: "In-Progress"
-            }
-          ]}
-        />
+        
+        <Link to = "/customer-approval">
+          <DashCard
+            title = "Customer Approval Requests"
+            dataPoints = {[
+              {
+                number: "47",
+                caption: "New Tickets"
+              },
+              {
+                number: "10",
+                caption: "In-Progress"
+              }
+            ]}
+          />
+        </Link>
         <DashCard
           title = "Business Admin Information"
           dataPoints = {[
