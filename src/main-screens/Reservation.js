@@ -10,7 +10,8 @@ import dayjs from 'dayjs';
 
 
 // todo: show user location on map
-// todo: log data to console & send to reservation details page & then the payment 
+// todo: log data to console  -- DONE
+// send to reservation details page & then the payment 
 
 function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
