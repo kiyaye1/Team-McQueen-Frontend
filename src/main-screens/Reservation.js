@@ -14,10 +14,26 @@ import dayjs from 'dayjs';
 
 function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
-    const [pickUp, setPickUp] = useState(dayjs());
-    const [dropOff, setDropOff] = useState(dayjs());
+    const [pickup_datetime, setPickUp] = useState(dayjs());
+    const [dropoff_datetime, setDropOff] = useState(dayjs());
+    const [pickup_location, setPickupLocation] = useState("")
+    const [dropoff_location, setDropOffLocation] = useState("")
+
+    const handlePickUpLocation = (e) => {
+      setPickupLocation(e.target.value)
+    }
+
+    const handleDropOffLocation = (e) => {
+      setDropOffLocation(e.target.value)
+    }
     
-    const searchHandler = () => setIsSearch(true);
+    const searchHandler = e => {
+      setIsSearch(true);
+      e.preventDefault()
+
+      // check errors on if date 2 is before date 1
+      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString(), pickup_location, dropoff_location)
+    }
 
     return (
       // heading 
@@ -34,20 +50,22 @@ function Reservation() {
         
         {/* Search field */}
         <div class = "lg:border border-border lg:rounded-lg">
-          <section class = "grid grid-cols-1 lg:grid-cols-5 gap-8 px-8 py-8">
+          <form onSubmit = {searchHandler} class = "grid grid-cols-1 lg:grid-cols-5 gap-8 px-8 py-8">
             <FormControl>
               <InputLabel id="location-select">Pick Up Location</InputLabel>
               <Select
+                name = "pickup_location"
+                value = {pickup_location}
+                onChange = {handlePickUpLocation}
                 labelId = "location-select"
-                // value = {reason}
                 label = "Pick Up Location"
                 variant = "standard"
               >
                 <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northeast">Northwest</MenuItem>
-                <MenuItem value = "Northeast">Center City</MenuItem>
-                <MenuItem value = "Northeast">Southeast</MenuItem>
-                <MenuItem value = "Northeast">Airport</MenuItem>
+                <MenuItem value = "Northwest">Northwest</MenuItem>
+                <MenuItem value = "Center City">Center City</MenuItem>
+                <MenuItem value = "Southeast">Southeast</MenuItem>
+                <MenuItem value = "Airport">Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -56,15 +74,17 @@ function Reservation() {
               <InputLabel id="drop-off-select">Drop off Location</InputLabel>
               <Select
                 labelId = "drop-off-select"
-                // value = {reason}
+                name = "dropoff_location"
+                value = {dropoff_location}
+                onChange = {handleDropOffLocation}
                 label = "Drop Off Location"
                 variant = "standard"
               >
                 <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northeast">Northwest</MenuItem>
-                <MenuItem value = "Northeast">Center City</MenuItem>
-                <MenuItem value = "Northeast">Southeast</MenuItem>
-                <MenuItem value = "Northeast">Airport</MenuItem>
+                <MenuItem value = "Northwest">Northwest</MenuItem>
+                <MenuItem value = "Center City">Center City</MenuItem>
+                <MenuItem value = "Southeast">Southeast</MenuItem>
+                <MenuItem value = "Airport">Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -73,9 +93,10 @@ function Reservation() {
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
                 <DateTimeField
                   label="Pick up Date"
+                  name = "pickup_datetime"
+                  value = {pickup_datetime}
+                  onChange = {newDate => setPickUp(newDate)}
                   slotProps={{textField: {variant: 'standard'}}}
-                  value={pickUp}
-                  onChange={(newValue) => setPickUp(newValue)}
                  />
             </LocalizationProvider>
 
@@ -84,8 +105,9 @@ function Reservation() {
                 <DateTimeField
                   label="Drop off Date"
                   slotProps={{textField: {variant: 'standard'}}}
-                  value={dropOff}
-                  onChange={(newValue) => setDropOff(newValue)}
+                  name = "dropoff_datetime"
+                  value={dropoff_datetime}
+                  onChange={newDate => setDropOff(newDate)}
                  />
             </LocalizationProvider>
 
@@ -93,15 +115,13 @@ function Reservation() {
               <Button 
                 variant = "contained" 
                 sx = {{width: "100%", height: "100%"}}
-                onClick = {
-                  searchHandler
-                }
+                type = "submit"
               >
               Search
               </Button>
             </div>
 
-          </section>
+          </form>
         </div>
 
         {/* Map and results */}
