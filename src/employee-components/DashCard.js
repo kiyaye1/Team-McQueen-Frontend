@@ -1,33 +1,22 @@
 import { Box } from "@mui/material";
 
-function DashCard() {
+function DashCard({title, dataPoints}) {
     return (
-      <><div >
-       <Box
-          height={256}
-          width={320}
-          my={4}
-          display="flex"
-          alignItems="center"
-          gap={4}
-          p={2}
-          sx={{ border: '2px solid #c6c6c8', borderRadius: "24px" }}
-        >
-          <div>
-            <p class = "text-card-title">Customer Approval Requests</p>
-            <div class = "grid grid-cols-2 gap-4">
-              <div>
-                <p class = "text-hero">48</p>
-                <p>New Tickets</p>
-              </div>
-              <div>
-                <p class = "text-hero">48</p>
-                <p>New Tickets</p>
-              </div>
-            </div>
+      <>
+        <div class = "w-full border border-border rounded-xl p-8 text-center">
+          <p class = "text-card-title">{title}</p>
+          <div class = "w-full flex justify-evenly">
+            {dataPoints.map((data, key) => {
+              return (
+                <span key = {key} class = "text-center px-4">
+                  <p class = "text-hero text-blue-primary">{data.number}</p>
+                  <p class = "text-body-copy">{data.caption}</p>
+                </span>
+              );
+            })}
           </div>
-    </Box>
-      </div></>
+        </div>
+      </>
   
     );
   }
