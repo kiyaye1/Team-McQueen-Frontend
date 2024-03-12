@@ -6,20 +6,38 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function ApprovalRequests() {
+    const [customerData, setCustomerData] = useState()
+    const [pendingCustomers, setPendingCustomers] = useState([])
+    const [approvedCustomers, setApprovedCustomers] = useState([])
 
-    function createData(name, ticket, date, status) {
-        return {name, ticket, date, status}
+    useEffect(() => {
+        getData()
+      }, [])
+  
+    const getData = async () => {
+        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers")
+        setCustomerData(data.data) 
+
+        const pending = []
+        const approved = []
+        for(var i = 0; i < customerData.length; i++) {
+            if(customerData[i].status.statusCode === "PVN") {
+                pending.push(customerData[i])
+            }
+            if(customerData[i].status.statusCode === "RDY") {
+                approved.push(customerData[i])
+            }
+        }
+        
+
+        setPendingCustomers(pending)
+        setApprovedCustomers(approved)
     }
 
-    // will come from API/Database
-    const rows = [
-        createData("Customer 1", "1", "03/12/2024", "new"),
-        createData("Customer 2", "2", "03/11/2024", "new"),
-        createData("Customer 3", "3", "03/10/2024", "new"),
-        createData("Customer 4", "4", "03/09/2024", "new")
-    ]
 
     return (
       <><div class = "mx-16">
@@ -35,15 +53,15 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => {
+                    {pendingCustomers?.map((row) => {
                         return (
-                            <TableRow key = {row.ticket}>
+                            <TableRow key = {row.customerID}>
                                 <TableCell component="th" scope = "row">
-                                    {row.name}
+                                    {row.firstName + " " + row.lastName}
                                 </TableCell>
-                                <TableCell align = "center">{row.ticket}</TableCell>
-                                <TableCell align = "center">{row.date}</TableCell>
-                                <TableCell align = "right">{row.status}</TableCell>
+                                <TableCell align = "center">{row.customerID}</TableCell>
+                                <TableCell align = "center">{row.createdDatetime}</TableCell>
+                                <TableCell align = "right">{row.status.shortDescription}</TableCell>
                             </TableRow>
                         );
                     })}
@@ -63,7 +81,7 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => {
+                    {/* {rows.map((row) => {
                         return (
                             <TableRow key = {row.ticket}>
                                 <TableCell component="th" scope = "row">
@@ -74,7 +92,7 @@ function ApprovalRequests() {
                                 <TableCell align = "right">{row.status}</TableCell>
                             </TableRow>
                         );
-                    })}
+                    })} */}
                 </TableBody>
             </Table>
         </TableContainer>
@@ -91,15 +109,15 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => {
+                    {approvedCustomers?.map((row) => {
                         return (
-                            <TableRow key = {row.ticket}>
+                            <TableRow key = {row.customerID}>
                                 <TableCell component="th" scope = "row">
-                                    {row.name}
+                                    {row.firstName + " " + row.lastName}
                                 </TableCell>
-                                <TableCell align = "center">{row.ticket}</TableCell>
-                                <TableCell align = "center">{row.date}</TableCell>
-                                <TableCell align = "right">{row.status}</TableCell>
+                                <TableCell align = "center">{row.customerID}</TableCell>
+                                <TableCell align = "center">{row.createdDatetime}</TableCell>
+                                <TableCell align = "right">{row.status.shortDescription}</TableCell>
                             </TableRow>
                         );
                     })}
@@ -119,7 +137,7 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => {
+                    {/* {rows.map((row) => {
                         return (
                             <TableRow key = {row.ticket}>
                                 <TableCell component="th" scope = "row">
@@ -130,7 +148,7 @@ function ApprovalRequests() {
                                 <TableCell align = "right">{row.status}</TableCell>
                             </TableRow>
                         );
-                    })}
+                    })} */}
                 </TableBody>
             </Table>
         </TableContainer>
