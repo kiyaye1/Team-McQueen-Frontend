@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function MembersInfo({customerData}) {
 
@@ -33,12 +34,7 @@ function MembersInfo({customerData}) {
                                     <TableCell width="35%" align = "center"> {row.firstName + " " + row.lastName}</TableCell>
                                     <TableCell width="35x%" align = "center">{row.status.shortDescription}</TableCell>
                                     <TableCell width="20%" align = "right">
-                                      <Button 
-                                        size = "small"
-                                      >
-                                        {/* pass props for specific person */}
-                                      Details
-                                      </Button>
+                                      <Link to = {`/customer-details/${row.customerID}`}>Details</Link>
                                     </TableCell>
                                 </TableRow>
                         );

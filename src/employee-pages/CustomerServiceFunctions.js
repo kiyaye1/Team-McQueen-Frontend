@@ -4,9 +4,9 @@ import Tab from '@mui/material/Tab';
 import { TabList } from '@mui/lab';
 import TabContext from '@mui/lab/TabContext';
 import {TabPanel} from '@mui/lab';
-import ApprovalRequests from '../employee-components/ApprovalRequests';
-import MembersInfo from '../employee-components/MembersInfo'
-import CustomerInquiries from '../employee-components/CustomerInquiries'
+import ApprovalRequests from './employee-components/ApprovalRequests';
+import MembersInfo from './employee-components/MembersInfo'
+import CustomerInquiries from './employee-components/CustomerInquiries'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -33,7 +33,7 @@ function CustomerServiceFunctions() {
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                <TabList onChange={handleChange}>
                     <Tab label="Approval Requests" value="1" />
                     <Tab label="Customer Inquiries" value="2" />
                     <Tab label="Members Info" value="3" />

@@ -1,4 +1,4 @@
-import DashCard from "../employee-components/DashCard";
+import DashCard from "../employee-pages/employee-components/DashCard";
 import { Link } from "react-router-dom";
 
 function Admin() {
