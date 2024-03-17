@@ -1,17 +1,51 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { Button } from "@mui/material";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { Button } from '@mui/material';
 
-function MembersInfo() {
-    
-    const getData = async () => {
-      const data = await axios.get("https://api.mcqueen-gyrocar.com/customers")
-      console.log(data)
-    }
+function MembersInfo({customerData}) {
+
     return (
-      <><div >
-        <h1>Members Info</h1>
-        <Button onClick = {getData}>Data</Button>
+      <><div class = "mx-16" >
+        <h1 class = "text-subhead">Members</h1>
+        <TableContainer>
+            <Table sx={{   }}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell >Customer ID</TableCell>
+                        <TableCell  align = "center">Customer Name</TableCell>
+                        <TableCell align = "center">Rental Status</TableCell>
+                        <TableCell  align = "right">Customer Details</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {customerData?.map((row) => {
+                        if(row.status.statusCode != "PVN")
+                            return (
+                                <TableRow key = {row.customerID}>
+                                    <TableCell width="10%" component="th" scope = "row">
+                                        {row.customerID}
+                                    </TableCell>
+                                    <TableCell width="35%" align = "center"> {row.firstName + " " + row.lastName}</TableCell>
+                                    <TableCell width="35x%" align = "center">{row.status.shortDescription}</TableCell>
+                                    <TableCell width="20%" align = "right">
+                                      <Button 
+                                        size = "small"
+                                      >
+                                        {/* pass props for specific person */}
+                                      Details
+                                      </Button>
+                                    </TableCell>
+                                </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
       </div></>
   
     );

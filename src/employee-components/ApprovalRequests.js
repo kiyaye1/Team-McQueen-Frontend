@@ -5,39 +5,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
-function ApprovalRequests() {
-    const [customerData, setCustomerData] = useState()
-    const [pendingCustomers, setPendingCustomers] = useState([])
-    const [approvedCustomers, setApprovedCustomers] = useState([])
+function ApprovalRequests({customerData}) {
 
-    useEffect(() => {
-        getData()
-      }, [])
-  
-    const getData = async () => {
-        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers")
-        setCustomerData(data.data) 
-
-        const pending = []
-        const approved = []
-        for(var i = 0; i < customerData.length; i++) {
-            if(customerData[i].status.statusCode === "PVN") {
-                pending.push(customerData[i])
-            }
-            if(customerData[i].status.statusCode === "RDY") {
-                approved.push(customerData[i])
-            }
-        }
-        
-
-        setPendingCustomers(pending)
-        setApprovedCustomers(approved)
+    function dateFormat(d) {
+        const date = d.substring(0,10)
+        return date
     }
-
 
     return (
       <><div class = "mx-16">
@@ -53,16 +27,17 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {pendingCustomers?.map((row) => {
-                        return (
-                            <TableRow key = {row.customerID}>
-                                <TableCell component="th" scope = "row">
-                                    {row.firstName + " " + row.lastName}
-                                </TableCell>
-                                <TableCell align = "center">{row.customerID}</TableCell>
-                                <TableCell align = "center">{row.createdDatetime}</TableCell>
-                                <TableCell align = "right">{row.status.shortDescription}</TableCell>
-                            </TableRow>
+                    {customerData?.map((row) => {
+                        if(row.status.statusCode === "PVN")
+                            return (
+                                <TableRow key = {row.customerID}>
+                                    <TableCell component="th" scope = "row">
+                                        {row.firstName + " " + row.lastName}
+                                    </TableCell>
+                                    <TableCell align = "center">{row.customerID}</TableCell>
+                                    <TableCell align = "center">{dateFormat(row.createdDatetime)}</TableCell>
+                                    <TableCell align = "right">{row.status.shortDescription}</TableCell>
+                                </TableRow>
                         );
                     })}
                 </TableBody>
@@ -81,18 +56,19 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row) => {
+                    {customerData.map((row) => {
+                        if(row.status.statusCode === "")
                         return (
                             <TableRow key = {row.ticket}>
                                 <TableCell component="th" scope = "row">
                                     {row.name}
                                 </TableCell>
                                 <TableCell align = "center">{row.ticket}</TableCell>
-                                <TableCell align = "center">{row.date}</TableCell>
+                                <TableCell align = "center">{dateFormat(row.createdDatetime)}</TableCell>
                                 <TableCell align = "right">{row.status}</TableCell>
                             </TableRow>
                         );
-                    })} */}
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>
@@ -109,17 +85,18 @@ function ApprovalRequests() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {approvedCustomers?.map((row) => {
-                        return (
-                            <TableRow key = {row.customerID}>
-                                <TableCell component="th" scope = "row">
-                                    {row.firstName + " " + row.lastName}
-                                </TableCell>
-                                <TableCell align = "center">{row.customerID}</TableCell>
-                                <TableCell align = "center">{row.createdDatetime}</TableCell>
-                                <TableCell align = "right">{row.status.shortDescription}</TableCell>
-                            </TableRow>
-                        );
+                    {customerData?.map((row) => {
+                        if(row.status.statusCode === "RDY")
+                            return (
+                                <TableRow key = {row.customerID}>
+                                    <TableCell component="th" scope = "row">
+                                        {row.firstName + " " + row.lastName}
+                                    </TableCell>
+                                    <TableCell align = "center">{row.customerID}</TableCell>
+                                    <TableCell align = "center">{dateFormat(row.createdDatetime)}</TableCell>
+                                    <TableCell align = "right">{row.status.shortDescription}</TableCell>
+                                </TableRow>
+                            );
                     })}
                 </TableBody>
             </Table>

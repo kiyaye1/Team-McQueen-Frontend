@@ -7,10 +7,22 @@ import {TabPanel} from '@mui/lab';
 import ApprovalRequests from '../employee-components/ApprovalRequests';
 import MembersInfo from '../employee-components/MembersInfo'
 import CustomerInquiries from '../employee-components/CustomerInquiries'
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function CustomerServiceFunctions() {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = useState('1');
+
+    const [customerData, setCustomerData] = useState([])
+
+    useEffect(() => {
+      getData()
+    }, [])
+
+    const getData = async () => {
+        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers")
+        setCustomerData(data.data) 
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -27,9 +39,9 @@ function CustomerServiceFunctions() {
                     <Tab label="Members Info" value="3" />
                 </TabList>
                 </Box>
-                <TabPanel value="1"><ApprovalRequests/></TabPanel>
+                <TabPanel value="1"><ApprovalRequests customerData = {customerData} /></TabPanel>
                 <TabPanel value="2"><CustomerInquiries/></TabPanel>
-                <TabPanel value="3"><MembersInfo/></TabPanel>
+                <TabPanel value="3"><MembersInfo customerData = {customerData}/></TabPanel>
             </TabContext>
         </Box>
       </div></>

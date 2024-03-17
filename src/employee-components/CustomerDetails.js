@@ -1,4 +1,4 @@
-function ReservationDetails() {
+function CustomerDetails(customer) {
     return (
       <><div className="Homepage">
         <h1> Home</h1>
@@ -7,4 +7,4 @@ function ReservationDetails() {
     );
   }
   
-  export default ReservationDetails;
+  export default CustomerDetails;
