@@ -20,6 +20,13 @@ function Reservation() {
     const [pickup_location, setPickupLocation] = useState("")
     const [dropoff_location, setDropOffLocation] = useState("")
 
+    // const [searchQuery, setSearchQuery] = useState({
+    //   pickup: dayjs(),
+    //   dropoff: dayjs(),
+    //   pickup_loc: "",
+    //   dropoff_loc: "",
+    // })
+
     const handlePickUpLocation = (e) => {
       setPickupLocation(e.target.value)
     }
@@ -29,6 +36,14 @@ function Reservation() {
     }
     
     const searchHandler = e => {
+      // setSearchQuery({
+      //   pickup: pickup_datetime,
+      //   dropoff: dropoff_datetime,
+      //   pickup_loc: pickup_location,
+      //   dropoff_loc: dropoff_location
+      // })
+      // console.log("RESERVATION: ")
+      // console.log(searchQuery)
       setIsSearch(true);
       e.preventDefault()
 
@@ -126,7 +141,7 @@ function Reservation() {
         </div>
 
         {/* Map and results */}
-        <MapResults search = {isSearch}/>
+        <MapResults search = {isSearch} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location}}/>
       </div></>
   
     );
