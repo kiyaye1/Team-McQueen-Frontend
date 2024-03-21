@@ -1,7 +1,11 @@
 
 import CreateAccount from '../components/HowItWorks';
 import { Button } from '@mui/material';
-import carPhoto from '../assets/teal-car.png'
+import carPhoto from '../assets/teal-car.png';
+import { Grid, Typography } from '@mui/material';
+
+
+
 
 const Homepage = () => {
   return (
@@ -28,6 +32,33 @@ const Homepage = () => {
         {/* Your CreateAccount component goes here */}
         <CreateAccount />
       </div>
+
+      <div className="hero bg-cover bg-center h-screen" style={{ backgroundImage: "url(src/img/car.png)" }}>
+      <div className="container flex items-center py-8 px-4 md:px-20">
+        <img src="img/car.png" alt="Image" className="w-1/2 h-auto object-cover rounded-lg mr-8" />
+        <div className="flex flex-col justify-content-between">
+        <div class="text-alignment">  <h1 class="text-4xl font-bold text-black mb-4">Why GyroGoGo</h1>  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Convenient</p>  <Typography variant="caption" color="textSecondary">
+      Navigate city traffic with ease. Parking is a breeze.  
+      Five convenient locations for pick up and drop off!
+    </Typography>
+  </div>
+
+  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Affordable</p>  <Typography variant="caption" color="textSecondary">
+      Save money! Renting an environmentally friendly gyrocar as needed is far more 
+      cost effective than commuting in an automobile that you own and maintain.
+    </Typography>
+  </div>
+
+  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Professional</p>  <Typography variant="caption" color="textSecondary">
+      Arrive at your destination in comfort and looking professional regardless of the weather.
+    </Typography>
+  </div>
+</div>
+
+          {/* Removed the Button component and its class */}
+        </div>
+      </div>
+    </div>
 
       {/* Second section with purple background */}
       <div class="w-full bg-purple-accent text-center">
