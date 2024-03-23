@@ -7,6 +7,8 @@ import { useState } from "react";
 import MapResults from "../components/MapResults";
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import dayjs from 'dayjs';
+import axios from "axios";
+import { useEffect } from "react";
 
 
 // todo: show user location on map
@@ -19,13 +21,49 @@ function Reservation() {
     const [dropoff_datetime, setDropOff] = useState(dayjs());
     const [pickup_location, setPickupLocation] = useState("")
     const [dropoff_location, setDropOffLocation] = useState("")
+    const [stations, setStations] = useState()
+    const [latitude, setLatitude] = useState("-77.68602")
+    const [longitude, setLongitude] = useState("43.20663")
 
-    // const [searchQuery, setSearchQuery] = useState({
-    //   pickup: dayjs(),
-    //   dropoff: dayjs(),
-    //   pickup_loc: "",
-    //   dropoff_loc: "",
-    // })
+    const getStations = async () => {
+      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations')
+      const stations = data.data
+      setStations(stations)
+    }
+
+    useEffect(() => {
+      getStations()
+    }, [])
+
+    let data = JSON.stringify({
+      scheduledStartDatetime: pickup_datetime,
+      scheduledEndDatetime: dropoff_datetime,
+      startStationID: pickup_location,
+      coordinates: {
+        lat: latitude,
+        lng: longitude
+      }
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://api.mcqueen-gyrocar.com/reservations/availability/',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+
+    function getResult() {
+      axios.request(config)
+      .then((response) => {
+        console.log(response.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
 
     const handlePickUpLocation = (e) => {
       setPickupLocation(e.target.value)
@@ -36,15 +74,9 @@ function Reservation() {
     }
     
     const searchHandler = e => {
-      // setSearchQuery({
-      //   pickup: pickup_datetime,
-      //   dropoff: dropoff_datetime,
-      //   pickup_loc: pickup_location,
-      //   dropoff_loc: dropoff_location
-      // })
-      // console.log("RESERVATION: ")
-      // console.log(searchQuery)
       setIsSearch(true);
+      getResult()
+
       e.preventDefault()
 
       // check errors on if date 2 is before date 1
@@ -77,11 +109,11 @@ function Reservation() {
                 label = "Pick Up Location"
                 variant = "standard"
               >
-                <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northwest">Northwest</MenuItem>
-                <MenuItem value = "Center City">Center City</MenuItem>
-                <MenuItem value = "Southeast">Southeast</MenuItem>
-                <MenuItem value = "Airport">Airport</MenuItem>
+                <MenuItem value = "2">Northeast</MenuItem>
+                <MenuItem value = "1">Northwest</MenuItem>
+                <MenuItem value = "3">Center City</MenuItem>
+                <MenuItem value = "4">Southeast</MenuItem>
+                <MenuItem value = "5">Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -96,11 +128,11 @@ function Reservation() {
                 label = "Drop Off Location"
                 variant = "standard"
               >
-                <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northwest">Northwest</MenuItem>
-                <MenuItem value = "Center City">Center City</MenuItem>
-                <MenuItem value = "Southeast">Southeast</MenuItem>
-                <MenuItem value = "Airport">Airport</MenuItem>
+                <MenuItem value = "2">Northeast</MenuItem>
+                <MenuItem value = "1">Northwest</MenuItem>
+                <MenuItem value = "3">Center City</MenuItem>
+                <MenuItem value = "4">Southeast</MenuItem>
+                <MenuItem value = "5">Airport</MenuItem>
 
               </Select>
             </FormControl>
