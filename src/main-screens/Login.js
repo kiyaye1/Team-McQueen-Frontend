@@ -37,15 +37,18 @@ function Login({toggleLogIn, loginEmployee}) {
       if (response.data.message) {
         setLoginStatus(response.data.message);
       } else {
-        if (role === 'user') {          
           toggleLogIn(true);
           localStorage.setItem('isLoggedIn', 'true');          
-          navigate('/');
-        } else if (role === 'employee') {          
-          loginEmployee(true);
-          localStorage.setItem('isEmployee', 'true');
-          navigate('/');
-        }
+          navigate('/reserve');
+        // if (role === 'user') {          
+        //   toggleLogIn(true);
+        //   localStorage.setItem('isLoggedIn', 'true');          
+        //   navigate('/');
+        // } else if (role === 'employee') {          
+        //   loginEmployee(true);
+        //   localStorage.setItem('isEmployee', 'true');
+        //   navigate('/');
+        // }
       }
     } catch (error) {
       console.error('Login failed', error);

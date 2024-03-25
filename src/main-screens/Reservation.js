@@ -56,7 +56,8 @@ function Reservation() {
       headers: { 
         'Content-Type': 'application/json'
       },
-      data : data
+      data : data,
+      withCredentials:true
     };
 
     function getResult() {
@@ -87,8 +88,10 @@ function Reservation() {
       // get elapsed time
       const startTime = new Date(pickup_datetime)
       const endTime = new Date(dropoff_datetime)
-      const elapsedTimeMillis = endTime - startTime 
+      const elapsedTimeMillis = Math.abs(endTime - startTime)
       const elapsedHours = elapsedTimeMillis / 3600000
+      console.log(elapsedTimeMillis)
+      console.log(elapsedHours)
       setReservationTime(elapsedHours)
   
 

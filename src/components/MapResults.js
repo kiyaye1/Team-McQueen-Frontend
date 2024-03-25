@@ -6,6 +6,8 @@ function MapResults({search, result, searchQuery}) {
     const navigate = useNavigate()
     const reservationResult = result.reservationResult
     const isSearch = search
+    console.log(searchQuery)
+    console.log(result)
 
 
     function getStationName(startID) {
@@ -27,12 +29,12 @@ function MapResults({search, result, searchQuery}) {
                 <div class = "grid grid-cols-1 gap-4">
                 {/* Reservation Result Card */}
                 {reservationResult?.map((data, key) => {
-                    return(
+                   return(
                         <div key = {key}
                             onClick = {
                             () => navigate('/reservation-details', 
                                 {state: {
-                                    result: {result},
+                                    result: {data},
                                     search: {searchQuery}
                                 } })
                             } 
@@ -47,7 +49,7 @@ function MapResults({search, result, searchQuery}) {
                                 </div>
                                 <div class = "col-span-1 text-right text-teal-secondary font-bold">
                                     <p>${data.costPerHour} per hour</p>
-                                    <p>Total Cost: ${searchQuery.costPerHour * searchQuery.elapsedTime}</p>
+                                    <p>Total Cost: ${data.costPerHour * searchQuery.reservationTime}</p>
                                     <p>{data.distanceInMiles.toFixed(2)} miles away</p>
                                 </div>
                                 
