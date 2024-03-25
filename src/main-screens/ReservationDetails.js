@@ -6,10 +6,21 @@ import carFront from "../assets/car-front.jpg"
 function ReservationDetails() {
 
     const {state} = useLocation()
-    const {searchQuery, station, price} = state
-    console.log(searchQuery)
-    console.log(price)
-    console.log(searchQuery.searchQuery.dropoff_location)
+    const {result, searchQuery} = state
+    console.log(result)
+
+
+    function getStationName(startID) {
+        switch(startID) {
+            case 1: return "Northwest";
+            case 2: return "Northeast";
+            case 3: return "Center City";
+            case 4: return "Southeast";
+            case 5: return "Airport";
+            default: return "Northwest"
+        }
+    }
+
 
     return (
       <><div class ="my-16 mx-16 lg:mx-32">
@@ -29,8 +40,8 @@ function ReservationDetails() {
 
             <div class = "border border-border rounded-xl p-4">
                 <h3 class = "text-card-title">Pick Up and Drop Off</h3>
-                <h5>{searchQuery.searchQuery.pickup_location}</h5>
-                <h5>{searchQuery.searchQuery.dropoff_location}</h5>
+                <h5>Pickup</h5>
+                <h5>DropOff</h5>
             </div>
 
             <div class = "col-span-2 border border-border rounded-xl p-4">
@@ -44,7 +55,7 @@ function ReservationDetails() {
 
             <div class = "border border-border rounded-xl p-4">
                 <h3 class = "text-card-title">Cost</h3>
-                <h5>${price.price}</h5>
+                <h5>$Price</h5>
             </div>
 
         </div>

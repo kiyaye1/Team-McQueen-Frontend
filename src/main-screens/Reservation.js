@@ -19,29 +19,33 @@ function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
     const [pickup_datetime, setPickUp] = useState(dayjs());
     const [dropoff_datetime, setDropOff] = useState(dayjs());
-    const [pickup_location, setPickupLocation] = useState("")
-    const [dropoff_location, setDropOffLocation] = useState("")
+    const [pickup_location, setPickupLocation] = useState(1)
+    const [dropoff_location, setDropOffLocation] = useState(2)
+    const [reservationTime, setReservationTime] = useState()
     const [stations, setStations] = useState()
-    const [latitude, setLatitude] = useState("-77.68602")
-    const [longitude, setLongitude] = useState("43.20663")
+    // const [latitude, setLatitude] = useState("43.0844")
+    // const [longitude, setLongitude] = useState("43.20663")
+    const [reservationResult, setReservationResult] = useState()
 
-    const getStations = async () => {
-      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations')
-      const stations = data.data
-      setStations(stations)
-    }
+    // const getStations = async () => {
+    //   const data = await axios.get('https://api.mcqueen-gyrocar.com/stations')
+    //   const stations = data.data
+    //   setStations(stations)
+    //   console.log(stations)
+    // }
 
-    useEffect(() => {
-      getStations()
-    }, [])
+    // useEffect(() => {
+    //   getStations()
+    // }, [])
 
+    // hardcode user location as RIT, for now
     let data = JSON.stringify({
-      scheduledStartDatetime: pickup_datetime,
-      scheduledEndDatetime: dropoff_datetime,
+      scheduledStartDatetime: pickup_datetime.toISOString(),
+      scheduledEndDatetime: dropoff_datetime.toISOString(),
       startStationID: pickup_location,
       coordinates: {
-        lat: latitude,
-        lng: longitude
+        lat: 43.0848,
+        lng: -77.6715
       }
     });
 
@@ -56,9 +60,13 @@ function Reservation() {
     };
 
     function getResult() {
+      console.log(pickup_datetime.toISOString().substring(0,19) + "+0000")
+      console.log(data)
       axios.request(config)
       .then((response) => {
-        console.log(response.data[0]);
+        console.log("Response")
+        console.log(response.data)
+        setReservationResult(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -74,13 +82,23 @@ function Reservation() {
     }
     
     const searchHandler = e => {
-      setIsSearch(true);
+      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location)
       getResult()
 
-      e.preventDefault()
 
-      // check errors on if date 2 is before date 1
-      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString(), pickup_location, dropoff_location)
+      // get elapsed time
+      const startTime = new Date(pickup_datetime)
+      const endTime = new Date(dropoff_datetime)
+      const elapsedTimeMillis = endTime - startTime 
+      const elapsedHours = elapsedTimeMillis / 3600000
+      console.log("elapsed " + elapsedTimeMillis)
+      console.log("elapsed in hours " + elapsedHours.toFixed(2))
+      setReservationTime(elapsedHours)
+  
+
+      setIsSearch(true);
+      e.preventDefault()
+      //check errors on dates
     }
 
     return (
@@ -109,11 +127,11 @@ function Reservation() {
                 label = "Pick Up Location"
                 variant = "standard"
               >
-                <MenuItem value = "2">Northeast</MenuItem>
-                <MenuItem value = "1">Northwest</MenuItem>
-                <MenuItem value = "3">Center City</MenuItem>
-                <MenuItem value = "4">Southeast</MenuItem>
-                <MenuItem value = "5">Airport</MenuItem>
+                <MenuItem value = {1}>Northwest</MenuItem>
+                <MenuItem value = {2}>Northeast</MenuItem>
+                <MenuItem value = {3}>Center City</MenuItem>
+                <MenuItem value = {4}>Southeast</MenuItem>
+                <MenuItem value = {5}>Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -128,11 +146,11 @@ function Reservation() {
                 label = "Drop Off Location"
                 variant = "standard"
               >
-                <MenuItem value = "2">Northeast</MenuItem>
-                <MenuItem value = "1">Northwest</MenuItem>
-                <MenuItem value = "3">Center City</MenuItem>
-                <MenuItem value = "4">Southeast</MenuItem>
-                <MenuItem value = "5">Airport</MenuItem>
+                <MenuItem value = {1}>Northwest</MenuItem>
+                <MenuItem value = {2}>Northeast</MenuItem>
+                <MenuItem value = {3}>Center City</MenuItem>
+                <MenuItem value = {4}>Southeast</MenuItem>
+                <MenuItem value = {5}>Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -173,7 +191,7 @@ function Reservation() {
         </div>
 
         {/* Map and results */}
-        <MapResults search = {isSearch} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location}}/>
+        <MapResults search = {isSearch} result = {{reservationResult}} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location, elapsedTime}}/>
       </div></>
   
     );

@@ -1,20 +1,61 @@
-import SearchResult from "./SearchResult";
 import MapComponent from "./MapComponent";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function MapResults({search, searchQuery}) {
-    console.log(searchQuery)
+function MapResults({search, result, searchQuery}) {
+    const navigate = useNavigate()
+    const reservationResult = result.reservationResult
     const isSearch = search
+
+
+    function getStationName(startID) {
+        switch(startID) {
+            case 1: return "Northwest";
+            case 2: return "Northeast";
+            case 3: return "Center City";
+            case 4: return "Southeast";
+            case 5: return "Airport";
+            default: return "Northwest"
+        }
+    }
+
     if(isSearch) {
         return (
         <>
             <section class = "grid grid-cols-8 gap-8">
             <div class = "col-span-3">
                 <div class = "grid grid-cols-1 gap-4">
-                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Northwest" price = "25" distance = "0.3" address = "The Mall at Greece Ridge, Somerworth Dr, Rochester, NY"/>
-                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Northeast" price = "25" distance = "1.2" address = "Town Center of Webster, Webster, NY"/>
-                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Center City" price = "25" distance = "3" address = "Genesee Crossroads Garage, 69 Andrews St, Rochester, NY "/>
-                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Southeast" price = "25" distance = "4" address = "Perinton Square Mall, Fairport, NY"/>
-                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Airport" price = "25" distance = "4.3" address = "Paul Rd at Scottsville Rd, Rochester, NY"/>
+                {/* Reservation Result Card */}
+                {reservationResult?.map((data, key) => {
+                    return(
+                        <div key = {key}
+                            onClick = {
+                            () => navigate('/reservation-details', 
+                                {state: {
+                                    result: {result},
+                                    search: {searchQuery}
+                                } })
+                            } 
+                            class = "border border-border px-4 py-8 rounded-lg hover:bg-gray5"
+                        >
+        
+                            <div class = "grid grid-cols-4">
+                                <div class = "col-span-3">
+                                    <h1 class = "text-card-title pb-2">{getStationName(data.startStationID)}</h1>
+                                    <p class = "text-sm text-body-copy">{data.streetAddress + " " + data.city}</p>
+                                    <p class = "text-sm text-body-copy">{data.carsAvailable.length} cars available</p>
+                                </div>
+                                <div class = "col-span-1 text-right text-teal-secondary font-bold">
+                                    <p>${data.costPerHour} per hour</p>
+                                    <p>Total Cost: ${searchQuery.costPerHour * searchQuery.elapsedTime}</p>
+                                    <p>{data.distanceInMiles.toFixed(2)} miles away</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    ); 
+                })}
+
                 </div>
             </div>
 
