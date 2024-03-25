@@ -15,9 +15,9 @@ function ReservationDetails() {
     const selectedResult = result.data
     console.log(selectedResult)
 
-    // FOR DEBUGGING AND TESTING
-    const customerID = 24;
-
+    // Payment Methods
+    const customerID = 24; // FOR DEBUGGING AND TESTING
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
     const [paymentMethods, setPaymentMethods] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -38,6 +38,12 @@ function ReservationDetails() {
         fetchData();
     }, []);
 
+    const handlePaymentMethodChange = (event) => {
+        setSelectedPaymentMethod(event.target.value);
+    };
+
+
+
     function getStationName(id) {
         switch(id) {
             case 1: return "Northwest";
@@ -51,7 +57,7 @@ function ReservationDetails() {
 
     // make sure customer ID is for who is logged in 
     let reservationData = JSON.stringify({
-        customerID: 4,
+        customerID: 4, // FOR TESTING
         carID: selectedResult.carsAvailable[0],
         scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(),
         scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(),
@@ -70,14 +76,22 @@ function ReservationDetails() {
         withCredentials:true
     }
 
-    function submitReservation() {
+    async function submitReservation() {
+        if (selectedPaymentMethod === "") {
+            alert("Please select a payment method");
+            return;
+        }
+        config.paymentMethodID = selectedPaymentMethod;
+
         axios.request(config)
-        .then((response) => {
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Reservation Successful: " + response.data.reservationID);
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
 
@@ -127,6 +141,7 @@ function ReservationDetails() {
             labelId = "payment_method_select"
             label = "Payment Method"
             variant = "standard"
+            onChange={handlePaymentMethodChange}
             >
         
             {paymentMethods.map((paymentMethod) => (
