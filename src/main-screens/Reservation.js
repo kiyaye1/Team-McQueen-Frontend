@@ -60,8 +60,6 @@ function Reservation() {
     };
 
     function getResult() {
-      console.log(pickup_datetime.toISOString().substring(0,19) + "+0000")
-      console.log(data)
       axios.request(config)
       .then((response) => {
         console.log("Response")
@@ -91,8 +89,6 @@ function Reservation() {
       const endTime = new Date(dropoff_datetime)
       const elapsedTimeMillis = endTime - startTime 
       const elapsedHours = elapsedTimeMillis / 3600000
-      console.log("elapsed " + elapsedTimeMillis)
-      console.log("elapsed in hours " + elapsedHours.toFixed(2))
       setReservationTime(elapsedHours)
   
 
@@ -191,7 +187,7 @@ function Reservation() {
         </div>
 
         {/* Map and results */}
-        <MapResults search = {isSearch} result = {{reservationResult}} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location, elapsedTime}}/>
+        <MapResults search = {isSearch} result = {{reservationResult}} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location, reservationTime}}/>
       </div></>
   
     );
