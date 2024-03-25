@@ -1,8 +1,9 @@
 import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import carInterior from "../assets/car-interior.png"
 import carBack from "../assets/car-back.jpg"
 import carFront from "../assets/car-front.jpg"
-import { Button } from "@mui/material";
+import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -13,6 +14,29 @@ function ReservationDetails() {
     const searchQuery = search.searchQuery
     const selectedResult = result.data
     console.log(selectedResult)
+
+    // FOR DEBUGGING AND TESTING
+    const customerID = 24;
+
+    const [paymentMethods, setPaymentMethods] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8080/customers/${customerID}/payments`, 
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true
+                    }
+                }
+            );
+            setPaymentMethods(response.data);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+
+        fetchData();
+    }, []);
 
     function getStationName(id) {
         switch(id) {
@@ -96,6 +120,24 @@ function ReservationDetails() {
             </div>
 
         </div>
+        <FormControl>
+            <InputLabel id="payment-method-select">Select Payment Method</InputLabel>
+            <Select
+            name = "payment_method"
+            labelId = "payment_method_select"
+            label = "Payment Method"
+            variant = "standard"
+            >
+        
+            {paymentMethods.map((paymentMethod) => (
+                <MenuItem key={paymentMethod.id} value={paymentMethod.id}>
+                    {paymentMethod.brand.toUpperCase() + " **** " + paymentMethod.last4}
+                </MenuItem>
+            ))}
+
+
+            </Select>
+        </FormControl>
         <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
         
       </div></>
