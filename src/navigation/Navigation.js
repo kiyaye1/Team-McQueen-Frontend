@@ -22,13 +22,12 @@ import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetai
 
 
 function Navigation() {
-    const [isLoggedIn, setIsLoggedIn] = useState()
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+    const [isEmployee, setIsEmployee] = useState(localStorage.getItem('isEmployee') === 'true');
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
     }
-
-    const [isEmployee, setIsEmployee] = useState(false)
 
     function loginEmployee(employ) {
         setIsEmployee(employ)
