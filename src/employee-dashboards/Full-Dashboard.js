@@ -1,7 +1,7 @@
 import DashCard from "../employee-pages/employee-components/DashCard";
 import { Link } from "react-router-dom";
 
-function Admin() {
+function FullDashboard() {
     return (
       <>
       <div class = "mx-16 mt-16 mb-8 text-section-head">
@@ -77,27 +77,29 @@ function Admin() {
             }
           ]}
         />
+        <Link to = "/fleet-management">
         <DashCard
-          title = "Fleet Management"
-          dataPoints = {[
-            {
-              number: "40",
-              caption: "Vehicles"
-            },
-            {
-              number: "4",
-              caption: "Stations"
-            },
-            {
-              number: "10",
-              caption: "Cars Per Station"
-            }
-          ]}
-        />
+            title = "Fleet Management"
+            dataPoints = {[
+              {
+                number: "40",
+                caption: "Vehicles"
+              },
+              {
+                number: "4",
+                caption: "Stations"
+              },
+              {
+                number: "10",
+                caption: "Cars Per Station"
+              }
+            ]}
+          />
+        </Link>
       </div>
       </>
   
     );
   }
   
-  export default Admin;
+  export default FullDashboard;

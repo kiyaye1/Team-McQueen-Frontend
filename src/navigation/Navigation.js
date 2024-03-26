@@ -12,7 +12,7 @@ import Reservation from '../main-screens/Reservation'
 import Confirmation from '../components/FormConfirmation';
 import CustomerService from '../employee-dashboards/CustomerService';
 import Manager from '../employee-dashboards/Manager';
-import Admin from '../employee-dashboards/Admin';
+import FullDashboard from '../employee-dashboards/Full-Dashboard';
 import Mechanic from '../employee-dashboards/Mechanic';
 import ReservationDetails from "../main-screens/ReservationDetails"
 import { useState } from 'react';
@@ -20,6 +20,7 @@ import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
 import ReservationConfirmation from '../main-screens/ReservationConfirmation';
+import FleetManagement from '../employee-pages/FleetManagement';
 
 
 function Navigation() {
@@ -54,10 +55,11 @@ function Navigation() {
                     {/* <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
                     <Route path = "mechanic" element = {<Mechanic/>}/> */}
-                    <Route path = "dash" element = {<Admin/>}/>
+                    <Route path = "dash" element = {<FullDashboard/>}/>
                     <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
+                    <Route path = "fleet-management" element = {<FleetManagement/>}/>
 
                     <Route path = "reservation-details" element = {<ReservationDetails/>}/>
                     <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>
