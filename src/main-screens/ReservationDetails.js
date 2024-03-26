@@ -134,26 +134,28 @@ function ReservationDetails() {
             </div>
 
         </div>
-        <FormControl>
-            <InputLabel id="payment-method-select">Select Payment Method</InputLabel>
-            <Select
-            name = "payment_method"
-            labelId = "payment_method_select"
-            label = "Payment Method"
-            variant = "standard"
-            onChange={handlePaymentMethodChange}
-            >
-        
-            {paymentMethods.map((paymentMethod) => (
-                <MenuItem key={paymentMethod.id} value={paymentMethod.id}>
-                    {paymentMethod.brand.toUpperCase() + " **** " + paymentMethod.last4}
-                </MenuItem>
-            ))}
+        <form className="grid grid-cols-1 lg:grid-cols-5 gap-8 px-8 py-8">
+            <FormControl>
+                <InputLabel id="payment-method-select">Select Payment Method</InputLabel>
+                <Select
+                name = "payment_method"
+                labelId = "payment_method_select"
+                label = "Payment Method"
+                variant = "standard"
+                onChange={handlePaymentMethodChange}
+                >
+            
+                {paymentMethods.map((paymentMethod) => (
+                    <MenuItem key={paymentMethod.id} value={paymentMethod.id}>
+                        {paymentMethod.brand.toUpperCase() + " **** " + paymentMethod.last4}
+                    </MenuItem>
+                ))}
 
 
-            </Select>
-        </FormControl>
-        <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
+                </Select>
+            </FormControl>
+            <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
+        </form>
         
       </div></>
   
