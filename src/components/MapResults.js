@@ -43,7 +43,7 @@ function MapResults({search, result, searchQuery}) {
         
                             <div class = "grid grid-cols-4">
                                 <div class = "col-span-3">
-                                    <h1 class = "text-card-title pb-2">{getStationName(data.startStationID)}</h1>
+                                    <h1 class = "text-card-title pb-2">{getStationName(data.stationID)}</h1>
                                     <p class = "text-sm text-body-copy">{data.streetAddress + " " + data.city}</p>
                                     <p class = "text-sm text-body-copy">{data.carsAvailable.length} cars available</p>
                                 </div>

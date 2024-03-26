@@ -9,6 +9,7 @@ import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import dayjs from 'dayjs';
 import axios from "axios";
 import { useEffect } from "react";
+import BASE_API_URI from "../config";
 
 
 // todo: show user location on map
@@ -52,12 +53,13 @@ function Reservation() {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://api.mcqueen-gyrocar.com/reservations/availability/',
+      url: `${BASE_API_URI}/reservations/availability/`,
       headers: { 
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true
       },
       data : data,
-      withCredentials:true
+      withCredentials: true
     };
 
     function getResult() {

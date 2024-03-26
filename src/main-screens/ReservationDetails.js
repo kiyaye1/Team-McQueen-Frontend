@@ -1,11 +1,13 @@
 import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import carInterior from "../assets/car-interior.png"
 import carBack from "../assets/car-back.jpg"
 import carFront from "../assets/car-front.jpg"
-import { Button } from "@mui/material";
+import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import BASE_API_URI from "../config";
 
 function ReservationDetails() {
 
@@ -16,6 +18,35 @@ function ReservationDetails() {
     console.log(selectedResult)
 
     const navigate = useNavigate()
+    // Payment Methods
+    const customerID = 24; // FOR DEBUGGING AND TESTING
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+    const [paymentMethods, setPaymentMethods] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true
+                    },
+                    withCredentials: true
+                }
+            );
+            setPaymentMethods(response.data);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+
+        fetchData();
+    }, []);
+
+    const handlePaymentMethodChange = (event) => {
+        setSelectedPaymentMethod(event.target.value);
+    };
+
+
 
     function getStationName(id) {
         switch(id) {
@@ -29,34 +60,43 @@ function ReservationDetails() {
     }
 
     // make sure customer ID is for who is logged in 
-    let reservationData = JSON.stringify({
-        customerID: 4,
+    let reservationData = {
+        customerID: customerID, // FOR TESTING
         carID: selectedResult.carsAvailable[0],
         scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(),
         scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(),
         startStationID: searchQuery.pickup_location,
         endStationID: searchQuery.dropoff_location
-    })
+    };
 
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://api.mcqueen-gyrocar.com/reservations/',
+        url: `${BASE_API_URI}/reservations/`,
         headers: {
             'Content-Type': 'application/json'
         },
-        data: reservationData,
         withCredentials:true
     }
 
-    function submitReservation() {
+    async function submitReservation() {
+        if (selectedPaymentMethod === "") {
+            alert("Please select a payment method");
+            return;
+        }
+        reservationData.paymentMethodID = selectedPaymentMethod;
+
+        config.data = JSON.stringify(reservationData);
+
         axios.request(config)
-        .then((response) => {
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            .then((response) => {
+                if (response.status === 200) {
+                    alert("Reservation Successful: " + response.data.reservationID);
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
 
@@ -99,7 +139,28 @@ function ReservationDetails() {
             </div>
 
         </div>
-        <Button onClick = {() => {submitReservation(); navigate("/reservation-confirmation")}}>Confirm Reservation</Button>
+        <form className="grid grid-cols-1 lg:grid-cols-5 gap-8 px-8 py-8">
+            <FormControl>
+                <InputLabel id="payment-method-select">Select Payment Method</InputLabel>
+                <Select
+                name = "payment_method"
+                labelId = "payment_method_select"
+                label = "Payment Method"
+                variant = "standard"
+                onChange={handlePaymentMethodChange}
+                >
+            
+                {paymentMethods.map((paymentMethod) => (
+                    <MenuItem key={paymentMethod.id} value={paymentMethod.id}>
+                        {paymentMethod.brand.toUpperCase() + " **** " + paymentMethod.last4}
+                    </MenuItem>
+                ))}
+
+
+                </Select>
+            </FormControl>
+            <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
+        </form>
         
       </div></>
   
