@@ -27,16 +27,16 @@ function Reservation() {
     // const [longitude, setLongitude] = useState("43.20663")
     const [reservationResult, setReservationResult] = useState()
 
-    // const getStations = async () => {
-    //   const data = await axios.get('https://api.mcqueen-gyrocar.com/stations')
-    //   const stations = data.data
-    //   setStations(stations)
-    //   console.log(stations)
-    // }
+    const getStations = async () => {
+      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations', {withCredentials: true})
+      const stations = data.data
+      setStations(stations)
+      console.log(stations)
+    }
 
-    // useEffect(() => {
-    //   getStations()
-    // }, [])
+    useEffect(() => {
+      getStations()
+    }, [])
 
     // hardcode user location as RIT, for now
     let data = JSON.stringify({
