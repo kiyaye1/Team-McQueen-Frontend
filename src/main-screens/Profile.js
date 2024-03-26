@@ -14,28 +14,42 @@ function Profile({toggleLogIn, loginEmployee}) {
     }
 
     useEffect(() => {
-      getLoggedInUser()
+      getUserInfo()
       getReservations()
       // getCustomerInfo()
     }, [])
 
-    function getLoggedInUser() {
-      axios.get('https://api.mcqueen-gyrocar.com/loginInfo/getID', {withCredentials:true})
-        .then(response => {
-          console.log(response.data.ID)
-          setCustomerID(response.data.ID)
-          
-          axios.get(`https://api.mcqueen-gyrocar.com/customers/${response.data.ID}`, {withCredentials: true})
-            .then(response => {
-              console.log(response.data)
-              setCustomer(response.data)
-      
-            })
-            .catch(error => console.log(error))
+    // for testing purposes with Stripe - customer 24
+    function getUserInfo() {
+      axios.get(`https://api.mcqueen-gyrocar.com/customers/24`, {withCredentials: true})
+      .then(response => {
+        console.log(response.data)
+        setCustomer(response.data)
       })
       .catch(error => console.log(error))
     }
 
+    // Based on who is logged in:
+    //
+    // function getLoggedInUser() {
+    //   axios.get('https://api.mcqueen-gyrocar.com/loginInfo/getID', {withCredentials:true})
+    //     .then(response => {
+    //       console.log(response.data.ID)
+    //       setCustomerID(response.data.ID)
+          
+    //       axios.get(`https://api.mcqueen-gyrocar.com/customers/${response.data.ID}`, {withCredentials: true})
+    //         .then(response => {
+    //           console.log(response.data)
+    //           setCustomer(response.data)
+      
+    //         })
+    //         .catch(error => console.log(error))
+    //   })
+    //   .catch(error => console.log(error))
+    // }
+
+
+    // find reservations that match ID 24
     function getReservations() {
       axios.get('https://api.mcqueen-gyrocar.com/reservations', {withCredentials:true})
       .then(response => {
@@ -46,13 +60,15 @@ function Profile({toggleLogIn, loginEmployee}) {
     }
 
     return (
-      <><div className="Profile">
-        <h1>Profile</h1>
-        <h3>{customer?.firstName + "" + customer?.lastName}</h3>
+      <><div class = "m-16">
+        <h1 class = "text-section-head">Profile</h1>
+        <h3 class = "text-card-title">{customer?.firstName + " " + customer?.lastName}</h3>
+        <h3 class = "text-card-title pt-8">Reservations</h3>
         {reservations?.map((data, key) => {
-          if(data.customer.customerID === customerID) {
+           // find reservations that match ID 24
+          if(data.customer.customerID === 24) {
             return (
-              <div key = {key}>
+              <div class = "mb-8" key = {key}>
                 <p>Reservation ID: {data.reservationID}</p>
                 <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
                 <p>Start Station: {data.startStation.stationID}</p>
@@ -63,7 +79,7 @@ function Profile({toggleLogIn, loginEmployee}) {
           }
         })}
           <Link to = "/">
-            <Button variant = "text" onClick = { () => {toggleLogIn(false); loginEmployee(false); handleLogout()}}>Log Out</Button>
+            <Button variant = "outlined" onClick = { () => {toggleLogIn(false); loginEmployee(false); handleLogout()}}>Log Out</Button>
           </Link>
       </div></>
   

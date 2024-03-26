@@ -51,10 +51,10 @@ function Navigation() {
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     
-                    <Route path = "customerservice" element = {<CustomerService/>}/>
+                    {/* <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
-                    <Route path = "mechanic" element = {<Mechanic/>}/>
-                    <Route path = "admin" element = {<Admin/>}/>
+                    <Route path = "mechanic" element = {<Mechanic/>}/> */}
+                    <Route path = "dash" element = {<Admin/>}/>
                     <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>

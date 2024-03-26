@@ -17,7 +17,11 @@ function ApprovalDetails() {
         axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
             statusCode: "RDY"
         }, {withCredentials:true})
-        .then(response => console.log(response))
+        .then(response =>{
+          console.log(response)
+          alert("Customer approved: " + response.data);
+
+        })
         .catch(error => console.log(error))
     }
 
@@ -34,7 +38,7 @@ function ApprovalDetails() {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`https://api.mcqueen-gyrocar.com/customers/${customerId}`)
+        const data = await axios.get(`https://api.mcqueen-gyrocar.com/customers/${customerId},`, {withCredentials:true})
         setCustomer(data.data)
         console.log(data.data)
     }

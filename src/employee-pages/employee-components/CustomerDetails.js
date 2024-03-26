@@ -29,15 +29,21 @@ function CustomerDetails(props) {
       axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
           statusCode: "SPD"
       }, {withCredentials: true})
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response)
+        alert("Customer suspended: " + response.data);
+      })
       .catch(error => console.log(error))
     }
 
     function terminateCustomer() {
         axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
             statusCode: "BND"
+        }, {withCredentials:true})
+        .then(response => {
+          console.log(response)
+          alert("Customer banned: " + response.data);
         })
-        .then(response => console.log(response))
         .catch(error => console.log(error))
     }
     
@@ -47,7 +53,7 @@ function CustomerDetails(props) {
         <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate(-1)}>Back to Customer List</Button>
 
         <div class = "w-full flex justify-between">
-          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.middleInitial + " " + customer?.lastName}</h1>
+          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.lastName}</h1>
           <div>
             <Button variant = "outlined" onClick = {() => terminateCustomer()}>Terminate </Button>
             <Button onClick = {() => suspendCustomer()}>Suspend</Button>
