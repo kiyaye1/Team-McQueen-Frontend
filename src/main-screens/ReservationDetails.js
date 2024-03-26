@@ -27,7 +27,8 @@ function ReservationDetails() {
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true
-                    }
+                    },
+                    withCredentials: true
                 }
             );
             setPaymentMethods(response.data);
@@ -57,14 +58,14 @@ function ReservationDetails() {
     }
 
     // make sure customer ID is for who is logged in 
-    let reservationData = JSON.stringify({
-        customerID: 4, // FOR TESTING
+    let reservationData = {
+        customerID: customerID, // FOR TESTING
         carID: selectedResult.carsAvailable[0],
         scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(),
         scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(),
         startStationID: searchQuery.pickup_location,
         endStationID: searchQuery.dropoff_location
-    })
+    };
 
     let config = {
         method: 'post',
@@ -73,7 +74,6 @@ function ReservationDetails() {
         headers: {
             'Content-Type': 'application/json'
         },
-        data: reservationData,
         withCredentials:true
     }
 
@@ -82,7 +82,9 @@ function ReservationDetails() {
             alert("Please select a payment method");
             return;
         }
-        config.paymentMethodID = selectedPaymentMethod;
+        reservationData.paymentMethodID = selectedPaymentMethod;
+
+        config.data = JSON.stringify(reservationData);
 
         axios.request(config)
             .then((response) => {
