@@ -2,9 +2,7 @@ import FormInputs from "./FormInputs";
 import useFormContext from "../hooks/useFormContext";
 import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-const validator = require("validator");
-const { isValid } = require('usdl-regex');
-const valid = require("card-validator");
+import axios from "axios";
 
 const Form = () => {
     const {
@@ -81,6 +79,7 @@ const Form = () => {
     // handle submit, console log user input
     const handleSubmit = e => {
         e.preventDefault()
+        console.log("submit")
         
         //call CreditCardInfoValidation from FormContext
         const errors = CreditCardInfoValidation()
@@ -90,13 +89,23 @@ const Form = () => {
             setCardNumberError(errors.cardNumber)
             setExpDateError(errors.cardExpirationDate)
             setCardccvError(errors.cardccv)
+            console.log("errors")
         } else {
             setCardNameError("")
             setCardNumberError("")
             setExpDateError("")
             setCardccvError("")
-
-            navigate('/registration-confirmation');
+            
+            console.log("else")
+            //Store credit card customer request info in the database tables
+            //Customer, CustomerPayment, Request, CustomerApplicationRequest, and CustomerServiceRequest
+            axios.post('https://api.mcqueen-gyrocar.com/', data)
+            .then(res => {
+                console.log(res)
+                //Direct customer to the registration-confirmation page
+                navigate('/registration-confirmation');
+            })
+            .catch(err => console.error(err))   
         }   
     }
 

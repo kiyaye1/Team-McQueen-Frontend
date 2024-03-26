@@ -49,7 +49,7 @@ function MapResults({search, result, searchQuery}) {
                                 </div>
                                 <div class = "col-span-1 text-right text-teal-secondary font-bold">
                                     <p>${data.costPerHour} per hour</p>
-                                    <p>Total Cost: ${data.costPerHour * searchQuery.reservationTime}</p>
+                                    <p>Total Cost: ${(data.costPerHour * searchQuery.reservationTime).toFixed(2)}</p>
                                     <p>{data.distanceInMiles.toFixed(2)} miles away</p>
                                 </div>
                                 

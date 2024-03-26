@@ -19,6 +19,7 @@ import { useState } from 'react';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
+import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 
 
 function Navigation() {
@@ -59,6 +60,7 @@ function Navigation() {
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
 
                     <Route path = "reservation-details" element = {<ReservationDetails/>}/>
+                    <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>

@@ -5,6 +5,7 @@ import carFront from "../assets/car-front.jpg"
 import { Button } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 function ReservationDetails() {
 
@@ -13,6 +14,8 @@ function ReservationDetails() {
     const searchQuery = search.searchQuery
     const selectedResult = result.data
     console.log(selectedResult)
+
+    const navigate = useNavigate()
 
     function getStationName(id) {
         switch(id) {
@@ -92,11 +95,11 @@ function ReservationDetails() {
 
             <div class = "border border-border rounded-xl p-4">
                 <h3 class = "text-card-title">Cost</h3>
-                <h5>${selectedResult.costPerHour * searchQuery.reservationTime}</h5>
+                <h5>${(selectedResult.costPerHour * searchQuery.reservationTime).toFixed(2)}</h5>
             </div>
 
         </div>
-        <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
+        <Button onClick = {() => {submitReservation(); navigate("/reservation-confirmation")}}>Confirm Reservation</Button>
         
       </div></>
   

@@ -16,7 +16,7 @@ function ApprovalDetails() {
     function approveCustomer() {
         axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
             statusCode: "RDY"
-        })
+        }, {withCredentials:true})
         .then(response => console.log(response))
         .catch(error => console.log(error))
     }
@@ -24,7 +24,7 @@ function ApprovalDetails() {
     function suspendCustomer() {
         axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
             statusCode: "SPD"
-        })
+        }, {withCredentials:true})
         .then(response => console.log(response))
         .catch(error => console.log(error))
       }

@@ -20,7 +20,7 @@ function CustomerServiceFunctions() {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers")
+        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers", {withCredentials:true})
         setCustomerData(data.data) 
     }
 
