@@ -3,6 +3,7 @@ import useFormContext from "../hooks/useFormContext";
 import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import BASE_API_URI from "../config";
 const stripe = require('stripe')('pk_test_51OC3lZF33393XxHnNjMZAvGE3U7GnSWqsxQXUUbsKNu7z0rNG205ZfDgjhSCFHNt4qvm3ynn7x054FrFUgJvWr4y00dnyECiyI');
 const validator = require("validator");
 const { isValid } = require('usdl-regex');
@@ -105,7 +106,7 @@ const Form = () => {
         // but the frontend will perform them all at
         // once after submission of the form
 
-        let step1 = await axios.post('http://localhost:8080/signUp/', 
+        let step1 = await axios.post(`${BASE_API_URI}/signUp/`, 
             {
                 firstName: data.customer_firstName,
                 lastName: data.customer_lastName,
@@ -121,7 +122,7 @@ const Form = () => {
             return;
         }
 
-        let step2 = await axios.put(`http://localhost:8080/signUp/updateWdl/${step1.data.customerID}`,
+        let step2 = await axios.put(`${BASE_API_URI}/signUp/updateWdl/${step1.data.customerID}`,
             {
                 driversLicenseNum: data.dlNumber,
                 driversLicenseState: data.dlState.slice(0,2)
@@ -148,7 +149,7 @@ const Form = () => {
             console.error('Error creating token:', error);
             return;
           }
-        let step3 = await axios.post(`http://localhost:8080/signUp/postCCI/${step1.data.customerID}`,
+        let step3 = await axios.post(`${BASE_API_URI}/signUp/postCCI/${step1.data.customerID}`,
             {
                 cardToken: token.id
             }

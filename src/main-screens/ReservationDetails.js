@@ -6,6 +6,7 @@ import carFront from "../assets/car-front.jpg"
 import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
+import BASE_API_URI from "../config";
 
 function ReservationDetails() {
 
@@ -22,7 +23,7 @@ function ReservationDetails() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`http://localhost:8080/customers/${customerID}/payments`, 
+            const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true
@@ -68,7 +69,7 @@ function ReservationDetails() {
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://api.mcqueen-gyrocar.com/reservations/',
+        url: `${BASE_API_URI}/reservations/`,
         headers: {
             'Content-Type': 'application/json'
         },
