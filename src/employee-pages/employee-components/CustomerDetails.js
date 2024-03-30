@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import BASE_API_URI from "../../config";
 
 // todo: set data in useeffect so it reloads when the data changes
 
@@ -20,30 +21,34 @@ function CustomerDetails(props) {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {withCredentials:true})
+        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, { withCredentials: true })
         setCustomer(data.data)
         console.log(data.data)
     }
 
     function suspendCustomer() {
-      axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
+      axios({
+        method: 'patch',
+        url: `${BASE_API_URI}/customers/${customerId}`,
+        data: {
           statusCode: "SPD"
-      }, {withCredentials: true})
-      .then(response => {
-        console.log(response)
-        alert("Customer suspended: " + response.data);
+        },
+        withCredentials: true,
       })
+      .then(response => console.log(response))
       .catch(error => console.log(error))
     }
 
     function terminateCustomer() {
-        axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
+        axios({
+          method: 'patch',
+          url: `${BASE_API_URI}/customers/${customerId}`,
+          data: {
             statusCode: "BND"
-        }, {withCredentials:true})
-        .then(response => {
-          console.log(response)
-          alert("Customer banned: " + response.data);
+          },
+          withCredentials: true,
         })
+        .then(response => console.log(response))
         .catch(error => console.log(error))
     }
     
@@ -53,7 +58,7 @@ function CustomerDetails(props) {
         <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate(-1)}>Back to Customer List</Button>
 
         <div class = "w-full flex justify-between">
-          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.lastName}</h1>
+          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.middleInitial + " " + customer?.lastName}</h1>
           <div>
             <Button variant = "outlined" onClick = {() => terminateCustomer()}>Terminate </Button>
             <Button onClick = {() => suspendCustomer()}>Suspend</Button>

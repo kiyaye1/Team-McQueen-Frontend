@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import BASE_API_URI from "../../config";
 
 function ApprovalDetails() {
 
@@ -13,22 +14,36 @@ function ApprovalDetails() {
 
     const [customer, setCustomer] = useState()
 
-    function approveCustomer() {
-        axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
-            statusCode: "RDY"
-        }, {withCredentials:true})
-        .then(response =>{
-          console.log(response)
-          alert("Customer approved: " + response.data);
+    const requestData = {
+      statusCode: 'RDY',
+      phoneVerified: 1,
+      emailVerified: 1
+    }
 
+    function approveCustomer() {
+      console.log(customerId);
+        axios({
+          method: 'put',
+          url: `${BASE_API_URI}/approval/${customerId}`,
+          data: requestData,
+          withCredentials: true,
         })
+        .then(response => console.log(response))
         .catch(error => console.log(error))
     }
 
+    
+    const requestData2 = {
+      statusCode: 'SPD'
+    }
+
     function suspendCustomer() {
-        axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
-            statusCode: "SPD"
-        }, {withCredentials:true})
+        axios({
+          method: 'put',
+          url: `${BASE_API_URI}/suspension/${customerId}`,
+          data: requestData2,
+          withCredentials: true,
+        })
         .then(response => console.log(response))
         .catch(error => console.log(error))
       }
@@ -38,7 +53,7 @@ function ApprovalDetails() {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`https://api.mcqueen-gyrocar.com/customers/${customerId},`, {withCredentials:true})
+        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, { withCredentials: true })
         setCustomer(data.data)
         console.log(data.data)
     }

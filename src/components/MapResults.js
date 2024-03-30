@@ -29,7 +29,7 @@ function MapResults({search, result, searchQuery}) {
                 <div class = "grid grid-cols-1 gap-4">
                 {/* Reservation Result Card */}
                 {reservationResult?.map((data, key) => {
-                   return(
+                    return(
                         <div key = {key}
                             onClick = {
                             () => navigate('/reservation-details', 
@@ -77,6 +77,6 @@ function MapResults({search, result, searchQuery}) {
     );
     
 
-  }
-  
-  export default MapResults;
+}
+
+export default MapResults;

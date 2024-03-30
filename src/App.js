@@ -1,16 +1,18 @@
 import './App.css';
 import Navigation from './navigation/Navigation';
 import React from "react"
-import { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
-  
   return (
-    <Navigation/>
-  ) 
- // }
+    <BrowserRouter>
+      <AuthProvider>
+        <Navigation />
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
-/** hello world  */
 export default App;
 

@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 function MembersInfo({customerData}) {
 
     return (
-      <><div class = "mx-16" >
+    <><div class = "mx-16" >
         <h1 class = "text-subhead">Members</h1>
         <TableContainer>
             <Table sx={{   }}>
@@ -34,17 +34,16 @@ function MembersInfo({customerData}) {
                                     <TableCell width="35%" align = "center"> {row.firstName + " " + row.lastName}</TableCell>
                                     <TableCell width="35x%" align = "center">{row.status.shortDescription}</TableCell>
                                     <TableCell width="20%" align = "right">
-                                      <Link to = {`/customer-details/${row.customerID}`}>Details</Link>
+                                        <Link to = {`/customer-details/${row.customerID}`}>Details</Link>
                                     </TableCell>
                                 </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
-        </TableContainer>
-      </div></>
-  
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div></>
     );
-  }
-  
-  export default MembersInfo;
+}
+
+export default MembersInfo;

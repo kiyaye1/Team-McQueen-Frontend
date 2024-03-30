@@ -108,7 +108,7 @@ const Form = () => {
         // but the frontend will perform them all at
         // once after submission of the form
 
-        let step1 = await axios.post(`${BASE_API_URI}/signUp/`, 
+        let step1 = await axios.post(`${BASE_API_URI}/signup/`, 
             {
                 firstName: data.customer_firstName,
                 lastName: data.customer_lastName,
@@ -124,7 +124,7 @@ const Form = () => {
             return;
         }
 
-        let step2 = await axios.put(`${BASE_API_URI}/signUp/updateWdl/${step1.data.customerID}`,
+        let step2 = await axios.put(`${BASE_API_URI}/signup/updateWdl/${step1.data.customerID}`,
             {
                 driversLicenseNum: data.dlNumber,
                 driversLicenseState: data.dlState.slice(0,2)
@@ -151,7 +151,7 @@ const Form = () => {
             console.error('Error creating token:', error);
             return;
           }
-        let step3 = await axios.post(`${BASE_API_URI}/signUp/postCCI/${step1.data.customerID}`,
+        let step3 = await axios.post(`${BASE_API_URI}/signup/postCCI/${step1.data.customerID}`,
             {
                 cardToken: token.id
             }

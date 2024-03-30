@@ -9,6 +9,7 @@ import MembersInfo from './employee-components/MembersInfo'
 import CustomerInquiries from './employee-components/CustomerInquiries'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import BASE_API_URI from "../config";
 
 function CustomerServiceFunctions() {
     const [value, setValue] = useState('1');
@@ -20,7 +21,7 @@ function CustomerServiceFunctions() {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get("https://api.mcqueen-gyrocar.com/customers", {withCredentials:true})
+        const data = await axios.get(`${BASE_API_URI}/customers`, { withCredentials: true })
         setCustomerData(data.data) 
     }
 
