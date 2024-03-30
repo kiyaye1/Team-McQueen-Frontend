@@ -9,6 +9,8 @@ function Profile({toggleLogIn, loginEmployee}) {
     const [reservations, setReservations] = useState()
 
     function handleLogout() {
+        toggleLogIn(false)
+        loginEmployee(false)
         localStorage.setItem('isLoggedIn', 'false')
         localStorage.setItem('isEmployee', 'false')
     }
@@ -79,7 +81,7 @@ function Profile({toggleLogIn, loginEmployee}) {
           }
         })}
           <Link to = "/">
-            <Button variant = "outlined" onClick = { () => {toggleLogIn(false); loginEmployee(false); handleLogout()}}>Log Out</Button>
+            <Button variant = "outlined" onClick = { () => {handleLogout()}}>Log Out</Button>
           </Link>
       </div></>
   

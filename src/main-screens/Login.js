@@ -6,17 +6,8 @@ import { createTheme } from "@mui/material"
 import {Link, useNavigate} from "react-router-dom"
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-//import useFormContext from "../hooks/useFormContext";
+import BASE_API_URI from "../config";
 
-// const theme = createTheme({
-//   palette: {
-//       blue_primary: '#000180',
-//       blue_primary_accent: '4a4cda',
-//       teal_secondary: '#33adad',
-//       purple: '9d9dd9',
-//       purple_accent: 'f2f2ff'
-//   }
-// });
 
 //Handle login with appropriate messages
 function Login({toggleLogIn, loginEmployee}) {
@@ -29,30 +20,30 @@ function Login({toggleLogIn, loginEmployee}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Im submitting');
-    try {
-      const response = await axios.post('https://api.mcqueen-gyrocar.com/login/loginRequest', { emailAddress, password }, {withCredentials:true});
-      console.log(response);
-      const { role } = response.data;
-      if (response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-          toggleLogIn(true);
-          localStorage.setItem('isLoggedIn', 'true');          
-          navigate('/reserve');
-        // if (role === 'user') {          
-        //   toggleLogIn(true);
-        //   localStorage.setItem('isLoggedIn', 'true');          
-        //   navigate('/');
-        // } else if (role === 'employee') {          
-        //   loginEmployee(true);
-        //   localStorage.setItem('isEmployee', 'true');
-        //   navigate('/');
-        // }
-      }
-    } catch (error) {
-      console.error('Login failed', error);
-    }
+    axios.post( `${BASE_API_URI}/login/loginRequest`, {emailAddress, password}, {withCredentials:true})
+    .then(response => {
+      console.log(response)
+      axios.get(`${BASE_API_URI}/loginInfo/getInfo`,{withCredentials:true})
+      .then(response => {
+        console.log(response)
+        console.log(response.data.role)
+        if(response.data.role === 0) {
+          console.log("role is 0")
+          toggleLogIn(true)
+          localStorage.setItem('isLoggedIn', true)
+          navigate('/reserve')
+        }
+        if(response.data.role > 0) {
+          console.log("employee logged in")
+          loginEmployee(true)
+          localStorage.setItem('isEmployee', true)
+          navigate('/dash')
+        }
+      })
+      .catch(error => console.log(error))
+    })
+    .catch(error => console.log(error))
+    
   };
   
   return (
