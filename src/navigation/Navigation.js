@@ -19,16 +19,16 @@ import { useState } from 'react';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
+import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 
 
 function Navigation() {
-    const [isLoggedIn, setIsLoggedIn] = useState()
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+    const [isEmployee, setIsEmployee] = useState(localStorage.getItem('isEmployee') === 'true');
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
     }
-
-    const [isEmployee, setIsEmployee] = useState(false)
 
     function loginEmployee(employ) {
         setIsEmployee(employ)
@@ -51,15 +51,16 @@ function Navigation() {
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     
-                    <Route path = "customerservice" element = {<CustomerService/>}/>
+                    {/* <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
-                    <Route path = "mechanic" element = {<Mechanic/>}/>
-                    <Route path = "admin" element = {<Admin/>}/>
+                    <Route path = "mechanic" element = {<Mechanic/>}/> */}
+                    <Route path = "dash" element = {<Admin/>}/>
                     <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
 
                     <Route path = "reservation-details" element = {<ReservationDetails/>}/>
+                    <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>

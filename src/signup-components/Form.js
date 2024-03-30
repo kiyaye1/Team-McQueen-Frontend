@@ -2,6 +2,9 @@ import FormInputs from "./FormInputs";
 import useFormContext from "../hooks/useFormContext";
 import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import BASE_API_URI from "../config";
+const stripe = require('stripe')('pk_test_51OC3lZF33393XxHnNjMZAvGE3U7GnSWqsxQXUUbsKNu7z0rNG205ZfDgjhSCFHNt4qvm3ynn7x054FrFUgJvWr4y00dnyECiyI');
 const validator = require("validator");
 const { isValid } = require('usdl-regex');
 const valid = require("card-validator");
@@ -79,8 +82,9 @@ const Form = () => {
     const navigate = useNavigate();
 
     // handle submit, console log user input
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
+        console.log("submit")
         
         //call CreditCardInfoValidation from FormContext
         const errors = CreditCardInfoValidation()
@@ -90,14 +94,74 @@ const Form = () => {
             setCardNumberError(errors.cardNumber)
             setExpDateError(errors.cardExpirationDate)
             setCardccvError(errors.cardccv)
+            console.log("errors")
         } else {
             setCardNameError("")
             setCardNumberError("")
             setExpDateError("")
             setCardccvError("")
 
-            navigate('/registration-confirmation');
-        }   
+        } 
+
+        // send data to backend
+        // The backend is broken down into steps 
+        // but the frontend will perform them all at
+        // once after submission of the form
+
+        let step1 = await axios.post(`${BASE_API_URI}/signUp/`, 
+            {
+                firstName: data.customer_firstName,
+                lastName: data.customer_lastName,
+                phoneNumber: data.customer_phoneNumber,
+                emailAddress: data.customer_emailAddress,
+                mailingAddress: data.customer_mailingAddress,
+                hashedPassword: data.customer_password,
+                retypedPassword: data.customer_passwordRetype,
+            }
+        );
+        if (!step1.data.customerID) {
+            console.error("Error in step 1");
+            return;
+        }
+
+        let step2 = await axios.put(`${BASE_API_URI}/signUp/updateWdl/${step1.data.customerID}`,
+            {
+                driversLicenseNum: data.dlNumber,
+                driversLicenseState: data.dlState.slice(0,2)
+            }
+        );
+        if (step2.status != 200) {
+            console.error("Error in step 2");
+            return;
+        }
+
+        // need to use stripe to get the token for the credit card info
+        let token;
+        const cardData = valid.expirationDate(data.cardExpirationDate);
+        try {
+            token = await stripe.tokens.create({
+              card: {
+                number: data.cardNumber,
+                exp_month: cardData.month,
+                exp_year: cardData.year,
+                cvc: data.cardccv
+              },
+            });
+          } catch (error) {
+            console.error('Error creating token:', error);
+            return;
+          }
+        let step3 = await axios.post(`${BASE_API_URI}/signUp/postCCI/${step1.data.customerID}`,
+            {
+                cardToken: token.id
+            }
+        );
+        if (step3.status != 200) {
+            console.error("Error in step 3");
+            return;
+        }
+
+        navigate('/registration-confirmation');
     }
 
     const content = (

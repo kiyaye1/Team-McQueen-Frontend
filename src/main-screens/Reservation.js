@@ -7,6 +7,9 @@ import { useState } from "react";
 import MapResults from "../components/MapResults";
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import dayjs from 'dayjs';
+import axios from "axios";
+import { useEffect } from "react";
+import BASE_API_URI from "../config";
 
 
 // todo: show user location on map
@@ -17,15 +20,59 @@ function Reservation() {
     const [isSearch, setIsSearch] = useState(false)
     const [pickup_datetime, setPickUp] = useState(dayjs());
     const [dropoff_datetime, setDropOff] = useState(dayjs());
-    const [pickup_location, setPickupLocation] = useState("")
-    const [dropoff_location, setDropOffLocation] = useState("")
+    const [pickup_location, setPickupLocation] = useState(1)
+    const [dropoff_location, setDropOffLocation] = useState(2)
+    const [reservationTime, setReservationTime] = useState()
+    const [stations, setStations] = useState()
+    // const [latitude, setLatitude] = useState("43.0844")
+    // const [longitude, setLongitude] = useState("43.20663")
+    const [reservationResult, setReservationResult] = useState()
 
-    // const [searchQuery, setSearchQuery] = useState({
-    //   pickup: dayjs(),
-    //   dropoff: dayjs(),
-    //   pickup_loc: "",
-    //   dropoff_loc: "",
-    // })
+    const getStations = async () => {
+      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations', {withCredentials:true})
+      const stations = data.data
+      setStations(stations)
+      console.log(stations)
+    }
+
+    useEffect(() => {
+      getStations()
+    }, [])
+
+    // hardcode user location as RIT, for now
+    let data = JSON.stringify({
+      scheduledStartDatetime: pickup_datetime.toISOString(),
+      scheduledEndDatetime: dropoff_datetime.toISOString(),
+      startStationID: pickup_location,
+      coordinates: {
+        lat: 43.0848,
+        lng: -77.6715
+      }
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${BASE_API_URI}/reservations/availability/`,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true
+      },
+      data : data,
+      withCredentials: true
+    };
+
+    function getResult() {
+      axios.request(config)
+      .then((response) => {
+        console.log("Response")
+        console.log(response.data)
+        setReservationResult(response.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
 
     const handlePickUpLocation = (e) => {
       setPickupLocation(e.target.value)
@@ -36,19 +83,23 @@ function Reservation() {
     }
     
     const searchHandler = e => {
-      // setSearchQuery({
-      //   pickup: pickup_datetime,
-      //   dropoff: dropoff_datetime,
-      //   pickup_loc: pickup_location,
-      //   dropoff_loc: dropoff_location
-      // })
-      // console.log("RESERVATION: ")
-      // console.log(searchQuery)
+      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location)
+      getResult()
+
+
+      // get elapsed time
+      const startTime = new Date(pickup_datetime)
+      const endTime = new Date(dropoff_datetime)
+      const elapsedTimeMillis = Math.abs(endTime - startTime)
+      const elapsedHours = elapsedTimeMillis / 3600000
+      console.log(elapsedTimeMillis)
+      console.log(elapsedHours)
+      setReservationTime(elapsedHours)
+  
+
       setIsSearch(true);
       e.preventDefault()
-
-      // check errors on if date 2 is before date 1
-      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString(), pickup_location, dropoff_location)
+      //check errors on dates
     }
 
     return (
@@ -77,11 +128,11 @@ function Reservation() {
                 label = "Pick Up Location"
                 variant = "standard"
               >
-                <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northwest">Northwest</MenuItem>
-                <MenuItem value = "Center City">Center City</MenuItem>
-                <MenuItem value = "Southeast">Southeast</MenuItem>
-                <MenuItem value = "Airport">Airport</MenuItem>
+                <MenuItem value = {1}>Northwest</MenuItem>
+                <MenuItem value = {2}>Northeast</MenuItem>
+                <MenuItem value = {3}>Center City</MenuItem>
+                <MenuItem value = {4}>Southeast</MenuItem>
+                <MenuItem value = {5}>Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -96,11 +147,11 @@ function Reservation() {
                 label = "Drop Off Location"
                 variant = "standard"
               >
-                <MenuItem value = "Northeast">Northeast</MenuItem>
-                <MenuItem value = "Northwest">Northwest</MenuItem>
-                <MenuItem value = "Center City">Center City</MenuItem>
-                <MenuItem value = "Southeast">Southeast</MenuItem>
-                <MenuItem value = "Airport">Airport</MenuItem>
+                <MenuItem value = {1}>Northwest</MenuItem>
+                <MenuItem value = {2}>Northeast</MenuItem>
+                <MenuItem value = {3}>Center City</MenuItem>
+                <MenuItem value = {4}>Southeast</MenuItem>
+                <MenuItem value = {5}>Airport</MenuItem>
 
               </Select>
             </FormControl>
@@ -141,7 +192,7 @@ function Reservation() {
         </div>
 
         {/* Map and results */}
-        <MapResults search = {isSearch} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location}}/>
+        <MapResults search = {isSearch} result = {{reservationResult}} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location, reservationTime}}/>
       </div></>
   
     );
