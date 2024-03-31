@@ -1,7 +1,8 @@
 import SearchResult from "./SearchResult";
 import MapComponent from "./MapComponent";
 
-function MapResults({search}) {
+function MapResults({search, searchQuery}) {
+    console.log(searchQuery)
     const isSearch = search
     if(isSearch) {
         return (
@@ -9,11 +10,11 @@ function MapResults({search}) {
             <section class = "grid grid-cols-8 gap-8">
             <div class = "col-span-3">
                 <div class = "grid grid-cols-1 gap-4">
-                <SearchResult station = "GyroGoGo Northwest" price = "25" distance = "0.3" address = "The Mall at Greece Ridge, Somerworth Dr, Rochester, NY"/>
-                <SearchResult station = "GyroGoGo Northeast" price = "25" distance = "1.2" address = "Town Center of Webster, Webster, NY"/>
-                <SearchResult station = "GyroGoGo Center City" price = "25" distance = "3" address = "Genesee Crossroads Garage, 69 Andrews St, Rochester, NY "/>
-                <SearchResult station = "GyroGoGo Southeast" price = "25" distance = "4" address = "Perinton Square Mall, Fairport, NY"/>
-                <SearchResult station = "GyroGoGo Airport" price = "25" distance = "4.3" address = "Paul Rd at Scottsville Rd, Rochester, NY"/>
+                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Northwest" price = "25" distance = "0.3" address = "The Mall at Greece Ridge, Somerworth Dr, Rochester, NY"/>
+                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Northeast" price = "25" distance = "1.2" address = "Town Center of Webster, Webster, NY"/>
+                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Center City" price = "25" distance = "3" address = "Genesee Crossroads Garage, 69 Andrews St, Rochester, NY "/>
+                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Southeast" price = "25" distance = "4" address = "Perinton Square Mall, Fairport, NY"/>
+                <SearchResult searchQuery = {searchQuery} station = "GyroGoGo Airport" price = "25" distance = "4.3" address = "Paul Rd at Scottsville Rd, Rochester, NY"/>
                 </div>
             </div>
 

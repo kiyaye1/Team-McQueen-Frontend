@@ -14,7 +14,11 @@ import CustomerService from '../employee-dashboards/CustomerService';
 import Manager from '../employee-dashboards/Manager';
 import Admin from '../employee-dashboards/Admin';
 import Mechanic from '../employee-dashboards/Mechanic';
+import ReservationDetails from "../main-screens/ReservationDetails"
 import { useState } from 'react';
+import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
+import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
+import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
 
 
 function Navigation() {
@@ -34,7 +38,9 @@ function Navigation() {
         <div>
             <BrowserRouter>
                 <Routes>
+
                 <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn} isEmployee = {isEmployee}/>}>
+
                     <Route index element={<Homepage/>}/>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
@@ -44,10 +50,16 @@ function Navigation() {
                     <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
+                    
                     <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
                     <Route path = "mechanic" element = {<Mechanic/>}/>
                     <Route path = "admin" element = {<Admin/>}/>
+                    <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
+                    <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
+                    <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
+
+                    <Route path = "reservation-details" element = {<ReservationDetails/>}/>
                 </Route>
                 </Routes>
             </BrowserRouter>

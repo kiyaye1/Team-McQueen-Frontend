@@ -39,7 +39,7 @@ function Login({toggleLogIn, loginEmployee}) {
                 <Link to = "/reserve">
                   <Button sx = {{backgroundColor: '#000180'}} variant = "contained" onClick = { () => toggleLogIn(true)}>Log In</Button>
                 </Link>
-                <Link to = "/account">
+                <Link to = "/admin">
                 <Button variant = "outlined" onClick = {() => loginEmployee(true)}>Employee Login</Button>
               </Link>
               </div>

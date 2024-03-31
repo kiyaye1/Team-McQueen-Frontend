@@ -1,4 +1,4 @@
-
+import BikeWoman from '../assets/bike-woman.jpg'
 import CreateAccount from '../components/HowItWorks';
 import { Button } from '@mui/material';
 import carPhoto from '../assets/teal-car.png';
@@ -28,36 +28,44 @@ const Homepage = () => {
 
       {/* Create Account section with border and title */}
       <div className="create-account-section border px-4 py-3 mx-auto mt-8 rounded flex flex-col items-center">
-        <h2 className="text-xl font-bold mb-4">How it works</h2>
+        <h2 className="text-section-head mb-8 mt-4">How it works</h2>
         {/* Your CreateAccount component goes here */}
         <CreateAccount />
       </div>
 
-      <div className="hero bg-cover bg-center h-screen" style={{ backgroundImage: "url(src/img/car.png)" }}>
-      <div className="container flex items-center py-8 px-4 md:px-20">
-        <img src="img/car.png" alt="Image" className="w-1/2 h-auto object-cover rounded-lg mr-8" />
-        <div className="flex flex-col justify-content-between">
-        <div class="text-alignment">  <h1 class="text-4xl font-bold text-black mb-4">Why GyroGoGo</h1>  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Convenient</p>  <Typography variant="caption" color="textSecondary">
-      Navigate city traffic with ease. Parking is a breeze.  
-      Five convenient locations for pick up and drop off!
-    </Typography>
-  </div>
+      <div className="m-16 lg:mx-32">
+          <div className="grid grid-cols-2 gap-8 lg:gap-16">
+            <img src= {BikeWoman} alt="Image" className="w-full h-auto object-cover rounded-lg mr-8" />
+            <div className="flex flex-col justify-content-between">
+            <div class="text-alignment">  
+            <h1 class="text-section-head font-bold text-black mb-4">Why GyroGoGo</h1>  
+              <div class="tagline-and-description">  
+                <p class="text-subhead leading-loose">Convenient</p>  
+                <p class = "text-body-copy">
+                    Navigate city traffic with ease. Parking is a breeze.  <br/>
+                    Five convenient locations for pick up and drop off!
+                </p>
+              </div>
 
-  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Affordable</p>  <Typography variant="caption" color="textSecondary">
-      Save money! Renting an environmentally friendly gyrocar as needed is far more 
-      cost effective than commuting in an automobile that you own and maintain.
-    </Typography>
-  </div>
+              <div class="tagline-and-description">  
+              <p class="text-subhead leading-loose">Affordable</p>  
+              <p class = "text-body-copy">
+                  Save money! Renting an environmentally friendly gyrocar as needed is far more <br/>
+                  cost effective than commuting in an automobile that you own and maintain.
+                </p>
+              </div>
 
-  <div class="tagline-and-description">  <p class="text-xl text-gray-500 leading-loose">Professional</p>  <Typography variant="caption" color="textSecondary">
-      Arrive at your destination in comfort and looking professional regardless of the weather.
-    </Typography>
-  </div>
-</div>
+              <div class="tagline-and-description">  
+              <p class="text-subhead leading-loose">Professional</p>  
+                <p class = "text-body-copy">
+                  Arrive at your destination in comfort and looking professional <br/> regardless of the weather.
+                </p>
+              </div>
+            </div>
 
-          {/* Removed the Button component and its class */}
+              {/* Removed the Button component and its class */}
+          </div>
         </div>
-      </div>
     </div>
 
       {/* Second section with purple background */}
