@@ -55,6 +55,7 @@ function FullDashboard() {
             }
           ]}
         />
+        <Link to = "/employee-management">
         <DashCard
           title = "Employee Information"
           dataPoints = {[
@@ -64,6 +65,7 @@ function FullDashboard() {
             }
           ]}
         />
+        </Link>
         <DashCard
           title = "Vehicle Information"
           dataPoints = {[

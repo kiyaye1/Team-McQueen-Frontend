@@ -21,6 +21,7 @@ import CustomerDetails from '../employee-pages/employee-components/CustomerDetai
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
 import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import FleetManagement from '../employee-pages/FleetManagement';
+import EmployeeManagement from '../employee-pages/EmployeeManagement';
 
 
 function Navigation() {
@@ -60,6 +61,7 @@ function Navigation() {
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
                     <Route path = "fleet-management" element = {<FleetManagement/>}/>
+                    <Route path = "employee-management" element = {<EmployeeManagement/>}/>
 
                     <Route path = "reservation-details" element = {<ReservationDetails/>}/>
                     <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>
