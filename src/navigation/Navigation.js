@@ -29,12 +29,12 @@ function Navigation() {
     const navigate = useNavigate();
     useSaveLocation();
 
-    useEffect(() => {
-        const lastLocation = sessionStorage.getItem('lastLocation');
-        if (lastLocation) {
-            navigate(lastLocation);
-        }
-    }, [navigate]);
+    // useEffect(() => {
+    //     const lastLocation = sessionStorage.getItem('lastLocation');
+    //     if (lastLocation) {
+    //         navigate(lastLocation);
+    //     }
+    // }, [navigate]);
 
     const handleLogOut = async () => {
         logout();

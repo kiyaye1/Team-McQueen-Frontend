@@ -52,12 +52,12 @@ function ReservationDetails() {
         }
     };
     const reservationData = {
-        customerID,
-        carID: selectedResult?.carsAvailable[0],
-        scheduledStartDatetime: dayjs(searchQuery?.pickupDateTime).toISOString(), 
-        scheduledEndDatetime: dayjs(searchQuery?.dropoffDateTime).toISOString(), 
-        startStationID: searchQuery?.pickupLocation,
-        endStationID: searchQuery?.dropoffLocation, 
+        customerID: customerID,
+        carID: selectedResult.carsAvailable[0],
+        scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(), 
+        scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(), 
+        startStationID: searchQuery.pickupLocation,
+        endStationID: searchQuery.dropoffLocation, 
         paymentMethodID: selectedPaymentMethod
     };
 
@@ -108,10 +108,10 @@ function ReservationDetails() {
                     </div>
                     <div className="border border-border rounded-xl p-4">
                         <h3 className="text-card-title">Pick Up and Drop Off</h3>
-                        <h5>{getStationName(searchQuery?.pickupLocation)}</h5>
-                        <p>{searchQuery?.pickupDateTime ? dayjs(searchQuery.pickupDateTime).toISOString() : "Time Unavailable"}</p>
-                        <h5>{getStationName(searchQuery?.dropoffLocation)}</h5>
-                        <p>{searchQuery?.dropoffDateTime ? dayjs(searchQuery.dropoffDateTime).toISOString() : "Time Unavailable"}</p>
+                        <h5>{getStationName(searchQuery.pickup_location)}</h5>
+                        <p>{searchQuery.pickup_datetime.$d.toISOString()}</p>
+                        <h5>{getStationName(searchQuery.dropoff_location)}</h5>
+                        <p>{searchQuery.dropoff_datetime.$d.toISOString()}</p>
                     </div>
                     <div className="col-span-2 border border-border rounded-xl p-4">
                         <h3 className="text-card-title">Car Features</h3>
