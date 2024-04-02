@@ -10,7 +10,7 @@ import BASE_API_URI from "../config";
 
 
 //Handle login with appropriate messages
-function Login({toggleLogIn, loginEmployee}) {
+function Login({toggleLogIn, loginEmployee, setEmployeeRole}) {
   
   const navigate = useNavigate();
 
@@ -36,6 +36,8 @@ function Login({toggleLogIn, loginEmployee}) {
         if(response.data.role > 0) {
           console.log("employee logged in")
           loginEmployee(true)
+          setEmployeeRole(response.data.role)
+          localStorage.setItem('employeeRole', response.data.role)
           localStorage.setItem('isEmployee', true)
           navigate('/dash')
         }

@@ -27,6 +27,7 @@ import EmployeeManagement from '../employee-pages/EmployeeManagement';
 function Navigation() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
     const [isEmployee, setIsEmployee] = useState(localStorage.getItem('isEmployee') === 'true');
+    const [employeeRoleNum, setEmployeeRoleNum] = useState(localStorage.getItem('employeeRole'))
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
@@ -34,6 +35,10 @@ function Navigation() {
 
     function loginEmployee(employ) {
         setIsEmployee(employ)
+    }
+
+    function setEmployeeRole(role) {
+        setEmployeeRoleNum(role)
     }
 
     return (
@@ -48,7 +53,7 @@ function Navigation() {
                     <Route path = "contact" element = {<Contact/>}/>
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
-                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
+                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} setEmployeeRole={setEmployeeRole} />}/>
                     <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
@@ -56,7 +61,7 @@ function Navigation() {
                     {/* <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
                     <Route path = "mechanic" element = {<Mechanic/>}/> */}
-                    <Route path = "dash" element = {<FullDashboard/>}/>
+                    <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
                     <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>

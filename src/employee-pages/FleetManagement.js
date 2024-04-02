@@ -66,7 +66,7 @@ function FleetManagement() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {carLocations.map((car) => {
+                    {carLocations?.map((car) => {
                         return (
                             <TableRow key = {car.carID}>
                                 <TableCell component="th" scope = "row">

@@ -29,7 +29,7 @@ function Reservation() {
     const [reservationResult, setReservationResult] = useState()
 
     const getStations = async () => {
-      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations', {withCredentials:true})
+      const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
       const stations = data.data
       setStations(stations)
       console.log(stations)
