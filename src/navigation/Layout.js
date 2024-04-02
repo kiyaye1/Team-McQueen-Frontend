@@ -43,10 +43,7 @@ function Layout({isLoggedIn, isEmployee}) {
                     <Link to = "/"><img class =  "h-auto w-16 md:w-20 lg:w-24" src ={logo} alt = "Logo"/></Link>
                     <div class = "text-right font-medium text-sm">
                         <Link to = "/dash" class = "p-4">Dashboard</Link>
-                        {/* <Link to = "/manager" class = "p-4">Manager Dash</Link>
-                        <Link to = "/mechanic" class = "p-4">Mechanic Dash</Link>
-                        <Link to = "/admin" class = "p-4">Admin Dash</Link>
-                        <Link to = "/account" class = "p-4">Profile</Link> */}
+                        <Link to = "/account" class = "p-4">Profile</Link>
                     </div>
                 </div>
             </div>
