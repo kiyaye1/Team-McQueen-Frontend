@@ -12,7 +12,7 @@ import Reservation from '../main-screens/Reservation'
 import Confirmation from '../components/FormConfirmation';
 import CustomerService from '../employee-dashboards/CustomerService';
 import Manager from '../employee-dashboards/Manager';
-import Admin from '../employee-dashboards/Admin';
+import FullDashboard from '../employee-dashboards/Full-Dashboard';
 import Mechanic from '../employee-dashboards/Mechanic';
 import ReservationDetails from "../main-screens/ReservationDetails"
 import { useState } from 'react';
@@ -20,11 +20,14 @@ import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
 import ReservationConfirmation from '../main-screens/ReservationConfirmation';
+import FleetManagement from '../employee-pages/FleetManagement';
+import EmployeeManagement from '../employee-pages/EmployeeManagement';
 
 
 function Navigation() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
     const [isEmployee, setIsEmployee] = useState(localStorage.getItem('isEmployee') === 'true');
+    const [employeeRoleNum, setEmployeeRoleNum] = useState(localStorage.getItem('employeeRole'))
     
     function toggleLogIn(login) {
         setIsLoggedIn(login)
@@ -32,6 +35,10 @@ function Navigation() {
 
     function loginEmployee(employ) {
         setIsEmployee(employ)
+    }
+
+    function setEmployeeRole(role) {
+        setEmployeeRoleNum(role)
     }
 
     return (
@@ -46,7 +53,7 @@ function Navigation() {
                     <Route path = "contact" element = {<Contact/>}/>
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
-                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
+                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} setEmployeeRole={setEmployeeRole} />}/>
                     <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
                     <Route path = "reserve" element = {<Reservation/>}/>
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
@@ -54,10 +61,12 @@ function Navigation() {
                     {/* <Route path = "customerservice" element = {<CustomerService/>}/>
                     <Route path = "manager" element = {<Manager/>}/>
                     <Route path = "mechanic" element = {<Mechanic/>}/> */}
-                    <Route path = "dash" element = {<Admin/>}/>
+                    <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
                     <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
                     <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                     <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
+                    <Route path = "fleet-management" element = {<FleetManagement/>}/>
+                    <Route path = "employee-management" element = {<EmployeeManagement/>}/>
 
                     <Route path = "reservation-details" element = {<ReservationDetails/>}/>
                     <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>

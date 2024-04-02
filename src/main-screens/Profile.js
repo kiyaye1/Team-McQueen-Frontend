@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import {Link} from "react-router-dom"
 import axios from "axios";
 import { useEffect, useState } from "react";
+import BASE_API_URI from "../config";
+
 
 function Profile({toggleLogIn, loginEmployee}) {
     const [customerID, setCustomerID] = useState()
@@ -23,7 +25,7 @@ function Profile({toggleLogIn, loginEmployee}) {
 
     // for testing purposes with Stripe - customer 24
     function getUserInfo() {
-      axios.get(`https://api.mcqueen-gyrocar.com/customers/24`, {withCredentials: true})
+      axios.get(`${BASE_API_URI}/customers/24`, {withCredentials: true})
       .then(response => {
         console.log(response.data)
         setCustomer(response.data)
@@ -53,7 +55,7 @@ function Profile({toggleLogIn, loginEmployee}) {
 
     // find reservations that match ID 24
     function getReservations() {
-      axios.get('https://api.mcqueen-gyrocar.com/reservations', {withCredentials:true})
+      axios.get(`${BASE_API_URI}/reservations`, {withCredentials:true})
       .then(response => {
         console.log(response.data)
         setReservations(response.data)  

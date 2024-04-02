@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import BASE_API_URI from "../../config";
 
 // todo: set data in useeffect so it reloads when the data changes
 
@@ -20,13 +21,13 @@ function CustomerDetails(props) {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {withCredentials:true})
+        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, {withCredentials:true})
         setCustomer(data.data)
         console.log(data.data)
     }
 
     function suspendCustomer() {
-      axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
+      axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
           statusCode: "SPD"
       }, {withCredentials: true})
       .then(response => {
@@ -37,7 +38,7 @@ function CustomerDetails(props) {
     }
 
     function terminateCustomer() {
-        axios.patch(`https://api.mcqueen-gyrocar.com/customers/${customerId}`, {
+        axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
             statusCode: "BND"
         }, {withCredentials:true})
         .then(response => {
