@@ -17,7 +17,6 @@ function Layout({isLoggedIn, isEmployee}) {
                 <div class = "flex justify-between">
                     <Link to = "/"><img class =  "h-auto w-16 md:w-20 lg:w-24" src ={logo} alt = "Logo"/></Link>
                     <div class = "text-right font-medium text-sm">
-                        <Link to = "/dash" class = "p-4">Dashboard - Employee</Link>
                         <Link to = "/reserve" class = "p-4">Reserve</Link>
                         <Link to = "/faq" class = "p-4">FAQ</Link>
                         <Link to = "/contact" class = "p-4">Contact Us</Link>
