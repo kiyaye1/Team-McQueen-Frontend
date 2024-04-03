@@ -15,7 +15,7 @@ function FullDashboard({employeeRole}) {
         <div>
           <div class = "mx-16 mt-16 mb-8 text-section-head">Admin Dashboard</div>
           <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/1">
               <DashCard
                 title = "Customer Approval Requests"
                 dataPoints = {[
@@ -52,15 +52,17 @@ function FullDashboard({employeeRole}) {
                 }
               ]}
             />
-            <DashCard
-              title = "Member Information"
-              dataPoints = {[
-                {
-                  number: "129",
-                  caption: "Customers"
-                }
-              ]}
-            />
+            <Link to = "/customer-approval/3">
+              <DashCard
+                title = "Member Information"
+                dataPoints = {[
+                  {
+                    number: "129",
+                    caption: "Customers"
+                  }
+                ]}
+              />
+            </Link>
             <Link to = "/employee-management">
             <DashCard
               title = "Employee Information"
@@ -113,7 +115,7 @@ function FullDashboard({employeeRole}) {
       <div>
         <div class = "mx-16 mt-16 mb-8 text-section-head">Customer Service Dashboard</div>
         <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-          <Link to = "/customer-approval">
+          <Link to = "/customer-approval/1">
                 <DashCard
                   title = "Customer Approval Requests"
                   dataPoints = {[
@@ -128,7 +130,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/3">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
@@ -139,7 +141,7 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/2">
               <DashCard
                 title = "Customer Inquiries"
                 dataPoints = {[
@@ -210,7 +212,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/1">
                 <DashCard
                   title = "Customer Approval Requests"
                   dataPoints = {[
@@ -225,7 +227,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/3">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
@@ -236,7 +238,7 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
-            <Link to = "/customer-approval">
+            <Link to = "/customer-approval/2">
               <DashCard
                 title = "Customer Inquiries"
                 dataPoints = {[

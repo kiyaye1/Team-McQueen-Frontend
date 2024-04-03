@@ -10,11 +10,19 @@ import CustomerInquiries from './employee-components/CustomerInquiries'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_API_URI from '../config';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function CustomerServiceFunctions() {
-    const [value, setValue] = useState('1');
 
     const [customerData, setCustomerData] = useState([])
+
+    const navigate = useNavigate() 
+    const params = useParams()
+    const tabNumber = params.tab
+
+    const [value, setValue] = useState(tabNumber);
+
 
     useEffect(() => {
       getData()
