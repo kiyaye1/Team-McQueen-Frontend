@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 
 function Layout() {
     const { user } = useAuth();
-    console.log(user);
     return (
         <>
             <div className="content-center p-4 shadow-lg">
@@ -14,15 +13,16 @@ function Layout() {
                     <div className="text-right font-medium text-sm">
                         {user && user.isLoggedIn && (
                             <>
-                                <Link to="/reserve" className="p-4">Reserve</Link>
-                                <Link to = "/faq" class = "p-4">FAQ</Link>
-                                <Link to = "/contact" class = "p-4">Contact Us</Link>
-                                <Link to = "/about" class = "p-4">About Us</Link>
-                                <Link to = "/account" class = "p-4">Profile</Link>
+                                {/* Conditionally render the Reserve link if the user is not an employee */}
+                                {!user.isEmployee && <Link to="/reserve" className="p-4">Reserve</Link>}
+                                <Link to="/faq" className="p-4">FAQ</Link>
+                                <Link to="/contact" className="p-4">Contact Us</Link>
+                                <Link to="/about" className="p-4">About Us</Link>
+                                <Link to="/account" className="p-4">Profile</Link>
                             </>
                         )}
                         {user && user.isEmployee && (
-                            <Link to="/dash" className="p-4">Admin Dash</Link>
+                            <Link to="/dash" className="p-4">Dashboard</Link>
                         )}
                         {!user && (
                             <>

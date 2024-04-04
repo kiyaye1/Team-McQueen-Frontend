@@ -8,9 +8,8 @@ import { useAuth } from '../context/AuthContext';
 
 function Profile() {
   const { user, logout } = useAuth();
-
+  sessionStorage.setItem('reservationActive', 'false');
   const navigate = useNavigate();
-
   const [customer, setCustomer] = useState();
   const [reservations, setReservations] = useState([]);
 
@@ -37,11 +36,6 @@ function Profile() {
       .catch(error => console.log(error));
   }
 
-  const handleLogOut = async () => {
-    logout();
-    navigate('/');
-  };
-
   if (user.role === 0) {
     return (
       <div className="m-16">
@@ -57,7 +51,7 @@ function Profile() {
             <p>End Station: {data.endStation.stationID}</p>
           </div>
         ))}        
-        <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "0em"}} onClick = { () => {handleLogOut();}}>Log Out</Button>
+        <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "0em"}} onClick = { () => {logout();}}>Log Out</Button>
       </div>
     );
   } else if (user.role > 0) {
@@ -75,7 +69,7 @@ function Profile() {
             </div>
           </div>
         </div>
-            <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "2em"}} onClick = { () => {handleLogOut();}}>Log Out</Button>
+            <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "2em"}} onClick = { () => {logout();}}>Log Out</Button>
         </div>
       </>
     );

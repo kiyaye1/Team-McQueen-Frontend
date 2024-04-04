@@ -28,10 +28,10 @@ function Reservation() {
     const [reservationResult, setReservationResult] = useState()
 
     const getStations = async () => {
-        const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
-        const stations = data.data
-        setStations(stations)
-        console.log(stations)
+      const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
+      const stations = data.data
+      setStations(stations)
+      console.log(stations)
     }
 
     useEffect(() => {
@@ -82,18 +82,27 @@ function Reservation() {
     }
     
     const searchHandler = e => {
-        console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location)
-        getResult()
-        // get elapsed time
-        const startTime = new Date(pickup_datetime)
-        const endTime = new Date(dropoff_datetime)
-        const elapsedTimeMillis = Math.abs(endTime - startTime)
-        const elapsedHours = elapsedTimeMillis / 3600000
-        console.log(elapsedTimeMillis)
-        console.log(elapsedHours)
-        setReservationTime(elapsedHours)
-        setIsSearch(true);
-        e.preventDefault()
+      sessionStorage.removeItem('reservationComplete');
+      sessionStorage.setItem('reservationActive', 'true');
+      sessionStorage.removeItem('lastLocation'); 
+
+      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location);
+
+      getResult();
+
+      // get elapsed time
+      const startTime = new Date(pickup_datetime)
+      const endTime = new Date(dropoff_datetime)
+      const elapsedTimeMillis = Math.abs(endTime - startTime)
+      const elapsedHours = elapsedTimeMillis / 3600000
+      console.log(elapsedTimeMillis)
+      console.log(elapsedHours)
+      setReservationTime(elapsedHours)
+  
+
+      setIsSearch(true);
+      e.preventDefault()
+      //check errors on dates
     }
 
     return (
@@ -151,23 +160,23 @@ function Reservation() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
                 <DateTimeField
-                    label="Pick up Date"
-                    name = "pickup_datetime"
-                    value = {pickup_datetime}
-                    onChange = {newDate => setPickUp(newDate)}
-                    slotProps={{textField: {variant: 'standard'}}}
-                    />
+                  label="Pick up Date"
+                  name = "pickup_datetime"
+                  value = {pickup_datetime}
+                  onChange = {newDate => setPickUp(newDate)}
+                  slotProps={{textField: {variant: 'standard'}}}
+                />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
                 <DateTimeField
-                    label="Drop off Date"
-                    slotProps={{textField: {variant: 'standard'}}}
-                    name = "dropoff_datetime"
-                    value={dropoff_datetime}
-                    onChange={newDate => setDropOff(newDate)}
-                    />
+                  label="Drop off Date"
+                  slotProps={{textField: {variant: 'standard'}}}
+                  name = "dropoff_datetime"
+                  value={dropoff_datetime}
+                  onChange={newDate => setDropOff(newDate)}
+                />
             </LocalizationProvider>
 
             <div class = "flex items-center">
@@ -186,6 +195,6 @@ function Reservation() {
         <MapResults search = {isSearch} result = {{reservationResult}} searchQuery = {{pickup_datetime, pickup_location, dropoff_datetime, dropoff_location, reservationTime}}/>
         </div></>
     );
-}
-
-export default Reservation; 
+  }
+  
+  export default Reservation; 

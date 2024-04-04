@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 import { useAuth } from '../context/AuthContext'; 
 
-function Login() {
+function Login({setEmployeeRole}) {
   const { user, login } = useAuth();
   const navigate = useNavigate();
   const [emailAddress, setEmailAddress] = useState('');
@@ -13,11 +13,14 @@ function Login() {
   useEffect(() => {
       if (user) {
           if (user.isEmployee) {
-              navigate('/dash'); 
+            setEmployeeRole(user.role);
+            sessionStorage.removeItem('employeeRole');
+            sessionStorage.setItem('employeeRole', user.role);
+            navigate('/dash'); 
           } else {
               navigate('/reserve');
           }
-      }
+      } 
   }, [user, navigate]);
 
   const handleSubmit = async (e) => {

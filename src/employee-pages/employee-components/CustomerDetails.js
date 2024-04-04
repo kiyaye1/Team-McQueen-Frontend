@@ -21,34 +21,30 @@ function CustomerDetails(props) {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, { withCredentials: true })
+        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, {withCredentials:true})
         setCustomer(data.data)
         console.log(data.data)
     }
 
     function suspendCustomer() {
-      axios({
-        method: 'patch',
-        url: `${BASE_API_URI}/customers/${customerId}`,
-        data: {
+      axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
           statusCode: "SPD"
-        },
-        withCredentials: true,
+      }, {withCredentials: true})
+      .then(response => {
+        console.log(response)
+        alert("Customer suspended: " + response.data);
       })
-      .then(response => console.log(response))
       .catch(error => console.log(error))
     }
 
     function terminateCustomer() {
-        axios({
-          method: 'patch',
-          url: `${BASE_API_URI}/customers/${customerId}`,
-          data: {
+        axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
             statusCode: "BND"
-          },
-          withCredentials: true,
+        }, {withCredentials:true})
+        .then(response => {
+          console.log(response)
+          alert("Customer banned: " + response.data);
         })
-        .then(response => console.log(response))
         .catch(error => console.log(error))
     }
     

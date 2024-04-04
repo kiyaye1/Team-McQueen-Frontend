@@ -14,36 +14,22 @@ function ApprovalDetails() {
 
     const [customer, setCustomer] = useState()
 
-    const requestData = {
-      statusCode: 'RDY',
-      phoneVerified: 1,
-      emailVerified: 1
-    }
-
     function approveCustomer() {
-      console.log(customerId);
-        axios({
-          method: 'put',
-          url: `${BASE_API_URI}/approval/${customerId}`,
-          data: requestData,
-          withCredentials: true,
-        })
-        .then(response => console.log(response))
-        .catch(error => console.log(error))
-    }
+      axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
+          statusCode: "RDY"
+      }, {withCredentials:true})
+      .then(response =>{
+        console.log(response)
+        alert("Customer approved: " + response.data);
 
-    
-    const requestData2 = {
-      statusCode: 'SPD'
+      })
+      .catch(error => console.log(error))
     }
 
     function suspendCustomer() {
-        axios({
-          method: 'put',
-          url: `${BASE_API_URI}/suspension/${customerId}`,
-          data: requestData2,
-          withCredentials: true,
-        })
+        axios.patch(`${BASE_API_URI}customers/${customerId}`, {
+            statusCode: "SPD"
+        }, {withCredentials:true})
         .then(response => console.log(response))
         .catch(error => console.log(error))
       }
@@ -53,7 +39,7 @@ function ApprovalDetails() {
     }, [])
 
     const getData = async () => {
-        const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, { withCredentials: true })
+        const data = await axios.get(`${BASE_API_URI}/customers/${customerId},`, {withCredentials:true})
         setCustomer(data.data)
         console.log(data.data)
     }
