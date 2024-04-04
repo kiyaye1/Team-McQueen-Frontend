@@ -49,6 +49,10 @@ function Navigation() {
         }
     }, [navigate]);
 
+    function setEmployeeRole(role) {
+        setEmployeeRoleNum(role)
+    }
+
     return (
         <div>
             <InactivityDetector

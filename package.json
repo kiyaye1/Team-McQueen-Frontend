@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@adobe/react-spectrum": "^3.34.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.10",
@@ -25,6 +26,7 @@
     "react-native-svg": "^14.1.0",
     "react-router-dom": "^6.22.1",
     "react-scripts": "^5.0.1",
+    "react-spectrum": "^1.2.6",
     "stripe": "^14.22.0",
     "usdl-regex": "^1.7.3",
     "use-places-autocomplete": "^4.0.1",

@@ -16,7 +16,7 @@ function FleetManagement() {
   const [carLocations, setCarLocations] = useState()
   const [stations, setStations] = useState()
 
-  // use effect loop to get the data frequently so it can detect when it is changed
+    // use effect loop to get the data frequently so it can detect when it is changed
   useEffect(() => {
     return onValue(ref(db, '/cars/'), querySnapshot => {
       // full data snapshot
