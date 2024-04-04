@@ -6,7 +6,6 @@ import carFront from "../assets/car-front.jpg";
 import { FormControl, Select, InputLabel, MenuItem, Button, TextField } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import BASE_API_URI from "../config";
 
@@ -18,7 +17,7 @@ function ReservationDetails() {
     const selectedResult = result.data
     console.log(selectedResult)
 
-    
+
     const navigate = useNavigate()
     // Payment Methods
     const customerID = user.userID; 
@@ -62,8 +61,8 @@ function ReservationDetails() {
         carID: selectedResult.carsAvailable[0],
         scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(), 
         scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(), 
-        startStationID: searchQuery.pickupLocation,
-        endStationID: searchQuery.dropoffLocation, 
+        startStationID: searchQuery.pickup_location,
+        endStationID: searchQuery.dropoff_location, 
         paymentMethodID: selectedPaymentMethod
     };
 
