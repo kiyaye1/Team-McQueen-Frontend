@@ -11,7 +11,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import BASE_API_URI from "../config";
 
-
 // todo: show user location on map
 // todo: log data to console  -- DONE
 // send to reservation details page & then the payment 
@@ -29,7 +28,7 @@ function Reservation() {
     const [reservationResult, setReservationResult] = useState()
 
     const getStations = async () => {
-      const data = await axios.get('https://api.mcqueen-gyrocar.com/stations', {withCredentials:true})
+      const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
       const stations = data.data
       setStations(stations)
       console.log(stations)
@@ -83,9 +82,13 @@ function Reservation() {
     }
     
     const searchHandler = e => {
-      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location)
-      getResult()
+      sessionStorage.removeItem('reservationComplete');
+      sessionStorage.setItem('reservationActive', 'true');
+      sessionStorage.removeItem('lastLocation'); 
 
+      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location);
+
+      getResult();
 
       // get elapsed time
       const startTime = new Date(pickup_datetime)
@@ -164,7 +167,7 @@ function Reservation() {
                   value = {pickup_datetime}
                   onChange = {newDate => setPickUp(newDate)}
                   slotProps={{textField: {variant: 'standard'}}}
-                 />
+                />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -175,7 +178,7 @@ function Reservation() {
                   name = "dropoff_datetime"
                   value={dropoff_datetime}
                   onChange={newDate => setDropOff(newDate)}
-                 />
+                />
             </LocalizationProvider>
 
             <div class = "flex items-center">

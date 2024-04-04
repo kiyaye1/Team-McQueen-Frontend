@@ -1,71 +1,89 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Homepage from '../main-screens/Homepage'
-import Login from '../main-screens/Login';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from '../context/AuthContext'; 
+import EmployeeRoute from './EmployeeRoute'; 
+import ProtectedRoute from './ProtectedRoute'; 
 import Faq from '../main-screens/Faq';
 import Register from '../main-screens/Register';
 import AboutUs from '../main-screens/About-us';
 import Contact from '../main-screens/Contact';
-import Layout from './Layout'
-import Profile from '../main-screens/Profile'
-import Reservation from '../main-screens/Reservation'
+import Layout from './Layout';
+import Homepage from '../main-screens/Homepage';
+import Login from '../main-screens/Login';
+import Profile from '../main-screens/Profile';
+import Reservation from '../main-screens/Reservation';
 import Confirmation from '../components/FormConfirmation';
-import CustomerService from '../employee-dashboards/CustomerService';
-import Manager from '../employee-dashboards/Manager';
-import Admin from '../employee-dashboards/Admin';
-import Mechanic from '../employee-dashboards/Mechanic';
-import ReservationDetails from "../main-screens/ReservationDetails"
-import { useState } from 'react';
+import FullDashboard from '../employee-dashboards/Full-Dashboard';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
+import ReservationDetails from "../main-screens/ReservationDetails";
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
 import ApprovalDetails from '../employee-pages/employee-components/ApprovalDetails';
 import ReservationConfirmation from '../main-screens/ReservationConfirmation';
-
+import InactivityDetector from '../hooks/InactivityDetector';
+import FleetManagement from '../employee-pages/FleetManagement';
+import EmployeeManagement from '../employee-pages/EmployeeManagement';
 
 function Navigation() {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
-    const [isEmployee, setIsEmployee] = useState(localStorage.getItem('isEmployee') === 'true');
-    
-    function toggleLogIn(login) {
-        setIsLoggedIn(login)
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [employeeRoleNum, setEmployeeRoleNum] = useState(sessionStorage.getItem('employeeRole'));
+
+    function setEmployeeRole(role) {
+        setEmployeeRoleNum(role)
     }
 
-    function loginEmployee(employ) {
-        setIsEmployee(employ)
-    }
+    useEffect(() => {
+        const isReservationActive = sessionStorage.getItem('reservationActive') === 'true';
+        // Update the last location only if the reservation process is not active
+        if (!isReservationActive) {
+            sessionStorage.setItem('lastLocation', location.pathname);
+        }
+    }, [location]);
+
+    useEffect(() => {
+        // Decide where to navigate based on the reservation active flag
+        const lastLocation = sessionStorage.getItem('lastLocation');
+        if (lastLocation) {
+            navigate(lastLocation);
+        }
+    }, [navigate]);
 
     return (
         <div>
-            <BrowserRouter>
-                <Routes>
-
-                <Route path = "/" element = {<Layout isLoggedIn = {isLoggedIn} isEmployee = {isEmployee}/>}>
-
-                    <Route index element={<Homepage/>}/>
+            <InactivityDetector
+                timeout={600000} 
+                onInactive={() => {
+                    logout();
+                }}
+            />
+            <Routes>
+                <Route path="/" element={<Layout isLoggedIn={user?.isLoggedIn} isEmployee={user?.isEmployee} />}>
+                    <Route index element={<Homepage />} />
+                    <Route path="login" element={<Login setEmployeeRole={setEmployeeRole}/>} />
+                    <Route path = "registration-confirmation" element = {<Confirmation/>}/>
+                    <Route element={<ProtectedRoute />}>
+                        <Route path = "account" element = {<Profile />}/>
+                        <Route path = "reserve" element={<Reservation />}/>
+                        <Route path = "reservation-details" element={<ReservationDetails />}/>
+                        <Route path = "reservation-confirmation" element = {<ReservationConfirmation />}/>                        
+                    </Route>
+                    <Route element={<EmployeeRoute />}>
+                        <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
+                        <Route path = "customer-approval/:tab" element = {<CustomerServiceFunctions/>}/>
+                        <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
+                        <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
+                        <Route path = "fleet-management" element = {<FleetManagement/>}/>
+                        <Route path = "employee-management" element = {<EmployeeManagement/>}/>                       
+                    </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
                     <Route path = "about" element = {<AboutUs/>}/>
                     <Route path = "signup" element = {<Register/>}/>
-                    <Route path = "login" element = {<Login toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee} />}/>
-                    <Route path = "account" element = {<Profile toggleLogIn = {toggleLogIn} loginEmployee = {loginEmployee}/>}/>
-                    <Route path = "reserve" element = {<Reservation/>}/>
-                    <Route path = "registration-confirmation" element = {<Confirmation/>}/>
-                    
-                    {/* <Route path = "customerservice" element = {<CustomerService/>}/>
-                    <Route path = "manager" element = {<Manager/>}/>
-                    <Route path = "mechanic" element = {<Mechanic/>}/> */}
-                    <Route path = "dash" element = {<Admin/>}/>
-                    <Route path = "customer-approval" element = {<CustomerServiceFunctions/>}/>
-                    <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
-                    <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
-
-                    <Route path = "reservation-details" element = {<ReservationDetails/>}/>
-                    <Route path = "reservation-confirmation" element = {<ReservationConfirmation/>}/>
                 </Route>
-                </Routes>
-            </BrowserRouter>
+            </Routes>
         </div>
     );
 }
 
-export default Navigation
+export default Navigation;

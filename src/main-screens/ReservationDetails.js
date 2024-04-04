@@ -7,10 +7,12 @@ import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material
 import axios from "axios";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 import BASE_API_URI from "../config";
 
 function ReservationDetails() {
 
+    const { user } = useAuth();
     const {state} = useLocation()
     const {result, search} = state
     const searchQuery = search.searchQuery
@@ -19,13 +21,13 @@ function ReservationDetails() {
 
     const navigate = useNavigate()
     // Payment Methods
-    const customerID = 24; // FOR DEBUGGING AND TESTING
+    const customerID = user.userID; 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
     const [paymentMethods, setPaymentMethods] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
+            try {
+                const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true
@@ -34,19 +36,16 @@ function ReservationDetails() {
                 }
             );
             setPaymentMethods(response.data);
-          } catch (error) {
+            } catch (error) {
             console.error('Error fetching data:', error);
-          }
+            }
         };
-
         fetchData();
     }, []);
 
     const handlePaymentMethodChange = (event) => {
         setSelectedPaymentMethod(event.target.value);
     };
-
-
 
     function getStationName(id) {
         switch(id) {
@@ -91,6 +90,8 @@ function ReservationDetails() {
         axios.request(config)
             .then((response) => {
                 if (response.status === 200) {
+                    sessionStorage.setItem('reservationComplete', 'true');
+                    sessionStorage.setItem('reservationActive', 'false');
                     alert("Reservation Successful: " + response.data.reservationID);
                 }
             })
@@ -99,9 +100,9 @@ function ReservationDetails() {
             })
     }
 
-
     return (
-      <><div class ="my-16 mx-16 lg:mx-32">
+        <>
+        <div class ="my-16 mx-16 lg:mx-32">
         <h1 class = "mb-4 text-section-head"> Car Details </h1>
         <div class = "grid grid-cols-1 gap-4 md:grid-cols-3 gap-4 lg:gap-8">
             <img class = "col-span-2 w-full rounded-xl" src = {carInterior}></img>
@@ -156,15 +157,14 @@ function ReservationDetails() {
                     </MenuItem>
                 ))}
 
-
                 </Select>
             </FormControl>
             <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
         </form>
         
-      </div></>
-  
+    </div>
+    </>
     );
-  }
-  
-  export default ReservationDetails;
+}
+
+export default ReservationDetails;

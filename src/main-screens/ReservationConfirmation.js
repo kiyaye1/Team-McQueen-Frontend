@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ReservationConfirmation = () => {
     const navigate = useNavigate();
-
+    sessionStorage.setItem('reservationComplete', 'true');
     return (
         <div>
             <h1 class = "text-section-head">Your Reservation is Confirmed</h1>
