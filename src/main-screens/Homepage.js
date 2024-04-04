@@ -3,11 +3,16 @@ import CreateAccount from '../components/HowItWorks';
 import { Button } from '@mui/material';
 import carPhoto from '../assets/teal-car.png';
 import { Grid, Typography } from '@mui/material';
-
-
-
+import { useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
+
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    navigate('/signup');
+  };
+
   return (
     <div className="hero bg-cover bg-center h-screen">
       <div className="container flex items-center justify-content-center py-8 pl-4 md:pl-20">
@@ -17,7 +22,11 @@ const Homepage = () => {
             <h1 className="text-hero font-bold text-black mb-4">Experience GyroGoGo</h1>
             <p className="text-xl text-gray-500 leading-loose">Rent an easy-to-drive gyrocar for your local commuting needs.</p>
             <p className="text-xl text-gray-500 leading-loose mt-2">Become a GyroGoGo member and enjoy the very best way to get around town!</p>
-            <div className = "py-8"><Button variant='contained'>Sign Up</Button></div>
+            <div className="py-8">
+              <Button variant="contained" onClick={handleSignUpClick} sx={{ backgroundColor: "#000180" }}>
+                Sign Up
+              </Button>
+            </div>
 
           </div>
 
@@ -62,19 +71,17 @@ const Homepage = () => {
                 </p>
               </div>
             </div>
-
-              {/* Removed the Button component and its class */}
           </div>
         </div>
     </div>
-
-      {/* Second section with purple background */}
       <div class="w-full bg-purple-accent text-center">
         <div class="p-16 mx-16 mt-24">
           <h1 class="text-section-head mb-8">Get Going Now</h1>
-          <Button variant="contained" sx={{ backgroundColor: "#000180" }}>
-            Sign Up
-          </Button>
+          <div className="py-8">
+              <Button variant="contained" onClick={handleSignUpClick} sx={{ backgroundColor: "#000180" }}>
+                Sign Up
+              </Button>
+            </div>
         </div>
       </div>
     </div>

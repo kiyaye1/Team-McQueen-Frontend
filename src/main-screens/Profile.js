@@ -1,93 +1,79 @@
 import { Button } from "@mui/material";
-import {Link} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import BASE_API_URI from "../config";
+import '../App.css';
+import { useAuth } from '../context/AuthContext'; 
 
+function Profile() {
+  const { user, logout } = useAuth();
+  sessionStorage.setItem('reservationActive', 'false');
+  const navigate = useNavigate();
+  const [customer, setCustomer] = useState();
+  const [reservations, setReservations] = useState([]);
 
-function Profile({toggleLogIn, loginEmployee}) {
-    const [customerID, setCustomerID] = useState()
-    const [customer, setCustomer] = useState()
-    const [reservations, setReservations] = useState()
-
-    function handleLogout() {
-        toggleLogIn(false)
-        loginEmployee(false)
-        localStorage.setItem('isLoggedIn', 'false')
-        localStorage.setItem('isEmployee', 'false')
+  useEffect(() => {
+    if (user.role === 0) {
+      getUserInfo();
+      getReservations();
     }
+  }, []);
 
-    useEffect(() => {
-      getUserInfo()
-      getReservations()
-      // getCustomerInfo()
-    }, [])
-
-    // for testing purposes with Stripe - customer 24
-    function getUserInfo() {
-      axios.get(`${BASE_API_URI}/customers/24`, {withCredentials: true})
+  function getUserInfo() {
+    axios.get(`${BASE_API_URI}/customers/${user.userID}`, { withCredentials: true })
       .then(response => {
-        console.log(response.data)
-        setCustomer(response.data)
+        setCustomer(response.data);
       })
-      .catch(error => console.log(error))
-    }
+      .catch(error => console.log(error));
+  }
 
-    // Based on who is logged in:
-    //
-    // function getLoggedInUser() {
-    //   axios.get('https://api.mcqueen-gyrocar.com/loginInfo/getID', {withCredentials:true})
-    //     .then(response => {
-    //       console.log(response.data.ID)
-    //       setCustomerID(response.data.ID)
-          
-    //       axios.get(`https://api.mcqueen-gyrocar.com/customers/${response.data.ID}`, {withCredentials: true})
-    //         .then(response => {
-    //           console.log(response.data)
-    //           setCustomer(response.data)
-      
-    //         })
-    //         .catch(error => console.log(error))
-    //   })
-    //   .catch(error => console.log(error))
-    // }
-
-
-    // find reservations that match ID 24
-    function getReservations() {
-      axios.get(`${BASE_API_URI}/reservations`, {withCredentials:true})
+  function getReservations() {
+    axios.get(`${BASE_API_URI}/reservations`, { withCredentials: true })
       .then(response => {
-        console.log(response.data)
-        setReservations(response.data)  
+        setReservations(response.data);
       })
-      .catch(error => console.log(error))
-    }
+      .catch(error => console.log(error));
+  }
 
+  if (user.role === 0) {
     return (
-      <><div class = "m-16">
-        <h1 class = "text-section-head">Profile</h1>
-        <h3 class = "text-card-title">{customer?.firstName + " " + customer?.lastName}</h3>
-        <h3 class = "text-card-title pt-8">Reservations</h3>
-        {reservations?.map((data, key) => {
-           // find reservations that match ID 24
-          if(data.customer.customerID === 24) {
-            return (
-              <div class = "mb-8" key = {key}>
-                <p>Reservation ID: {data.reservationID}</p>
-                <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
-                <p>Start Station: {data.startStation.stationID}</p>
-                <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
-                <p>End Station: {data.endStation.stationID}</p>
-              </div>
-            );
-          }
-        })}
-          <Link to = "/">
-            <Button variant = "outlined" onClick = { () => {handleLogout()}}>Log Out</Button>
-          </Link>
-      </div></>
-  
+      <div className="m-16">
+        <h1 className="text-section-head">Profile</h1>
+        <h3 className="text-card-title">{user.firstName + " " + user.lastName}</h3>
+        <h3 className="text-card-title pt-8">Reservations</h3>
+        {reservations?.filter(data => data.customer.customerID === user.userID).map((data, key) => (
+          <div className="mb-8" key={key}>
+            <p>Reservation ID: {data.reservationID}</p>
+            <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
+            <p>Start Station: {data.startStation.stationID}</p>
+            <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
+            <p>End Station: {data.endStation.stationID}</p>
+          </div>
+        ))}        
+        <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "0em"}} onClick = { () => {logout();}}>Log Out</Button>
+      </div>
+    );
+  } else if (user.role > 0) {
+    return (
+      <>
+      <div className="Profile">
+        <div className="profile-container">
+          <div className="profile">
+            <div className="profile-picture"></div>
+            <div className="profile-details">
+              <h1>{`${user.firstName} ${user.lastName}`}</h1>
+              <p>{'Employee #: ' + user.userID}</p>
+              <p>{user.emailAddress}</p>
+              <p>{user.xtra}</p> 
+            </div>
+          </div>
+        </div>
+            <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "2em"}} onClick = { () => {logout();}}>Log Out</Button>
+        </div>
+      </>
     );
   }
-  
-  export default Profile;
+}
+
+export default Profile;

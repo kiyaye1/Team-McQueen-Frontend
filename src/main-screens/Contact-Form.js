@@ -4,6 +4,9 @@ import {Button, MenuItem} from "@mui/material";
 import { useState } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import {FormControl} from "@mui/material";
+import BASE_API_URI from "../config";
+import axios from "axios";
+import validator from 'validator';
 
 const ContactForm = () => {
 
@@ -28,14 +31,28 @@ const ContactForm = () => {
         setMessage(e.target.value);
     }
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        console.log("name: " + name)
-        console.log("email: " + email)
-        console.log("reason: " + reason)
-        console.log("message: " + message)
-
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!validator.isEmail(email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+    
+        try {
+            await axios.post(`${BASE_API_URI}/contacts/createContacts`, { name, email, reason, message }, { withCredentials: true });
+            alert('Your message has been sent!');
+            // Reset form fields
+            setName('');
+            setEmail('');
+            setReason('');
+            setMessage('');
+        } catch (error) {
+            console.error(error);
+            console.error('Error sending message:', error);
+            alert('Failed to send the message.');
+        }
+    };
 
     return (
     <div class = "grid grid-cols-1 lg:grid-cols-3 md: grid-cols-2 py-8 gap-16">
@@ -47,6 +64,7 @@ const ContactForm = () => {
             onChange = {handleNameChange}
             variant = "outlined"
             sx = {{marginRight:1, width: '100%', backgroundColor: 'white', borderRadius: '4px'}}
+            required
             />
             </div>
             <div>
@@ -56,6 +74,7 @@ const ContactForm = () => {
                 onChange = {handleEmailChange}
                 variant = "outlined"
                 sx = {{marginRight:1, width: '100%', backgroundColor: 'white', borderRadius: '4px'}}
+                required
             />
             </div>
             <div>
@@ -67,6 +86,7 @@ const ContactForm = () => {
                     label = "Reason"
                     onChange = {handleReasonChange}
                     sx = {{ backgroundColor: 'white', borderRadius: '4px'}}
+                    required
                 >
                     <MenuItem value = "Website feedback">Website Feedback</MenuItem>
                     <MenuItem value = "General Feedback">General Feedback</MenuItem>
@@ -83,6 +103,7 @@ const ContactForm = () => {
                 value = {message}
                 onChange = {handleMessageChange}
                 sx = {{marginRight:1, width: '100%', backgroundColor: 'white', borderRadius: '4px'}}
+                required
             />
             </div>
             <div>

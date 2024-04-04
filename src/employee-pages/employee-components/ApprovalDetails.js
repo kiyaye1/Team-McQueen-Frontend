@@ -15,15 +15,15 @@ function ApprovalDetails() {
     const [customer, setCustomer] = useState()
 
     function approveCustomer() {
-        axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
-            statusCode: "RDY"
-        }, {withCredentials:true})
-        .then(response =>{
-          console.log(response)
-          alert("Customer approved: " + response.data);
+      axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
+          statusCode: "RDY"
+      }, {withCredentials:true})
+      .then(response =>{
+        console.log(response)
+        alert("Customer approved: " + response.data);
 
-        })
-        .catch(error => console.log(error))
+      })
+      .catch(error => console.log(error))
     }
 
     function suspendCustomer() {

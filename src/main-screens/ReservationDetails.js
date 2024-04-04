@@ -1,31 +1,32 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import carInterior from "../assets/car-interior.png"
-import carBack from "../assets/car-back.jpg"
-import carFront from "../assets/car-front.jpg"
-import { FormControl, Select, InputLabel, MenuItem, Button } from "@mui/material";
+import carInterior from "../assets/car-interior.png";
+import carBack from "../assets/car-back.jpg";
+import carFront from "../assets/car-front.jpg";
+import { FormControl, Select, InputLabel, MenuItem, Button, TextField } from "@mui/material";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 import BASE_API_URI from "../config";
 
 function ReservationDetails() {
-
+    const { user } = useAuth();
     const {state} = useLocation()
     const {result, search} = state
     const searchQuery = search.searchQuery
     const selectedResult = result.data
     console.log(selectedResult)
 
+
     const navigate = useNavigate()
     // Payment Methods
-    const customerID = 24; // FOR DEBUGGING AND TESTING
+    const customerID = user.userID; 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
     const [paymentMethods, setPaymentMethods] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
+            try {
+                const response = await axios.get(`${BASE_API_URI}/customers/${customerID}/payments`, 
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true
@@ -34,19 +35,16 @@ function ReservationDetails() {
                 }
             );
             setPaymentMethods(response.data);
-          } catch (error) {
+            } catch (error) {
             console.error('Error fetching data:', error);
-          }
+            }
         };
-
         fetchData();
     }, []);
 
     const handlePaymentMethodChange = (event) => {
         setSelectedPaymentMethod(event.target.value);
     };
-
-
 
     function getStationName(id) {
         switch(id) {
@@ -55,18 +53,17 @@ function ReservationDetails() {
             case 3: return "Center City";
             case 4: return "Southeast";
             case 5: return "Airport";
-            default: return "Northwest"
+            default: return "Unknown";
         }
-    }
-
-    // make sure customer ID is for who is logged in 
-    let reservationData = {
-        customerID: customerID, // FOR TESTING
+    };
+    const reservationData = {
+        customerID: customerID,
         carID: selectedResult.carsAvailable[0],
-        scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(),
-        scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(),
+        scheduledStartDatetime: searchQuery.pickup_datetime.$d.toISOString(), 
+        scheduledEndDatetime: searchQuery.dropoff_datetime.$d.toISOString(), 
         startStationID: searchQuery.pickup_location,
-        endStationID: searchQuery.dropoff_location
+        endStationID: searchQuery.dropoff_location, 
+        paymentMethodID: selectedPaymentMethod
     };
 
     let config = {
@@ -76,6 +73,7 @@ function ReservationDetails() {
         headers: {
             'Content-Type': 'application/json'
         },
+        data: reservationData,
         withCredentials:true
     }
 
@@ -91,6 +89,8 @@ function ReservationDetails() {
         axios.request(config)
             .then((response) => {
                 if (response.status === 200) {
+                    sessionStorage.setItem('reservationComplete', 'true');
+                    sessionStorage.setItem('reservationActive', 'false');
                     alert("Reservation Successful: " + response.data.reservationID);
                 }
             })
@@ -99,9 +99,9 @@ function ReservationDetails() {
             })
     }
 
-
     return (
-      <><div class ="my-16 mx-16 lg:mx-32">
+        <>
+        <div class ="my-16 mx-16 lg:mx-32">
         <h1 class = "mb-4 text-section-head"> Car Details </h1>
         <div class = "grid grid-cols-1 gap-4 md:grid-cols-3 gap-4 lg:gap-8">
             <img class = "col-span-2 w-full rounded-xl" src = {carInterior}></img>
@@ -156,15 +156,14 @@ function ReservationDetails() {
                     </MenuItem>
                 ))}
 
-
                 </Select>
             </FormControl>
             <Button onClick = {() => submitReservation()}>Confirm Reservation</Button>
         </form>
         
-      </div></>
-  
+    </div>
+    </>
     );
-  }
-  
-  export default ReservationDetails;
+}
+
+export default ReservationDetails;

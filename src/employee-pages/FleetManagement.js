@@ -12,7 +12,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import BASE_API_URI from "../config";
 
-
 function FleetManagement() {
   const [carLocations, setCarLocations] = useState()
   const [stations, setStations] = useState()
@@ -34,7 +33,6 @@ function FleetManagement() {
     setStations(stations)
     console.log(stations)
   }
-
 
     return (
       <><div class = "m-16">

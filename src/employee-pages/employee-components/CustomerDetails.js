@@ -54,7 +54,7 @@ function CustomerDetails(props) {
         <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate(-1)}>Back to Customer List</Button>
 
         <div class = "w-full flex justify-between">
-          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.lastName}</h1>
+          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.middleInitial + " " + customer?.lastName}</h1>
           <div>
             <Button variant = "outlined" onClick = {() => terminateCustomer()}>Terminate </Button>
             <Button onClick = {() => suspendCustomer()}>Suspend</Button>
