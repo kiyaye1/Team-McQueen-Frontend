@@ -130,45 +130,51 @@ function EmployeeFunction() {
 
   //JSX rendering
   return (
-    <Container className="my-8">
-      {/* Title */}
-      <Typography variant="h4" align="left" gutterBottom class="table-title">
-      Employee Info
-      </Typography>
-      {/* Search and Sort options */}
-      <Box display="flex" justifyContent="space-between" marginBottom={2}>
-      <div className="flex space-x-4">
-        {/* Search input */}
+    <Container class="mx-16 my-4">
+      <div class = "float-right space-x-4 my-4">
         <TextField
-          label="Search"
-          value={search}
-          onChange={handleChangeSearch}
-        />
+            size = "small"
+            label="Search"
+            value={search}
+            onChange={handleChangeSearch}
+          />
+          <Button variant="contained" sx ={{backgroundColor: '#000180'}} onClick={() => handleAdd()}>
+            Add Employee
+          </Button>
+      </div>
+      {/* Title */}
+      <div class = "w-full flex justify-between align-center">
+        <h2 class = "text-section-head mb-8">Employee Info</h2>
         {/* Sort By dropdown */}
-        <FormControl>
-          <InputLabel>Sort By</InputLabel>
-          <Select
-            label="Sort By"
-            value={orderBy}
-            onChange={(e) => handleChangeOrderBy(e.target.value)}
-          >
-            <MenuItem value="employeeID">Employee Number</MenuItem>
-            <MenuItem value="firstName">First Name</MenuItem>
-            <MenuItem value="lastName">Last Name</MenuItem>
-            <MenuItem value="roleName">Employee Type</MenuItem>
-            <MenuItem value="employeeStatus">Employee Status</MenuItem>
-          </Select>
-        </FormControl>
+        <div class = "float-right pb-8">
+          <FormControl>
+            <InputLabel>Sort By</InputLabel>
+            <Select
+              label="Sort By"
+              value={orderBy}
+              variant = "outlined"
+              onChange={(e) => handleChangeOrderBy(e.target.value)}
+            >
+              <MenuItem value="employeeID">Employee Number</MenuItem>
+              <MenuItem value="firstName">First Name</MenuItem>
+              <MenuItem value="lastName">Last Name</MenuItem>
+              <MenuItem value="roleName">Employee Type</MenuItem>
+              <MenuItem value="employeeStatus">Employee Status</MenuItem>
+            </Select>
+          </FormControl>
+        {/* </div> */}
         {/* Order button */}
-        <Button onClick={handleChangeOrder} class = "add-emp">
+        {/* <Button onClick={handleChangeOrder} class = "add-emp">
           {order === 'asc' ? 'Ascending' : 'Descending'} 
-        </Button>
-        </div>
-        {/* Add Employee button */}
-        <Button variant="contained" onClick={() => handleAdd()} class = "add-emp">
-          Add Employee
-        </Button>
-      </Box> 
+        </Button> */}
+      </div>
+      </div>
+      {/* <Typography variant="h4" align="left" gutterBottom class="table-title">
+      Employee Info
+      </Typography> */}
+      {/* Search and Sort options */}
+      {/* <div className="place-items-end"> */}
+
       {/* Delete confirmation dialog */}     
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>Confirm Delete</DialogTitle>
@@ -255,10 +261,12 @@ function EmployeeFunction() {
           <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Update</Button>
         </DialogActions>
       </Dialog>
+      
       {/* Button for navigating to the previous page */}
-      <Button onClick={() => handleChangePage(page - 1)} class ="button-paginate-prev">Previous</Button>
+      <Button onClick={() => handleChangePage(page - 1)} sx ={{backgroundColor: '#000180', color: '#FFFFFF', marginRight: '8px'}}>Previous</Button>
       {/* Button for navigating to the next page */}
-      <Button onClick={() => handleChangePage(page + 1)} class ="button-paginate-next">Next</Button>
+      <Button variant = "outlined" onClick={() => handleChangePage(page + 1)} sx ={{color: '#000180', borderColor: '#000180'}}>Next</Button>
+
     </Container>    
   );
 }
