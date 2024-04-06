@@ -5,6 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import '../App.css';
 import BASE_API_URI from '../config';
+import { useAuth } from '../context/AuthContext';
+
 
 function EmployeeFunction() {
   //State hooks for managing component state
@@ -20,6 +22,7 @@ function EmployeeFunction() {
   const [search, setSearch] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteEmployeeId, setDeleteEmployeeId] = useState(null);
+  const { user } = useAuth();
 
   //Effect hook to fetch employees data when page, orderBy, order, limit, or search changes
   useEffect(() => {
@@ -129,146 +132,220 @@ function EmployeeFunction() {
   };
 
   //JSX rendering
-  return (
-    <Container class="mx-16 my-4">
-      <div class = "float-right space-x-4 my-4">
-        <TextField
-            size = "small"
-            label="Search"
-            value={search}
-            onChange={handleChangeSearch}
-          />
-          <Button variant="contained" sx ={{backgroundColor: '#000180'}} onClick={() => handleAdd()}>
-            Add Employee
-          </Button>
-      </div>
-      {/* Title */}
-      <div class = "w-full flex justify-between align-center">
-        <h2 class = "text-section-head mb-8">Employee Info</h2>
-        {/* Sort By dropdown */}
-        <div class = "float-right pb-8">
-          <FormControl>
-            <InputLabel>Sort By</InputLabel>
-            <Select
-              label="Sort By"
-              value={orderBy}
-              variant = "outlined"
-              onChange={(e) => handleChangeOrderBy(e.target.value)}
-            >
-              <MenuItem value="employeeID">Employee Number</MenuItem>
-              <MenuItem value="firstName">First Name</MenuItem>
-              <MenuItem value="lastName">Last Name</MenuItem>
-              <MenuItem value="roleName">Employee Type</MenuItem>
-              <MenuItem value="employeeStatus">Employee Status</MenuItem>
-            </Select>
-          </FormControl>
-        {/* </div> */}
-        {/* Order button */}
-        {/* <Button onClick={handleChangeOrder} class = "add-emp">
-          {order === 'asc' ? 'Ascending' : 'Descending'} 
-        </Button> */}
-      </div>
-      </div>
-      {/* <Typography variant="h4" align="left" gutterBottom class="table-title">
-      Employee Info
-      </Typography> */}
-      {/* Search and Sort options */}
-      {/* <div className="place-items-end"> */}
+  if(user.role == 1) {
+      return (
+        <Container class="mx-16 my-4">
+          <div class = "float-right space-x-4 my-4">
+            <TextField
+                size = "small"
+                label="Search"
+                value={search}
+                onChange={handleChangeSearch}
+              />
+              <Button variant="contained" sx ={{backgroundColor: '#000180'}} onClick={() => handleAdd()}>
+                Add Employee
+              </Button>
+          </div>
+          {/* Title */}
+          <div class = "w-full flex justify-between align-center">
+            <h2 class = "text-section-head mb-8">Employee Info</h2>
+            {/* Sort By dropdown */}
+            <div class = "float-right pb-8">
+              <FormControl>
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                  label="Sort By"
+                  value={orderBy}
+                  variant = "outlined"
+                  onChange={(e) => handleChangeOrderBy(e.target.value)}
+                >
+                  <MenuItem value="employeeID">Employee Number</MenuItem>
+                  <MenuItem value="firstName">First Name</MenuItem>
+                  <MenuItem value="lastName">Last Name</MenuItem>
+                  <MenuItem value="roleName">Employee Type</MenuItem>
+                  <MenuItem value="employeeStatus">Employee Status</MenuItem>
+                </Select>
+              </FormControl>
+            {/* </div> */}
+            {/* Order button */}
+            {/* <Button onClick={handleChangeOrder} class = "add-emp">
+              {order === 'asc' ? 'Ascending' : 'Descending'} 
+            </Button> */}
+          </div>
+          </div>
+          {/* <Typography variant="h4" align="left" gutterBottom class="table-title">
+          Employee Info
+          </Typography> */}
+          {/* Search and Sort options */}
+          {/* <div className="place-items-end"> */}
 
-      {/* Delete confirmation dialog */}     
-      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">Are you sure you want to delete this employee?</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={() => { confirmDelete(); handleClose();}} color="error">Delete</Button>
-        </DialogActions>
-      </Dialog>
-      {/* Table displaying employee data */}
-      <TableContainer component={Paper} className="my-5">
-        <Table>
-          <TableHead class = "table-head">
-            <TableRow>
-              <TableCell>Employee Number</TableCell>
-              <TableCell>Full Name</TableCell>
-              <TableCell>Employee Type</TableCell>
-              <TableCell>Employee Status</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {/* Mapping through employees to display each row */}
-            {employees.map((employee) => (
-              <TableRow key={employee.employeeID} class = "tr">
-                <TableCell>{employee.employeeID}</TableCell>
-                <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
-                <TableCell>{employee.roleName}</TableCell>
-                <TableCell>{employee.employeeStatus}</TableCell>
-                <TableCell>
-                  {/* Edit button */}
-                  <Button onClick={() => handleEdit(employee)}><EditIcon sx={{color: "#000180"}} /></Button>
-                  {/* Delete button */}
-                  <Button onClick={() => handleDelete(employee.employeeID)}><DeleteIcon color="error" /></Button>
-                </TableCell>
+          {/* Delete confirmation dialog */}     
+          <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogContent>
+              <Typography variant="body1">Are you sure you want to delete this employee?</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button onClick={() => { confirmDelete(); handleClose();}} color="error">Delete</Button>
+            </DialogActions>
+          </Dialog>
+          {/* Table displaying employee data */}
+          <TableContainer component={Paper} className="my-5">
+            <Table>
+              <TableHead class = "table-head">
+                <TableRow>
+                  <TableCell>Employee Number</TableCell>
+                  <TableCell>Full Name</TableCell>
+                  <TableCell>Employee Type</TableCell>
+                  <TableCell>Employee Status</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* Mapping through employees to display each row */}
+                {employees.map((employee) => (
+                  <TableRow key={employee.employeeID} class = "tr">
+                    <TableCell>{employee.employeeID}</TableCell>
+                    <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                    <TableCell>{employee.roleName}</TableCell>
+                    <TableCell>{employee.employeeStatus}</TableCell>
+                    <TableCell>
+                      {/* Edit button */}
+                      <Button onClick={() => handleEdit(employee)}><EditIcon sx={{color: "#000180"}} /></Button>
+                      {/* Delete button */}
+                      <Button onClick={() => handleDelete(employee.employeeID)}><DeleteIcon color="error" /></Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>          
+            </Table>        
+          </TableContainer>
+          <Dialog open={openAdd} onClose={handleClose}>
+            {/* Dialog for adding a new employee */}
+            <DialogTitle>Add Employee</DialogTitle>
+            <DialogContent>
+              {/* Input fields for employee details */}
+              <TextField autoFocus margin="dense" name="add_employeeID" label="Employee Number" fullWidth value={formData.add_employeeID || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_firstName" label="First Name" fullWidth value={formData.add_employee_firstName || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_lastName" label="Last Name" fullWidth value={formData.add_employee_lastName || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_mi" label="Middle Initial" fullWidth value={formData.add_employee_mi || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_suffix" label="Suffix" fullWidth value={formData.add_employee_suffix || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} />          
+              <TextField margin="dense" name="add_employee_emailAddress" label="Email Address" fullWidth value={formData.add_employee_emailAddress || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_password" label="Password" fullWidth value={formData.add_employee_password || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.add_employee_roleID || ''} onChange={handleChange} />
+              <TextField margin="dense" name="add_employee_status" label="Status (Active / Terminated) " fullWidth value={formData.add_employee_status || ''} onChange={handleChange} />
+            </DialogContent>
+            <DialogActions>
+              {/* Buttons for canceling or adding the employee */}
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Add</Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog open={openEdit} onClose={handleClose}>
+            {/* Dialog for editing an employee */}
+            <DialogTitle>Edit Employee</DialogTitle>
+            <DialogContent>
+              {/* Input fields for employee details */}
+              <TextField autoFocus margin="dense" name="employeeID" label="Employee Number" fullWidth value={formData.employeeID || ''} onChange={handleChange} />
+              <TextField margin="dense" name="firstName" label="First Name" fullWidth value={formData.firstName || ''} onChange={handleChange} />
+              <TextField margin="dense" name="lastName" label="Last Name" fullWidth value={formData.lastName || ''} onChange={handleChange} />
+              <TextField margin="dense" name="middleInitial" label="Middle Initial" fullWidth value={formData.middleInitial || ''} onChange={handleChange} />
+              <TextField margin="dense" name="suffix" label="Suffix" fullWidth value={formData.suffix || ''} onChange={handleChange} />
+              <TextField margin="dense" name="title" label="Title" fullWidth value={formData.title || ''} onChange={handleChange} />          
+              <TextField margin="dense" name="emailAddress" label="Email Address" fullWidth value={formData.emailAddress || ''} onChange={handleChange} />
+              <TextField margin="dense" name="employee_password" label="Password" fullWidth value={formData.employee_password || ''} onChange={handleChange} />
+              <TextField margin="dense" name="roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.roleID || ''} onChange={handleChange} />
+              <TextField margin="dense" name="employeeStatus" label="Status (Active / Terminated) " fullWidth value={formData.employeeStatus || ''} onChange={handleChange} />
+            </DialogContent>
+            <DialogActions>
+              {/* Buttons for canceling or editing the employee */}
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Update</Button>
+            </DialogActions>
+          </Dialog>
+          
+          {/* Button for navigating to the previous page */}
+          <Button onClick={() => handleChangePage(page - 1)} sx ={{backgroundColor: '#000180', color: '#FFFFFF', marginRight: '8px'}}>Previous</Button>
+          {/* Button for navigating to the next page */}
+          <Button variant = "outlined" onClick={() => handleChangePage(page + 1)} sx ={{color: '#000180', borderColor: '#000180'}}>Next</Button>
+
+        </Container>    
+      );
+  } else if(user.role == 4) {
+    return (
+      <Container class="mx-16 my-4">
+        <div class = "float-right space-x-4 my-4">
+          <TextField
+              size = "small"
+              label="Search"
+              value={search}
+              onChange={handleChangeSearch}
+            />
+        </div>
+        {/* Title */}
+        <div class = "w-full flex justify-between align-center">
+          <h2 class = "text-section-head mb-8">Employee Info</h2>
+          {/* Sort By dropdown */}
+          <div class = "float-right pb-8">
+            <FormControl>
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                label="Sort By"
+                value={orderBy}
+                variant = "outlined"
+                onChange={(e) => handleChangeOrderBy(e.target.value)}
+              >
+                <MenuItem value="employeeID">Employee Number</MenuItem>
+                <MenuItem value="firstName">First Name</MenuItem>
+                <MenuItem value="lastName">Last Name</MenuItem>
+                <MenuItem value="roleName">Employee Type</MenuItem>
+                <MenuItem value="employeeStatus">Employee Status</MenuItem>
+              </Select>
+            </FormControl>
+        </div>
+        </div>
+        {/* Table displaying employee data */}
+        <TableContainer component={Paper} className="my-5">
+          <Table>
+            <TableHead class = "table-head">
+              <TableRow>
+                <TableCell>Employee Number</TableCell>
+                <TableCell>Full Name</TableCell>
+                <TableCell>Employee Type</TableCell>
+                <TableCell>Employee Status</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>          
-        </Table>        
-      </TableContainer>
-      <Dialog open={openAdd} onClose={handleClose}>
-        {/* Dialog for adding a new employee */}
-        <DialogTitle>Add Employee</DialogTitle>
-        <DialogContent>
-          {/* Input fields for employee details */}
-          <TextField autoFocus margin="dense" name="add_employeeID" label="Employee Number" fullWidth value={formData.add_employeeID || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_firstName" label="First Name" fullWidth value={formData.add_employee_firstName || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_lastName" label="Last Name" fullWidth value={formData.add_employee_lastName || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_mi" label="Middle Initial" fullWidth value={formData.add_employee_mi || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_suffix" label="Suffix" fullWidth value={formData.add_employee_suffix || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} />          
-          <TextField margin="dense" name="add_employee_emailAddress" label="Email Address" fullWidth value={formData.add_employee_emailAddress || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_password" label="Password" fullWidth value={formData.add_employee_password || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.add_employee_roleID || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_status" label="Status (Active / Terminated) " fullWidth value={formData.add_employee_status || ''} onChange={handleChange} />
-        </DialogContent>
-        <DialogActions>
-          {/* Buttons for canceling or adding the employee */}
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Add</Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={openEdit} onClose={handleClose}>
-        {/* Dialog for editing an employee */}
-        <DialogTitle>Edit Employee</DialogTitle>
-        <DialogContent>
-          {/* Input fields for employee details */}
-          <TextField autoFocus margin="dense" name="employeeID" label="Employee Number" fullWidth value={formData.employeeID || ''} onChange={handleChange} />
-          <TextField margin="dense" name="firstName" label="First Name" fullWidth value={formData.firstName || ''} onChange={handleChange} />
-          <TextField margin="dense" name="lastName" label="Last Name" fullWidth value={formData.lastName || ''} onChange={handleChange} />
-          <TextField margin="dense" name="middleInitial" label="Middle Initial" fullWidth value={formData.middleInitial || ''} onChange={handleChange} />
-          <TextField margin="dense" name="suffix" label="Suffix" fullWidth value={formData.suffix || ''} onChange={handleChange} />
-          <TextField margin="dense" name="title" label="Title" fullWidth value={formData.title || ''} onChange={handleChange} />          
-          <TextField margin="dense" name="emailAddress" label="Email Address" fullWidth value={formData.emailAddress || ''} onChange={handleChange} />
-          <TextField margin="dense" name="employee_password" label="Password" fullWidth value={formData.employee_password || ''} onChange={handleChange} />
-          <TextField margin="dense" name="roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.roleID || ''} onChange={handleChange} />
-          <TextField margin="dense" name="employeeStatus" label="Status (Active / Terminated) " fullWidth value={formData.employeeStatus || ''} onChange={handleChange} />
-        </DialogContent>
-        <DialogActions>
-          {/* Buttons for canceling or editing the employee */}
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Update</Button>
-        </DialogActions>
-      </Dialog>
-      
-      {/* Button for navigating to the previous page */}
-      <Button onClick={() => handleChangePage(page - 1)} sx ={{backgroundColor: '#000180', color: '#FFFFFF', marginRight: '8px'}}>Previous</Button>
-      {/* Button for navigating to the next page */}
-      <Button variant = "outlined" onClick={() => handleChangePage(page + 1)} sx ={{color: '#000180', borderColor: '#000180'}}>Next</Button>
+            </TableHead>
+            <TableBody>
+              {/* Mapping through employees to display each row */}
+              {employees.map((employee) => (
+                <TableRow key={employee.employeeID} class = "tr">
+                  <TableCell>{employee.employeeID}</TableCell>
+                  <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                  <TableCell>{employee.roleName}</TableCell>
+                  <TableCell>{employee.employeeStatus}</TableCell>
+                  <TableCell>
+                    {/* Edit button */}
+                    <Button onClick={() => handleEdit(employee)}><EditIcon sx={{color: "#000180"}} /></Button>
+                    {/* Delete button */}
+                    <Button onClick={() => handleDelete(employee.employeeID)}><DeleteIcon color="error" /></Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>          
+          </Table>        
+        </TableContainer>
+        
+        {/* Button for navigating to the previous page */}
+        <Button onClick={() => handleChangePage(page - 1)} sx ={{backgroundColor: '#000180', color: '#FFFFFF', marginRight: '8px'}}>Previous</Button>
+        {/* Button for navigating to the next page */}
+        <Button variant = "outlined" onClick={() => handleChangePage(page + 1)} sx ={{color: '#000180', borderColor: '#000180'}}>Next</Button>
 
-    </Container>    
-  );
+      </Container>    
+    );
+  }
 }
 
 export default EmployeeFunction;
