@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
       console.log(error)
     })
 
-  }, [user])
+  }, [navigate])
 
   const login = async (emailAddress, password) => {
     try {

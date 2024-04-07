@@ -42,13 +42,14 @@ function Navigation() {
         }
     }, [location]);
 
-    useEffect(() => {
-        // Decide where to navigate based on the reservation active flag
-        const lastLocation = sessionStorage.getItem('lastLocation');
-        if (lastLocation) {
-            navigate(lastLocation);
-        }
-    }, [navigate]);
+    // causing page to change locations
+    // useEffect(() => {
+    //     // Decide where to navigate based on the reservation active flag
+    //     const lastLocation = sessionStorage.getItem('lastLocation');
+    //     if (lastLocation) {
+    //         navigate(lastLocation);
+    //     }
+    // }, [navigate]);
 
     function setEmployeeRole(role) {
         setEmployeeRoleNum(role)
