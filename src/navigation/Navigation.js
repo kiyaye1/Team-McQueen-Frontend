@@ -23,7 +23,6 @@ import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import InactivityDetector from '../hooks/InactivityDetector';
 import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
-import MechanicFunctions from '../employee-pages/MechanicFunction';
 
 function Navigation() {
     const { user, logout } = useAuth();
@@ -43,14 +42,20 @@ function Navigation() {
         }
     }, [location]);
 
-    // causing page to change locations
-    useEffect(() => {
+    /*useEffect(() => {
         // Decide where to navigate based on the reservation active flag
         const lastLocation = sessionStorage.getItem('lastLocation');
         if (lastLocation) {
             navigate(lastLocation);
         }
-    }, [navigate]);
+    }, [navigate]);*/
+
+    useEffect(() => {
+        const lastLocation = sessionStorage.getItem('lastLocation');
+        if (lastLocation && lastLocation !== location.pathname) {
+            navigate(lastLocation, { replace: true });
+        }
+    }, [location.pathname, navigate]);
 
     function setEmployeeRole(role) {
         setEmployeeRoleNum(role)
@@ -59,7 +64,7 @@ function Navigation() {
     return (
         <div>
             <InactivityDetector
-                timeout={3600000} 
+                timeout={600000} 
                 onInactive={() => {
                     logout();
                 }}
@@ -76,8 +81,7 @@ function Navigation() {
                         <Route path = "reservation-confirmation" element = {employeeRoleNum != 0 ? <Unauthorized /> : <ReservationConfirmation />}/>                        
                     </Route>
                     <Route element={<EmployeeRoute />}>
-                        <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>   
-                        <Route path = "mechanic-functions/:tab" element = {<MechanicFunctions/>}/>                   
+                        <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
                         <Route path = "customer-approval/:tab" element = {employeeRoleNum != 3 ? <CustomerServiceFunctions/> : <Unauthorized />}/>
                         <Route path = "customer-details/:id" element = {employeeRoleNum != 3 ? <CustomerDetails/> : <Unauthorized />}/>
                         <Route path = "approval-details/:id" element = {employeeRoleNum != 3 ? <ApprovalDetails/> : <Unauthorized />}/>
