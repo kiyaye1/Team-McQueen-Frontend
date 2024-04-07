@@ -227,21 +227,23 @@ function FullDashboard() {
     <div>
     <div class = "mx-16 mt-16 mb-8 text-section-head">Mechanic Dashboard</div>
       <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-        <DashCard
-            title = "Service Requests"
-            dataPoints = {[
-              {
-                number: "11",
-                caption: "New Tickets"
-              },
-              {
-                number: "8",
-                caption: "In-Progress"
-              }
-            ]}
-          />
+        <Link to = "/mechanic-functions/1">
+          <DashCard
+              title = "Service Requests"
+              dataPoints = {[
+                {
+                  number: "11",
+                  caption: "New Tickets"
+                },
+                {
+                  number: "8",
+                  caption: "In-Progress"
+                }
+              ]}
+            />
+          </Link>
           
-          <Link to = "/fleet-management">
+          <Link to = "/mechanic-functions/2">
           <DashCard
               title = "Fleet Management"
               dataPoints = {[

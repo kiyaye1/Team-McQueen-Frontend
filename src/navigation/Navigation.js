@@ -22,6 +22,7 @@ import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import InactivityDetector from '../hooks/InactivityDetector';
 import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
+import MechanicFunctions from '../employee-pages/MechanicFunction';
 
 function Navigation() {
     const { user, logout } = useAuth();
@@ -56,7 +57,7 @@ function Navigation() {
     return (
         <div>
             <InactivityDetector
-                timeout={600000} 
+                timeout={3600000} 
                 onInactive={() => {
                     logout();
                 }}
@@ -78,7 +79,8 @@ function Navigation() {
                         <Route path = "customer-details/:id" element = {<CustomerDetails/>}/>
                         <Route path = "approval-details/:id" element = {<ApprovalDetails/>}/>
                         <Route path = "fleet-management" element = {<FleetManagement/>}/>
-                        <Route path = "employee-management" element = {<EmployeeManagement/>}/>                       
+                        <Route path = "employee-management" element = {<EmployeeManagement/>}/>    
+                        <Route path = "mechanic-functions/:tab" element = {<MechanicFunctions/>}/>                   
                     </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
