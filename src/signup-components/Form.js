@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import FormInputs from "./FormInputs";
 import useFormContext from "../hooks/useFormContext";
 import { Button } from "@mui/material";
@@ -161,7 +162,7 @@ const Form = () => {
             return;
         }
 
-        navigate('/registration-confirmation');
+        navigate('/registration-confirmation')
     }
 
     const content = (
