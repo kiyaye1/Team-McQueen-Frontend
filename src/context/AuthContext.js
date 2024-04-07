@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import BASE_API_URI from "../config";
+import { useLocation } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -12,30 +13,53 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
 
+  // useEffect(() => {
+  //   const reauthenticate = async () => {
+  //     try {
+  //       const response = await axios.get(`${BASE_API_URI}/refresh`, {withCredentials: true});
+  //       console.log(response);
+  //       const userData = {
+  //         isLoggedIn: true,
+  //         isEmployee: response.data.role > 0,
+  //         role: response.data.role,
+  //         userID: response.data.userID,
+  //         firstName: response.data.firstName,
+  //         lastName: response.data.lastName,
+  //         emailAddress: response.data.emailAddress,
+  //         xtra: response.data.xtra
+  //       };
+  //       setUser(userData);
+  //     } catch (error) {
+  //         console.error("Re-authentication failed:", error);
+  //     }
+  //   };
+  //   reauthenticate();
+  // }, []);
+
   useEffect(() => {
-    const reauthenticate = async () => {
-      try {
-        const response = await axios.get(`${BASE_API_URI}/refresh`, {withCredentials: true});
-        console.log(response);
-        const userData = {
-          isLoggedIn: true,
-          isEmployee: response.data.role > 0,
-          role: response.data.role,
-          userID: response.data.userID,
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
-          emailAddress: response.data.emailAddress,
-          xtra: response.data.xtra
-        };
-        setUser(userData);
-      } catch (error) {
-          console.error("Re-authentication failed:", error);
+    axios.get(`${BASE_API_URI}/loginInfo/getInfo`, { withCredentials: true })
+    .then((response) => {
+      console.log(response)
+      const userData = {
+        isLoggedIn: true,
+        isEmployee: response.data.role > 0,
+        role: response.data.role,
+        userID: response.data.userID,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        emailAddress: response.data.emailAddress,
+        xtra: response.data.xtra
       }
-    };
-    reauthenticate();
-  }, []);
+      setUser(userData)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
+  }, [user])
 
   const login = async (emailAddress, password) => {
     try {

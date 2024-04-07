@@ -14,9 +14,12 @@ function ApprovalDetails() {
 
     const [customer, setCustomer] = useState()
 
+
     function approveCustomer() {
       axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
-          statusCode: "RDY"
+          statusCode: "RDY",
+          emailVerified: 1,
+          phoneVerified: 1
       }, {withCredentials:true})
       .then(response =>{
         console.log(response)
