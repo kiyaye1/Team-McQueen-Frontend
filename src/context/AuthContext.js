@@ -40,29 +40,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-// experiment
-  // useEffect(() => {
-  //   axios.get(`${BASE_API_URI}/loginInfo/getInfo`, { withCredentials: true })
-  //   .then((response) => {
-  //     console.log(response)
-  //     const userData = {
-  //       isLoggedIn: true,
-  //       isEmployee: response.data.role > 0,
-  //       role: response.data.role,
-  //       userID: response.data.userID,
-  //       firstName: response.data.firstName,
-  //       lastName: response.data.lastName,
-  //       emailAddress: response.data.emailAddress,
-  //       xtra: response.data.xtra
-  //     }
-  //     setUser(userData)
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-
-  // }, [navigate])
-
   const login = async (emailAddress, password) => {
     try {
       const loginResponse = await axios.post(`${BASE_API_URI}/login/loginRequest`, { emailAddress, password }, { withCredentials: true });

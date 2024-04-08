@@ -195,21 +195,21 @@ function EmployeeFunction() {
             <Table>
               <TableHead class = "table-head">
                 <TableRow>
-                  <TableCell>Employee Number</TableCell>
-                  <TableCell>Full Name</TableCell>
-                  <TableCell>Employee Type</TableCell>
-                  <TableCell>Employee Status</TableCell>
-                  <TableCell>Actions</TableCell>
+                  <TableCell  class = "font-bold py-4" >Employee Number</TableCell>
+                  <TableCell  class = "font-bold py-4">Full Name</TableCell>
+                  <TableCell  class = "font-bold py-4">Employee Type</TableCell>
+                  <TableCell  class = "font-bold py-4">Employee Status</TableCell>
+                  <TableCell  class = "font-bold py-4">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {/* Mapping through employees to display each row */}
                 {employees.map((employee) => (
                   <TableRow key={employee.employeeID} class = "tr">
-                    <TableCell>{employee.employeeID}</TableCell>
-                    <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
-                    <TableCell>{employee.roleName}</TableCell>
-                    <TableCell>{employee.employeeStatus}</TableCell>
+                    <TableCell align = "center">{employee.employeeID}</TableCell>
+                    <TableCell align = "center">{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                    <TableCell align = "center">{employee.roleName}</TableCell>
+                    <TableCell align = "center">{employee.employeeStatus}</TableCell>
                     <TableCell>
                       {/* Edit button */}
                       <Button onClick={() => handleEdit(employee)}><EditIcon sx={{color: "#000180"}} /></Button>
@@ -307,25 +307,25 @@ function EmployeeFunction() {
         </div>
         </div>
         {/* Table displaying employee data */}
-        <TableContainer component={Paper} className="my-5">
+        <TableContainer component={Paper} className="my-4">
           <Table>
             <TableHead class = "table-head">
               <TableRow>
-                <TableCell>Employee Number</TableCell>
-                <TableCell>Full Name</TableCell>
-                <TableCell>Employee Type</TableCell>
-                <TableCell>Employee Status</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell class = "font-bold py-4">Employee Number</TableCell>
+                <TableCell class = "font-bold py-4">Full Name</TableCell>
+                <TableCell class = "font-bold py-4">Employee Type</TableCell>
+                <TableCell class = "font-bold py-4">Employee Status</TableCell>
+                <TableCell class = "font-bold py-4">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {/* Mapping through employees to display each row */}
               {employees.map((employee) => (
                 <TableRow key={employee.employeeID} class = "tr">
-                  <TableCell>{employee.employeeID}</TableCell>
-                  <TableCell>{`${employee.firstName} ${employee.lastName}`}</TableCell>
-                  <TableCell>{employee.roleName}</TableCell>
-                  <TableCell>{employee.employeeStatus}</TableCell>
+                  <TableCell align = "center">{employee.employeeID}</TableCell>
+                  <TableCell align = "center">{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                  <TableCell align = "center">{employee.roleName}</TableCell>
+                  <TableCell align = "center">{employee.employeeStatus}</TableCell>
                   <TableCell>
                     {/* Edit button */}
                     <Button onClick={() => handleEdit(employee)}><EditIcon sx={{color: "#000180"}} /></Button>
