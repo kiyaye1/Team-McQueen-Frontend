@@ -18,7 +18,10 @@ function Login({setEmployeeRole}) {
             sessionStorage.setItem('employeeRole', user.role);
             navigate('/dash'); 
           } else {
-              navigate('/reserve');
+            setEmployeeRole(user.role);
+            sessionStorage.removeItem('employeeRole');
+            sessionStorage.setItem('employeeRole', user.role);
+            navigate('/reserve');
           }
       } 
   }, [user, navigate]);
