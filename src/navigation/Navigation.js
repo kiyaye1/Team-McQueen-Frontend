@@ -77,9 +77,12 @@ function Navigation() {
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     <Route element={<ProtectedRoute />}>
                         <Route path = "account" element = {<Profile />}/>
-                        <Route path = "reserve" element={employeeRoleNum != 0 ? <Unauthorized /> : <Reservation />}/>
+                        <Route path = "reserve" element = {<Reservation />}/>
+                        <Route path = "reservation-details" element = {<ReservationDetails/>}/>
+                        <Route path = "reservation-confirmation" element = {<ReservationConfirmation />}/>
+                        {/* <Route path = "reserve" element={employeeRoleNum === 0 ? <Reservation /> : <Unauthorized />}/>
                         <Route path = "reservation-details" element={employeeRoleNum != 0 ? <Unauthorized /> : <ReservationDetails />}/>
-                        <Route path = "reservation-confirmation" element = {employeeRoleNum != 0 ? <Unauthorized /> : <ReservationConfirmation />}/>                        
+                        <Route path = "reservation-confirmation" element = {employeeRoleNum != 0 ? <Unauthorized /> : <ReservationConfirmation />}/>                         */}
                     </Route>
                     <Route element={<EmployeeRoute />}>
                         <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
