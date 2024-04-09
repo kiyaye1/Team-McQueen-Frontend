@@ -23,6 +23,7 @@ import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import InactivityDetector from '../hooks/InactivityDetector';
 import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
+import MechanicFunctions from '../employee-pages/MechanicFunction';
 
 function Navigation() {
     const { user, logout } = useAuth();
@@ -85,8 +86,10 @@ function Navigation() {
                         <Route path = "customer-approval/:tab" element = {employeeRoleNum != 3 ? <CustomerServiceFunctions/> : <Unauthorized />}/>
                         <Route path = "customer-details/:id" element = {employeeRoleNum != 3 ? <CustomerDetails/> : <Unauthorized />}/>
                         <Route path = "approval-details/:id" element = {employeeRoleNum != 3 ? <ApprovalDetails/> : <Unauthorized />}/>
-                        <Route path = "fleet-management" element={employeeRoleNum != 3 ? <Unauthorized /> : <FleetManagement />}/>
-                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>                       
+                        <Route path = "fleet-management" element={employeeRoleNum != 3 ? <FleetManagement /> : <Unauthorized /> }/>
+                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>  
+                        <Route path = "mechanic-functions/:tab" element = {employeeRoleNum == 3 ? <MechanicFunctions/> : <Unauthorized/>}/>                   
+                     
                     </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
