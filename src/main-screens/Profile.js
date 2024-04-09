@@ -43,13 +43,15 @@ function Profile() {
         <h3 className="text-card-title">{user.firstName + " " + user.lastName}</h3>
         <h3 className="text-card-title pt-8">Reservations</h3>
         {reservations?.filter(data => data.customer.customerID === user.userID).map((data, key) => (
-          <div className="mb-8" key={key}>
-            <p>Reservation ID: {data.reservationID}</p>
-            <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
-            <p>Start Station: {data.startStation.stationID}</p>
-            <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
-            <p>End Station: {data.endStation.stationID}</p>
-          </div>
+         
+              <div className="mb-8" key={key}>
+                <p>Reservation ID: {data.reservationID}</p>
+                <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
+                <p>Start Station: {data.startStation.stationID}</p>
+                <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
+                <p>End Station: {data.endStation.stationID}</p>
+             </div>
+            
         ))}        
         <Button variant="contained" sx={{ backgroundColor: "#000180", foregroundColor: "#FFFFFF", marginLeft: "0em"}} onClick = { () => {logout();}}>Log Out</Button>
       </div>

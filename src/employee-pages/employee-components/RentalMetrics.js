@@ -29,9 +29,9 @@ export default function RentalMetrics() {
 
     return (
         <Container className="my-8">
-            <Typography variant="h4" align="left" gutterBottom class="table-title">
+            <h1 class = "text-section-head pb-8">
                 Rental Metrics 
-            </Typography>
+            </h1>
             <Grid container spacing={2} alignItems="center" marginTop="1em" marginBottom="1em" justifyContent="center">
                 <Grid item>
                     <TextField

@@ -25,6 +25,8 @@ import {
   Select, 
   MenuItem } from '@mui/material';
   import {Dialog} from '@mui/material';
+import userEvent from '@testing-library/user-event';
+import { useAuth } from '../context/AuthContext';
 
 
 
@@ -34,6 +36,7 @@ function FleetManagement() {
   const [SQLCars, setSQLCars] = useState()
   const [newStationData, setNewStationData] = useState({})
   const [openAdd, setOpenAdd] = useState(false);
+  const {user} = useAuth()
 
 
     // use effect loop to get the data frequently so it can detect when it is changed
@@ -127,14 +130,17 @@ function FleetManagement() {
             <h1 class = "text-section-head">Fleet Management</h1>
             <div class = "flex items-center pt-8">
               <h2 class = "text-subhead pr-4">Stations</h2>
-              <Button 
-                variant = 'outlined' 
-                size = "small" 
-                sx = {{color: "#000180", borderColor: "#000180"}}
-                onClick  = {() => handleAdd()}
-              >
-              Add Station
-              </Button>
+              {user.role === 1 && (
+                  <Button 
+                  variant = 'outlined' 
+                  size = "small" 
+                  sx = {{color: "#000180", borderColor: "#000180"}}
+                  onClick  = {() => handleAdd()}
+                  >
+                  Add Station
+                  </Button>
+                )
+              }
             </div>
             <Dialog open={openAdd} onClose={handleClose}>
               <DialogTitle>Add Station</DialogTitle>
@@ -219,7 +225,9 @@ function FleetManagement() {
 
             <div class = "flex items-center pt-8">
               <h2 class = "text-subhead pr-4">Cars</h2>
-              <Button variant = 'disabled' size = "small" sx = {{color: "#000180", borderColor: "#000180"}}>Add Cars</Button>
+              {user.role === 1 && (
+                <Button variant = 'disabled' size = "small" sx = {{color: "#000180", borderColor: "#000180"}}>Add Cars</Button>
+              )}
             </div>
             <TableContainer>
             <Table sx={{   }}>

@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import '../App.css';
 import BASE_API_URI from '../config';
+import { useAuth } from '../context/AuthContext';
 
 function EmployeeFunction() {
   //State hooks for managing component state
@@ -20,6 +21,9 @@ function EmployeeFunction() {
   const [search, setSearch] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteEmployeeId, setDeleteEmployeeId] = useState(null);
+  const {user} = useAuth()
+  console.log(user)
+
 
   //Effect hook to fetch employees data when page, orderBy, order, limit, or search changes
   useEffect(() => {
@@ -128,13 +132,15 @@ function EmployeeFunction() {
     setSearch(e.target.value);
   };
 
-  //JSX rendering
+
+  // admin
+  if(user.role === 1){ 
   return (
     <Container className="my-8">
       {/* Title */}
-      <Typography variant="h4" align="left" gutterBottom class="table-title">
+      <h1 class = "text-section-head pb-8">
       Employee Info
-      </Typography>
+      </h1>
       {/* Search and Sort options */}
       <Box display="flex" justifyContent="space-between" marginBottom={2}>
       <div className="flex space-x-4">
@@ -160,12 +166,10 @@ function EmployeeFunction() {
           </Select>
         </FormControl>
         {/* Order button */}
-        <Button onClick={handleChangeOrder} class = "add-emp">
-          {order === 'asc' ? 'Ascending' : 'Descending'} 
-        </Button>
+        <Button variant = "outlined" onClick = {handleChangeOrder}>{order === 'asc' ? 'Ascending' : 'Descending'} </Button>
         </div>
         {/* Add Employee button */}
-        <Button variant="contained" onClick={() => handleAdd()} class = "add-emp">
+        <Button sx = {{backgroundColor: "#000180"}} variant="contained" onClick={() => handleAdd()}>
           Add Employee
         </Button>
       </Box> 
@@ -185,11 +189,11 @@ function EmployeeFunction() {
         <Table>
           <TableHead class = "table-head">
             <TableRow>
-              <TableCell>Employee Number</TableCell>
-              <TableCell>Full Name</TableCell>
-              <TableCell>Employee Type</TableCell>
-              <TableCell>Employee Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell class = "font-bold py-4">Employee Number</TableCell>
+              <TableCell class = "font-bold py-4">Full Name</TableCell>
+              <TableCell class = "font-bold py-4">Employee Type</TableCell>
+              <TableCell class = "font-bold py-4">Employee Status</TableCell>
+              <TableCell class = "font-bold py-4">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -261,6 +265,74 @@ function EmployeeFunction() {
       <Button onClick={() => handleChangePage(page + 1)} class ="button-paginate-next">Next</Button>
     </Container>    
   );
+
+  // manager
+  } else if(user.role === 4) {
+    return (
+      <Container className="my-8">
+      {/* Title */}
+      <h1 class = "text-section-head pb-8">
+      Employee Info
+      </h1>
+      {/* Search and Sort options */}
+      <Box display="flex" justifyContent="space-between" marginBottom={2}>
+      <div className="flex space-x-4">
+        {/* Search input */}
+        <TextField
+          label="Search"
+          value={search}
+          onChange={handleChangeSearch}
+        />
+        {/* Sort By dropdown */}
+        <FormControl>
+          <InputLabel>Sort By</InputLabel>
+          <Select
+            label="Sort By"
+            value={orderBy}
+            onChange={(e) => handleChangeOrderBy(e.target.value)}
+          >
+            <MenuItem value="employeeID">Employee Number</MenuItem>
+            <MenuItem value="firstName">First Name</MenuItem>
+            <MenuItem value="lastName">Last Name</MenuItem>
+            <MenuItem value="roleName">Employee Type</MenuItem>
+            <MenuItem value="employeeStatus">Employee Status</MenuItem>
+          </Select>
+        </FormControl>
+        {/* Order button */}
+        <Button variant = "outlined" onClick = {handleChangeOrder}>{order === 'asc' ? 'Ascending' : 'Descending'} </Button>
+        </div>
+      </Box> 
+      {/* Table displaying employee data */}
+      <TableContainer component={Paper} className="my-5">
+        <Table>
+          <TableHead class = "table-head">
+            <TableRow>
+              <TableCell class = "font-bold py-4">Employee Number</TableCell>
+              <TableCell class = "font-bold py-4">Full Name</TableCell>
+              <TableCell class = "font-bold py-4">Employee Type</TableCell>
+              <TableCell class = "font-bold py-4">Employee Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {/* Mapping through employees to display each row */}
+            {employees.map((employee) => (
+              <TableRow key={employee.employeeID} class = "tr">
+                <TableCell align = "center">{employee.employeeID}</TableCell>
+                <TableCell align = "center">{`${employee.firstName} ${employee.lastName}`}</TableCell>
+                <TableCell align = "center">{employee.roleName}</TableCell>
+                <TableCell align = "center">{employee.employeeStatus}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>          
+        </Table>        
+      </TableContainer>
+      {/* Button for navigating to the previous page */}
+      <Button onClick={() => handleChangePage(page - 1)} class ="button-paginate-prev">Previous</Button>
+      {/* Button for navigating to the next page */}
+      <Button onClick={() => handleChangePage(page + 1)} class ="button-paginate-next">Next</Button>
+    </Container>  
+    );
+  }
 }
 
 export default EmployeeFunction;

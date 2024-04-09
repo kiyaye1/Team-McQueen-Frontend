@@ -32,9 +32,9 @@ export default function ApplicationMetrics() {
 
   return (
     <Container className="my-8">
-      <Typography variant="h4" align="left" gutterBottom class="table-title">
-        Customer Application Metrics
-      </Typography>
+      <h1 class = "text-section-head pb-8">
+                Customer Application Metrics
+            </h1>
       <Grid container spacing={2} alignItems="center" marginTop="1em" marginBottom="1em" justifyContent="center">
         <Grid item>
           <TextField
