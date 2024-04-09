@@ -7,36 +7,33 @@ import { Grid, Typography, Box, Button } from '@mui/material';
 
 const HowItWorks = () => {
   return (
-   // <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh', border: '1px solid #ddd', borderRadius: 4 }}> {/* Added border and rounded corners */}
-      <Grid container spacing={2} direction="row" alignItems="center" >
-        <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}> {/* Added padding */}
+    <div class = "grid grid-cols-3 gap-16">
+      <div class = "text-center">
+        <div class = "flex justify-center items-center">
           <img class = "rounded-full" src={CreateAccount} alt="Create Account" width="128" height="128" />
-          <Typography variant="h6" component="h6" className="text-black font-bold mb-2">
-            Create an account
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Sign up, await approval, then access!
-          </Typography>
-        </Grid>
-        <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}> {/* Added padding */}
-        <img class = "rounded-full" src={BookReservation} alt="Book Reservation" width="128" height="128" />
-          <Typography variant="h6" component="h6" className="text-black font-bold mb-2">
-            Book Your Reservation
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Sign up, await approval, then access!
-          </Typography>
-        </Grid>
-        <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}> {/* Added padding */}
-        <img class = "rounded-full" src={PickUp} alt="PickUp" width="128" height="128" />
-          <Typography variant="h6" component="h6" className="text-black font-bold mb-2">
-            Pick Up Your Gyrocar
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Sign up, await approval, then access!
-          </Typography>
-        </Grid>
-      </Grid>
+        </div>
+        <h5 class = "text-card-title">Create an Account</h5>
+        <p class = "text-body text-body-copy">Sign up, await approval, then access!</p>
+      </div>
+
+      <div class = "text-center">
+        <div class = "flex justify-center items-center">
+          <img class = "rounded-full" src={BookReservation} alt="Create Account" width="128" height="128" />
+        </div>
+        <h5 class = "text-card-title">Book your Reservation</h5>
+        <p class = "text-body text-body-copy">Sign up, await approval, then access!</p>
+      </div>
+
+      <div class = "text-center">
+        <div class = "flex justify-center items-center">
+          <img class = "rounded-full" src={PickUp} alt="Create Account" width="128" height="128" />
+        </div>
+        <h5 class = "text-card-title">Pick up your Gyrocar</h5>
+        <p class = "text-body text-body-copy">Sign up, await approval, then access!</p>
+      </div>
+  
+    </div>
+   
     
   );
 };
