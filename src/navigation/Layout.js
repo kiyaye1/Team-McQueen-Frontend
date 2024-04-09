@@ -19,7 +19,10 @@ function Layout() {
                             </>
                         )}
                         {user && user.isEmployee && (
+                            <>
                             <Link to="/dash" className="p-4">Dashboard</Link>
+                            <Link to="/metrics" className="p-4">Metrics</Link>
+                            </>
                         )}
                         {user && user.isLoggedIn && (
                             <>
