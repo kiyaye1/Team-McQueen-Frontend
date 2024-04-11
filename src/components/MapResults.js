@@ -27,33 +27,41 @@ function MapResults({search, result, searchQuery}) {
                 <div class = "grid grid-cols-1 gap-4">
                 {/* Reservation Result Card */}
                 {reservationResult?.map((data, key) => {
-                    return(
-                        <div key = {key}
-                            onClick = {
-                            () => navigate('/reservation-details', 
-                                {state: {
-                                    result: {data},
-                                    search: {searchQuery}
-                                } })
-                            } 
-                            class = "border border-border px-4 py-8 rounded-lg hover:bg-gray5"
-                        >
-        
-                            <div class = "grid grid-cols-4">
-                                <div class = "col-span-3">
-                                    <h1 class = "text-card-title pb-2">{getStationName(data.stationID)}</h1>
-                                    <p class = "text-sm text-body-copy">{data.streetAddress + " " + data.city}</p>
-                                    <p class = "text-sm text-body-copy">{data.carsAvailable.length} cars available</p>
+                    if(data.carsAvailable.length > 0) {
+                        return(
+                            <div key = {key}
+                                onClick = {
+                                () => navigate('/reservation-details', 
+                                    {state: {
+                                        result: {data},
+                                        search: {searchQuery}
+                                    } })
+                                } 
+                                class = "border border-border px-4 py-8 rounded-lg hover:bg-gray5"
+                            >
+            
+                                <div class = "grid grid-cols-4">
+                                    <div class = "col-span-3">
+                                        <h1 class = "text-card-title pb-2">{getStationName(data.stationID)}</h1>
+                                        <p class = "text-sm text-body-copy">{data.streetAddress + " " + data.city}</p>
+                                        <p class = "text-sm text-body-copy">{data.carsAvailable.length} cars available</p>
+                                    </div>
+                                    <div class = "col-span-1 text-right text-teal-secondary font-bold">
+                                        <p>${data.costPerHour} per hour</p>
+                                        <p>Total Cost: ${(data.costPerHour * searchQuery.reservationTime).toFixed(2)}</p>
+                                        <p>{data.distanceInMiles.toFixed(2)} miles away</p>
+                                    </div>
+                                    
                                 </div>
-                                <div class = "col-span-1 text-right text-teal-secondary font-bold">
-                                    <p>${data.costPerHour} per hour</p>
-                                    <p>Total Cost: ${(data.costPerHour * searchQuery.reservationTime).toFixed(2)}</p>
-                                    <p>{data.distanceInMiles.toFixed(2)} miles away</p>
-                                </div>
-                                
                             </div>
-                        </div>
-                    ); 
+                        ); 
+                    } else {
+                        return (
+                            <div class = "pl-8">
+                                No Cars Available at this location and time.
+                            </div>
+                        );
+                    }
                 })}
 
                 </div>

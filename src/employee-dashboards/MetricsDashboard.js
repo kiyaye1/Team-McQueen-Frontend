@@ -2,7 +2,7 @@ import MetricsDashCard from "../employee-pages/employee-components/MetricsDashCa
 import { Link } from "react-router-dom";
 
 function MetricsDashboard() {
-    
+
     return (
         <div>
         <div class = "mx-16 mt-16 mb-8 text-section-head">Metrics</div>

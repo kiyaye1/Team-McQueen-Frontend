@@ -216,15 +216,15 @@ function EmployeeFunction() {
         <DialogTitle>Add Employee</DialogTitle>
         <DialogContent>
           {/* Input fields for employee details */}
-          <TextField autoFocus margin="dense" name="add_employeeID" label="Employee Number" fullWidth value={formData.add_employeeID || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_firstName" label="First Name" fullWidth value={formData.add_employee_firstName || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_lastName" label="Last Name" fullWidth value={formData.add_employee_lastName || ''} onChange={handleChange} />
+          <TextField autoFocus margin="dense" name="add_employeeID" label="Employee Number" fullWidth value={formData.add_employeeID || ''} onChange={handleChange} required />
+          <TextField margin="dense" name="add_employee_firstName" label="First Name" fullWidth value={formData.add_employee_firstName || ''} onChange={handleChange} required/>
+          <TextField margin="dense" name="add_employee_lastName" label="Last Name" fullWidth value={formData.add_employee_lastName || ''} onChange={handleChange} required />
           <TextField margin="dense" name="add_employee_mi" label="Middle Initial" fullWidth value={formData.add_employee_mi || ''} onChange={handleChange} />
           <TextField margin="dense" name="add_employee_suffix" label="Suffix" fullWidth value={formData.add_employee_suffix || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} />          
-          <TextField margin="dense" name="add_employee_emailAddress" label="Email Address" fullWidth value={formData.add_employee_emailAddress || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_password" label="Password" fullWidth value={formData.add_employee_password || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.add_employee_roleID || ''} onChange={handleChange} />
+          <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} required />          
+          <TextField margin="dense" name="add_employee_emailAddress" label="Email Address" fullWidth value={formData.add_employee_emailAddress || ''} onChange={handleChange} required />
+          <TextField margin="dense" name="add_employee_password" label="Password" fullWidth value={formData.add_employee_password || ''} onChange={handleChange} required/>
+          <TextField margin="dense" name="add_employee_roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.add_employee_roleID || ''} onChange={handleChange} required/>
           <TextField margin="dense" name="add_employee_status" label="Status (Active / Terminated) " fullWidth value={formData.add_employee_status || ''} onChange={handleChange} />
         </DialogContent>
         <DialogActions>
@@ -244,7 +244,7 @@ function EmployeeFunction() {
           <TextField margin="dense" name="middleInitial" label="Middle Initial" fullWidth value={formData.middleInitial || ''} onChange={handleChange} />
           <TextField margin="dense" name="suffix" label="Suffix" fullWidth value={formData.suffix || ''} onChange={handleChange} />
           <TextField margin="dense" name="title" label="Title" fullWidth value={formData.title || ''} onChange={handleChange} />          
-          <TextField margin="dense" name="emailAddress" label="Email Address" fullWidth value={formData.emailAddress || ''} onChange={handleChange} />
+          <TextField margin="dense" name="emailAddress" label="Email Address" fullWidth value={formData.emailAddress || ''} onChange={handleChange}/>
           <TextField margin="dense" name="employee_password" label="Password" fullWidth value={formData.employee_password || ''} onChange={handleChange} />
           <TextField margin="dense" name="roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.roleID || ''} onChange={handleChange} />
           <TextField margin="dense" name="employeeStatus" label="Status (Active / Terminated) " fullWidth value={formData.employeeStatus || ''} onChange={handleChange} />

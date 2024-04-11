@@ -5,10 +5,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Button, Paper } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ApprovalRequests({customerData}) {
+    const navigate = useNavigate()
 
     function dateFormat(d) {
         const date = d.substring(0,10)
@@ -18,15 +19,15 @@ function ApprovalRequests({customerData}) {
     return (
       <><div class = "mx-16">
         <h1 class = "text-subhead">New Requests</h1>
-        <TableContainer>
+        <TableContainer component = {Paper}  class = "my-4">
             <Table sx={{   }}>
-                <TableHead>
+                <TableHead class = "table-head">
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align = "center">Ticket Number</TableCell>
-                        <TableCell align = "center">Date Created</TableCell>
-                        <TableCell align = "center">Status</TableCell>
-                        <TableCell align = "right">Manage Application</TableCell>
+                        <TableCell class = "font-bold py-4">Name</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Ticket Number</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Date Created</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Status</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Manage Application</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -34,13 +35,15 @@ function ApprovalRequests({customerData}) {
                         if(row.status.statusCode === "PVN")
                             return (
                                 <TableRow key = {row.customerID}>
-                                    <TableCell component="th" scope = "row">
+                                    <TableCell align = "center" component="th" scope = "row">
                                         {row.firstName + " " + row.lastName}
                                     </TableCell>
                                     <TableCell align = "center">{row.customerID}</TableCell>
                                     <TableCell align = "center">{dateFormat(row.createdDatetime)}</TableCell>
                                     <TableCell align = "center">{row.status.shortDescription}</TableCell>
-                                    <TableCell align = "right">  <Link to = {`/approval-details/${row.customerID}`}>Manage Application</Link></TableCell>
+                                    <TableCell align = "center">  
+                                        <Button onClick = {() => navigate(`/approval-details/${row.customerID}`)}>Manage</Button>
+                                    </TableCell>
                                 </TableRow>
                         );
                     })}
@@ -49,15 +52,15 @@ function ApprovalRequests({customerData}) {
         </TableContainer>
 
         <h1 class = "text-subhead mt-16">Completed</h1>
-        <TableContainer>
+        <TableContainer component = {Paper} class = "my-4">
             <Table sx={{   }}>
-                <TableHead>
+                <TableHead class = "table-head">
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align = "center">Ticket Number</TableCell>
-                        <TableCell align = "center">Date Created</TableCell>
-                        <TableCell align = "center">Status</TableCell>
-                        <TableCell align = "right">Manage Application</TableCell>
+                        <TableCell class = "font-bold py-4">Name</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Ticket Number</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Date Created</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Status</TableCell>
+                        <TableCell class = "font-bold py-4" align = "center">Manage Application</TableCell>
 
                     </TableRow>
                 </TableHead>
@@ -66,13 +69,14 @@ function ApprovalRequests({customerData}) {
                         if(row.status.statusCode === "RDY")
                             return (
                                 <TableRow key = {row.customerID}>
-                                    <TableCell component="th" scope = "row">
+                                    <TableCell align = "center" component="th" scope = "row">
                                         {row.firstName + " " + row.lastName}
                                     </TableCell>
                                     <TableCell align = "center">{row.customerID}</TableCell>
                                     <TableCell align = "center">{dateFormat(row.createdDatetime)}</TableCell>
-                                    <TableCell align = "right">{row.status.shortDescription}</TableCell>
-                                    <TableCell align = "right">  <Link to = {`/customer-details/${row.customerID}`}>Customer Details</Link></TableCell>
+                                    <TableCell align = "center">{row.status.shortDescription}</TableCell>
+                                    <TableCell align = "center"><Button onClick={() => navigate(`/customer-details/${row.customerID}`)}>View Details</Button>
+                                        </TableCell>
                                 </TableRow>
                             );
                     })}

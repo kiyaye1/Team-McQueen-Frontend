@@ -53,17 +53,16 @@ export const FormProvider = ({children}) => {
     //     }
     // }
 
+    // State to track if terms have been accepted
+    const [termsAccepted, setTermsAccepted] = useState(false);
+
     const handleChange = e => {
-        const type = e.target.type
-        const name = e.target.name
-
-        const value = type == "checkbox"
-            ? e.target.checked
-            : e.target.value 
-
-    
-        setData(prevData => ({...prevData, [name] : value}))
-    }
+        const { type, name, value, checked } = e.target;
+        setData(prevData => ({
+            ...prevData,
+            [name]: type === "checkbox" ? checked : value
+        }));
+    };
 
     // mi and suffix - not required
     // requiredInputs - everything else not defined before (all req inputs)
@@ -182,10 +181,8 @@ export const FormProvider = ({children}) => {
     
         return Object.keys(errors).length === 0 ? null : errors;
     }
-    
-    // can submit when required inputs are all fulled in, and when the user is on last page
-    // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
-    const canSubmit = page == Object.keys(title).length - 1
+
+    const canSubmit = page === Object.keys(title).length - 1 && termsAccepted;
 
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
@@ -252,6 +249,8 @@ export const FormProvider = ({children}) => {
             setCardccvError,
             handleChange, 
             canSubmit, 
+            termsAccepted, 
+            setTermsAccepted,
             disableNext, 
             disablePrev
         }}>

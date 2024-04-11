@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import BASE_API_URI from "../config";
 
@@ -10,7 +10,6 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }) => {
-
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
     const reauthenticate = async () => {
       try {
         const response = await axios.get(`${BASE_API_URI}/refresh`, {withCredentials: true});
-        console.log(response);
         const userData = {
           isLoggedIn: true,
           isEmployee: response.data.role > 0,
@@ -31,9 +29,11 @@ export const AuthProvider = ({ children }) => {
         };
         setUser(userData);
       } catch (error) {
-          console.error("Re-authentication failed:", error);
+        setUser(null);
+        console.error("Re-authentication failed:", error);
       }
     };
+
     reauthenticate();
   }, []);
 
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const loginResponse = await axios.post(`${BASE_API_URI}/login/loginRequest`, { emailAddress, password }, { withCredentials: true });
       const userInfoResponse = await axios.get(`${BASE_API_URI}/loginInfo/getInfo`, { withCredentials: true });
-  
+
       if (userInfoResponse.data.role >= 0) {
         const userData = {
           isLoggedIn: true,
@@ -71,16 +71,22 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.removeItem('employeeRole');
       sessionStorage.removeItem('reservationComplete');
       sessionStorage.removeItem('lastLocation');
-      navigate('/');
+      navigate('/');  
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
+
+  // Using useEffect to log user after state changes
+  useEffect(() => {
+    console.log('Current user state:', user);
+  }, [user]);
 
   const value = {
     user,
     login,
     logout,
   };
+  
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

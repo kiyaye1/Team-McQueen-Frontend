@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import FormInputs from "./FormInputs";
 import useFormContext from "../hooks/useFormContext";
-import { Button } from "@mui/material";
+//import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import axios from 'axios';
 import BASE_API_URI from "../config";
 const stripe = require('stripe')('pk_test_51OC3lZF33393XxHnNjMZAvGE3U7GnSWqsxQXUUbsKNu7z0rNG205ZfDgjhSCFHNt4qvm3ynn7x054FrFUgJvWr4y00dnyECiyI');
@@ -33,6 +34,9 @@ const Form = () => {
         setExpDateError,
         setCardccvError, 
         canSubmit,
+        termsAccepted, 
+        setTermsAccepted,
+        //handleChange,
         disablePrev,
         disableNext
     } = useFormContext()
@@ -86,6 +90,12 @@ const Form = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         console.log("submit")
+
+        // Check if terms and conditions have been accepted
+        if (!termsAccepted) {
+            alert("You must agree to the Terms and Conditions to proceed.");
+            return;  // Stop the form submission if terms are not accepted
+        }
         
         //call CreditCardInfoValidation from FormContext
         const errors = CreditCardInfoValidation()
@@ -166,21 +176,24 @@ const Form = () => {
     }
 
     const content = (
+
         <form onSubmit={handleSubmit}>
-            <header>
-                {/* <h2>{title[page]}</h2> */}
-            </header>
+        <header>
+            <h2>{title[page]}</h2> 
+        </header>
 
-            {/* get all input pages from context */}
-            <FormInputs/>
-            
-            <div>
-                {/* <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button> */}
+          {/*get all input pages from context*/} 
+        <FormInputs/>
+        
+        <div>
+                {/*<Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button> */}
                 <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handleNext} disabled = {disableNext}>Continue</Button>
-                <Button sx = {{backgroundColor: '#000180'}} type = "submit" variant="contained" disabled = {!canSubmit}>Submit</Button>
-            </div>
+            <Button sx = {{backgroundColor: '#000180'}} type = "submit" variant="contained" disabled = {!canSubmit}>Submit</Button>
+        </div>
 
-        </form>
+</form>
+
+
     )
 
     return content

@@ -15,7 +15,6 @@ import Profile from '../main-screens/Profile';
 import Reservation from '../main-screens/Reservation';
 import Confirmation from '../main-screens/FormConfirmation';
 import FullDashboard from '../employee-dashboards/Full-Dashboard';
-import MetricsDashboard from '../employee-dashboards/MetricsDashboard';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
 import ReservationDetails from "../main-screens/ReservationDetails";
 import CustomerDetails from '../employee-pages/employee-components/CustomerDetails';
@@ -24,6 +23,8 @@ import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import InactivityDetector from '../hooks/InactivityDetector';
 import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
+import MechanicFunctions from '../employee-pages/MechanicFunction';
+import MetricsDashboard from '../employee-dashboards/MetricsDashboard';
 import ApplicationMetrics from '../employee-pages/employee-components/ApplicationMetrics';
 import RentalMetrics from '../employee-pages/employee-components/RentalMetrics';
 
@@ -52,10 +53,6 @@ function Navigation() {
         }
     }, [location.pathname, navigate]);
 
-    function setEmployeeRole(role) {
-        setEmployeeRoleNum(role)
-    }
-
     return (
         <div>
             <InactivityDetector
@@ -83,8 +80,10 @@ function Navigation() {
                         <Route path = "customer-approval/:tab" element = {employeeRoleNum != 3 ? <CustomerServiceFunctions/> : <Unauthorized />}/>
                         <Route path = "customer-details/:id" element = {employeeRoleNum != 3 ? <CustomerDetails/> : <Unauthorized />}/>
                         <Route path = "approval-details/:id" element = {employeeRoleNum != 3 ? <ApprovalDetails/> : <Unauthorized />}/>
-                        <Route path = "fleet-management" element={employeeRoleNum != 3 ? <Unauthorized /> : <FleetManagement />}/>
-                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>                       
+                        <Route path = "fleet-management" element={employeeRoleNum != 3 ? <FleetManagement /> : <Unauthorized /> }/>
+                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>  
+                        <Route path = "mechanic-functions/:tab" element = {employeeRoleNum == 3 ? <MechanicFunctions/> : <Unauthorized/>}/>                   
+                     
                     </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
