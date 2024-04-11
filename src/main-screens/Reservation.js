@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useState } from "react";
 import MapResults from "../components/MapResults";
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
 import axios from "axios";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ function Reservation() {
     //const [latitude, setLatitude] = useState("43.0844")
     //const [longitude, setLongitude] = useState("43.20663")
     const [reservationResult, setReservationResult] = useState()
+    const [reservationError, setReservationError] = useState("")
 
     const getStations = async () => {
       const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
@@ -85,24 +87,26 @@ function Reservation() {
       sessionStorage.removeItem('reservationComplete');
       sessionStorage.setItem('reservationActive', 'true');
       sessionStorage.removeItem('lastLocation'); 
+    
+      if(pickup_datetime.isAfter(dropoff_datetime)) {
+        setReservationError("Please select a dropoff time that is after your pickup time")
+        e.preventDefault()
+      } else {
+        setReservationError("")
+        getResult();
 
-      console.log(pickup_datetime.toISOString(), dropoff_datetime.toISOString, pickup_location, dropoff_location);
-
-      getResult();
-
-      // get elapsed time
-      const startTime = new Date(pickup_datetime)
-      const endTime = new Date(dropoff_datetime)
-      const elapsedTimeMillis = Math.abs(endTime - startTime)
-      const elapsedHours = elapsedTimeMillis / 3600000
-      console.log(elapsedTimeMillis)
-      console.log(elapsedHours)
-      setReservationTime(elapsedHours)
+        // get elapsed time
+        const startTime = new Date(pickup_datetime)
+        const endTime = new Date(dropoff_datetime)
+        const elapsedTimeMillis = Math.abs(endTime - startTime)
+        const elapsedHours = elapsedTimeMillis / 3600000
+        setReservationTime(elapsedHours)
+    
   
-
-      setIsSearch(true);
-      e.preventDefault()
-      //check errors on dates
+        setIsSearch(true);
+        e.preventDefault()
+        //check errors on dates
+      }
     }
 
     return (
@@ -120,6 +124,7 @@ function Reservation() {
         
         {/* Search field */}
         <div class = "lg:border border-border lg:rounded-lg">
+            <p class = "px-8 pt-4 text-red font-bold">{reservationError}</p>
             <form onSubmit = {searchHandler} class = "grid grid-cols-1 lg:grid-cols-5 gap-8 px-8 py-8">
             <FormControl>
                 <InputLabel id="location-select">Pick Up Location</InputLabel>
@@ -131,6 +136,7 @@ function Reservation() {
                     label = "Pick Up Location"
                     variant = "standard"
                 >
+              
                 <MenuItem value = {1}>Northwest</MenuItem>
                 <MenuItem value = {2}>Northeast</MenuItem>
                 <MenuItem value = {3}>Center City</MenuItem>
@@ -159,23 +165,25 @@ function Reservation() {
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
-                <DateTimeField
+                <DateTimePicker
                   label="Pick up Date"
                   name = "pickup_datetime"
                   value = {pickup_datetime}
                   onChange = {newDate => setPickUp(newDate)}
                   slotProps={{textField: {variant: 'standard'}}}
+                  disablePast
                 />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/* <DatePicker label="Drop Off Date" slotProps={{textField: {variant: 'standard'}}}/> */}
-                <DateTimeField
+                <DateTimePicker
                   label="Drop off Date"
                   slotProps={{textField: {variant: 'standard'}}}
                   name = "dropoff_datetime"
                   value={dropoff_datetime}
                   onChange={newDate => setDropOff(newDate)}
+                  disablePast
                 />
             </LocalizationProvider>
 
