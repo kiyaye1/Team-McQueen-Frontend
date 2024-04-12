@@ -33,6 +33,8 @@ const Form = () => {
         setExpDateError,
         setCardccvError, 
         canSubmit,
+        termsAccepted,
+        setTermsAccepted,
         disablePrev,
         disableNext
     } = useFormContext()
@@ -86,6 +88,11 @@ const Form = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         console.log("submit")
+
+        if(!termsAccepted) {
+            alert("You must agree to the Terms and Conditions to proceed.")
+            return;
+        }
         
         //call CreditCardInfoValidation from FormContext
         const errors = CreditCardInfoValidation()
