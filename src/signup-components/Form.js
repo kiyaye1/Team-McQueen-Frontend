@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import FormInputs from "./FormInputs";
 import useFormContext from "../hooks/useFormContext";
-import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import axios from 'axios';
 import BASE_API_URI from "../config";
 const stripe = require('stripe')('pk_test_51OC3lZF33393XxHnNjMZAvGE3U7GnSWqsxQXUUbsKNu7z0rNG205ZfDgjhSCFHNt4qvm3ynn7x054FrFUgJvWr4y00dnyECiyI');
@@ -33,8 +33,9 @@ const Form = () => {
         setExpDateError,
         setCardccvError, 
         canSubmit,
-        termsAccepted,
+        termsAccepted, 
         setTermsAccepted,
+        //handleChange,
         disablePrev,
         disableNext
     } = useFormContext()
@@ -89,9 +90,10 @@ const Form = () => {
         e.preventDefault()
         console.log("submit")
 
-        if(!termsAccepted) {
-            alert("You must agree to the Terms and Conditions to proceed.")
-            return;
+        // Check if terms and conditions have been accepted
+        if (!termsAccepted) {
+            alert("You must agree to the Terms and Conditions to proceed.");
+            return;  // Stop the form submission if terms are not accepted
         }
         
         //call CreditCardInfoValidation from FormContext
@@ -148,48 +150,50 @@ const Form = () => {
         const cardData = valid.expirationDate(data.cardExpirationDate);
         try {
             token = await stripe.tokens.create({
-              card: {
-                number: data.cardNumber,
-                exp_month: cardData.month,
-                exp_year: cardData.year,
-                cvc: data.cardccv
-              },
+                card: {
+                    number: data.cardNumber,
+                    exp_month: cardData.month,
+                    exp_year: cardData.year,
+                    cvc: data.cardccv
+                },
             });
-          } catch (error) {
+        } catch (error) {
             console.error('Error creating token:', error);
-            return;
-          }
-        let step3 = await axios.post(`${BASE_API_URI}/signup/postCCI/${step1.data.customerID}`,
-            {
-                cardToken: token.id
-            }
-        );
-        if (step3.status != 200) {
-            console.error("Error in step 3");
             return;
         }
 
-        navigate('/registration-confirmation')
+        try {
+            let step3 = await axios.post(`${BASE_API_URI}/signup/postCCI/${step1.data.customerID}`,
+            {
+                cardToken: token.id
+            });
+            if (step3.status === 200) {
+                alert("Thank you for your registration. Please check your email to verify it.");
+                navigate('/');
+            } else {
+                console.error("Error in step 3");
+                return;
+            }
+        } catch (error) {
+            console.error("Error during form submission", error);
+            alert("An error occurred during registration. Please try again.");
+        }
     }
 
     const content = (
         <form onSubmit={handleSubmit}>
-            <header>
-                {/* <h2>{title[page]}</h2> */}
-            </header>
-
-            {/* get all input pages from context */}
-            <FormInputs/>
-            
-            <div>
-                {/* <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button> */}
+        <header>
+            <h2>{title[page]}</h2> 
+        </header>
+        {/*get all input pages from context*/} 
+        <FormInputs/>
+        <div>
+                {/*<Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handlePrev} disabled = {disablePrev}>Previous</Button> */}
                 <Button sx = {{color: '#000180'}} type = "button" variant = "text" onClick = {handleNext} disabled = {disableNext}>Continue</Button>
-                <Button sx = {{backgroundColor: '#000180'}} type = "submit" variant="contained" disabled = {!canSubmit}>Submit</Button>
-            </div>
-
+            <Button sx = {{backgroundColor: '#000180'}} type = "submit" variant="contained" disabled = {!canSubmit}>Submit</Button>
+        </div>
         </form>
     )
-
     return content
 }
 
