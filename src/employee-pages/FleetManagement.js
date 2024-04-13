@@ -42,6 +42,11 @@ function FleetManagement() {
     const [openAddCar, setOpenAddCar] = useState(false)
     const {user} = useAuth()
 
+    // Car states:
+    // RDY - Ready 
+    // IFR - In for repair
+    // OTR - On the Road / Reserved
+
 
     // Get cars data from firebase
     useEffect(() => {
@@ -322,6 +327,25 @@ function FleetManagement() {
                     <MenuItem value = "IFR">Out for Service</MenuItem>
                   </Select>
                 </FormControl>
+
+                <FormControl required fullWidth>
+                <InputLabel id="station-select">Starting Station</InputLabel>
+                  <Select
+                      labelId = "station-select"
+                      name = "station"
+                      value = {newCarData.station}
+                      label = "Starting Station"
+                      onChange = {handleChangeCar}
+                      required
+                  >
+                    {stations?.map((data, key) => {
+                      return (
+                        <MenuItem key = {key} value = {data.coordinates}>{data.name}</MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+                
                 <DialogActions>
                   <Button onClick = {handleClose}>Cancel</Button>
                   <Button onClick = {() => {addCar(); handleClose()}} color = "primary">Add Station</Button>
