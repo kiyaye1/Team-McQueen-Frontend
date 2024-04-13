@@ -27,6 +27,7 @@ import {
   import {Dialog} from '@mui/material';
 import userEvent from '@testing-library/user-event';
 import { useAuth } from '../context/AuthContext';
+import { number } from 'card-validator';
 
 
 
@@ -37,6 +38,7 @@ function FleetManagement() {
   const [newStationData, setNewStationData] = useState({})
   const [openAdd, setOpenAdd] = useState(false);
   const {user} = useAuth()
+  const [numberStations, setNumberStations] = useState(5)
 
 
     // use effect loop to get the data frequently so it can detect when it is changed
@@ -46,11 +48,15 @@ function FleetManagement() {
       let data = querySnapshot.val()
       console.log(data)
       setCarLocations(data)
-      getStations()
-      getSQLCars()
     })
 
   }, [])
+
+  useEffect(() => {
+    getStations()
+    getSQLCars()
+    console.log("stations use effect")
+  }, [numberStations])
 
   function getSQLCars() {
     axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
@@ -85,6 +91,7 @@ function FleetManagement() {
       {withCredentials:true})
     .then((response) => {
       alert("New Station - " + newStationData.name + " has been created.")
+      setNumberStations(numberStations + 1)
     })
     .catch((error) => {
       alert(error)
@@ -109,13 +116,24 @@ function FleetManagement() {
       setNewStationData({});
     };
 
+    function deleteStation(id) {
+      axios.delete(`${BASE_API_URI}/stations/${id}`, {withCredentials: true})
+      .then((response) => {
+        alert("This station has been deleted.")
+        setNumberStations(numberStations - 1)
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    }
+
 
   function isCarInStation(lat, lng) {
     //const [currentLoc, setCurrentLoc] = useState("Driving")
     var currentLoc = "Driving"
     for(var i = 0; i < stations?.length; i++) {
-        const l = stations[i].coordinates.lat.toFixed(4)
-        const ln = stations[i].coordinates.lng.toFixed(4)
+        const l = stations[i].coordinates.lat?.toFixed(4)
+        const ln = stations[i].coordinates.lng?.toFixed(4)
         if(lat === l && lng === ln) {
           var loc = (i + 1)
           currentLoc = stations[i].name
@@ -175,7 +193,7 @@ function FleetManagement() {
                 <TextField 
                   margin="dense" 
                   name="state" 
-                  label="State" fullWidth required
+                  label="State - 2 Letter Abbreviation" fullWidth required
                   value={newStationData.state || ''} 
                   onChange={handleChange} />
                 <TextField 
@@ -217,7 +235,18 @@ function FleetManagement() {
                   <p>{data.streetAddress}</p>
                   <p>{data.city}, {data.state} {data.zip}</p>
                   <p>{data.county} County</p>
-                  <p>{data.coordinates.lat}, {data.coordinates.lng}</p>
+                  <p class = "pb-4">{data.coordinates.lat}, {data.coordinates.lng}</p>
+                  <Button 
+                    variant = "contained" 
+                    size = "small" 
+                    sx = {{backgroundColor: "#000180"}}
+                    >Edit</Button>
+                  <Button 
+                    variant = "outlined" 
+                    size = "small" 
+                    onClick = {() => deleteStation(data.stationID)}
+                    sx = {{marginLeft: "8px", color: "red", borderColor: "red"}}
+                    >Delete</Button>
                 </div>
               );
             })}
