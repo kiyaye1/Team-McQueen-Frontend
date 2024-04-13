@@ -35,10 +35,24 @@ function FleetManagement() {
   const [carLocations, setCarLocations] = useState()
   const [stations, setStations] = useState()
   const [SQLCars, setSQLCars] = useState()
-  const [newStationData, setNewStationData] = useState({})
+  const [newStationData, setNewStationData] = useState({
+    name: "",
+    streetAddress: "",
+    city: "",
+    county: "",
+    state: "",
+    country: "",
+    zip: "",
+    lat: "",
+    lng:""
+  })
   const [openAdd, setOpenAdd] = useState(false);
   const {user} = useAuth()
   const [numberStations, setNumberStations] = useState(5)
+
+  const {...requiredInputs} = newStationData
+   
+  const canSubmit = [...Object.values(requiredInputs)].every(Boolean)
 
 
     // use effect loop to get the data frequently so it can detect when it is changed
@@ -74,7 +88,12 @@ function FleetManagement() {
   //const stationFields = ['stationID', 'country', 
   //'state', 'county', 'city', 'zip', 'coordinates', 'streetAddress']
   const addStation = () => {
-    axios.post(`${BASE_API_URI}/stations`, 
+    // if(newStationData.name == "") {
+    //   alert("Please fill out all required fields")
+    // } else {
+
+    if(canSubmit) {
+      axios.post(`${BASE_API_URI}/stations`, 
       {
         name: newStationData.name,
         streetAddress: newStationData.streetAddress,
@@ -96,6 +115,12 @@ function FleetManagement() {
     .catch((error) => {
       alert(error)
     })
+  } else {
+      alert("Could not add station - please fill out all required fields. ")
+      handleAdd()
+  }
+    
+  
   }
 
     //Function to handle form input change
@@ -113,7 +138,17 @@ function FleetManagement() {
 
     const handleAdd = () => {
       setOpenAdd(true);
-      setNewStationData({});
+      setNewStationData({
+        name: "",
+        streetAddress: "",
+        city: "",
+        county: "",
+        state: "",
+        country: "",
+        zip: "",
+        lat: "",
+        lng:""
+      });
     };
 
     function deleteStation(id) {
@@ -224,7 +259,7 @@ function FleetManagement() {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => { addStation(); handleClose();}} color="primary">Add Station</Button>
+                <Button disabled = {!canSubmit} onClick={() => { addStation(); handleClose();}} color="primary">Add Station</Button>
               </DialogActions>
             </Dialog>
             <div class = "grid grid-cols-2 gap-4 py-4">
@@ -236,16 +271,17 @@ function FleetManagement() {
                   <p>{data.city}, {data.state} {data.zip}</p>
                   <p>{data.county} County</p>
                   <p class = "pb-4">{data.coordinates.lat}, {data.coordinates.lng}</p>
-                  <Button 
+                  {/* <Button 
                     variant = "contained" 
                     size = "small" 
+                    disabled = "true"
                     sx = {{backgroundColor: "#000180"}}
-                    >Edit</Button>
+                    >Edit</Button> */}
                   <Button 
                     variant = "outlined" 
                     size = "small" 
                     onClick = {() => deleteStation(data.stationID)}
-                    sx = {{marginLeft: "8px", color: "red", borderColor: "red"}}
+                    sx = {{color: "red", borderColor: "red"}}
                     >Delete</Button>
                 </div>
               );
