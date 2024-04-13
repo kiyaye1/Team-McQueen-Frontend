@@ -251,8 +251,8 @@ function FleetManagement() {
                                 <TableCell align = "center">In Service</TableCell>
                                 <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell>
                                 <TableCell align = "center">Fair</TableCell>
-                                <TableCell align = "center">{car.lat.toFixed(4)}, {car.lng.toFixed(4)}</TableCell>
-                                <TableCell align = "right">{isCarInStation(car.lat.toFixed(4), car.lng.toFixed(4))}</TableCell>
+                                <TableCell align = "center">{car.lat?.toFixed(4)}, {car.lng?.toFixed(4)}</TableCell>
+                                <TableCell align = "right">{isCarInStation(car.lat?.toFixed(4), car.lng?.toFixed(4))}</TableCell>
                             </TableRow>
                         );
                     })}
