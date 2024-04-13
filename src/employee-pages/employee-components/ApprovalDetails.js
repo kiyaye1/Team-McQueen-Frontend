@@ -18,13 +18,14 @@ function ApprovalDetails() {
     function approveCustomer() {
       axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
           statusCode: "RDY",
-          emailVerified: 1,
+          //emailVerified: 1,
           phoneVerified: 1
       }, {withCredentials:true})
       .then(response =>{
         console.log(response)
         alert("Customer approved: " + response.data);
-
+        // Send email
+        sendApprovalEmail();
       })
       .catch(error => console.log(error))
     }
@@ -47,7 +48,24 @@ function ApprovalDetails() {
         console.log(data.data)
     }
 
+    const sendApprovalEmail = () => {
+      if (!customer) {
+        console.error('No customer data available');
+        return;
+      }
     
+      axios.post(`${BASE_API_URI}/approvals/send-approval-email`, {
+        email: customer.emailAddress,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+      }, {withCredentials:true})
+      .then(response => {
+        console.log('Approval email sent:', response.data.message);
+      })
+      .catch(error => {
+        console.error('Failed to send approval email', error);
+      });
+    };    
 
     return (
       <><div class = "mx-16 my-8">

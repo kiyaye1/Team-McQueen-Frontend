@@ -6,8 +6,8 @@ const Confirmation = () => {
 
     return (
         <div class = "m-16">
-            <h1 class = "text-section-head">Thank you!</h1>
-            <p>We'll review your information for verification and approval. Expect an email shortly to notify you of the approval status.</p>
+            <h1 class = "text-section-head">Thank you! Email Successfully Verified!</h1>
+            <p>Expect another email shortly to notify you of the approval status.</p>
             <Button onClick={() => navigate('/')}>Back to Home</Button>
         </div>
     )
