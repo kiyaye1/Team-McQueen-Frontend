@@ -5,6 +5,17 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 
 function CustomerInquiries() {
 
+    useEffect(() => {
+      console.log("use Effect")
+      axios.get(`${BASE_API_URI}/contacts/getCustomerContacts`, {useCredentials: true})
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }, [])
+
     const data = [
       {
         type: "General Feedback",
@@ -46,7 +57,7 @@ function CustomerInquiries() {
               <TableBody>
                   {data.map((row) => {
                       return (
-                          <TableRow key = {row.customerID}>
+                          <TableRow key = {row.ticketNumber}>
                               <TableCell align = "left" component="th" scope = "row">
                                   {row.type}
                               </TableCell>
