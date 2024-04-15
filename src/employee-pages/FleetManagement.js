@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { db } from '../FirebaseConfig'
-import { ref, onValue, set } from 'firebase/database'
+import { ref, onValue, set, remove } from 'firebase/database'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 import BASE_API_URI from "../config";
@@ -28,6 +28,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { useAuth } from '../context/AuthContext';
 import dayjs from 'dayjs';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -38,7 +39,6 @@ function FleetManagement() {
     const [newStationData, setNewStationData] = useState({})
     const [newCarData, setNewCarData] = useState({})
     const [openAdd, setOpenAdd] = useState(false);
-    const [nextCarNumber, setNextCarNumber] = useState()
     const [openAddCar, setOpenAddCar] = useState(false)
     const {user} = useAuth()
 
@@ -53,14 +53,14 @@ function FleetManagement() {
       return onValue(ref(db, '/cars/'), querySnapshot => {
         // full data snapshot
         let data = querySnapshot.val()
-        console.log(data)
         setCarLocations(data)
-        getStations()
-        getSQLCars()
-
-        setNextCarNumber(data.length)
       })
 
+    }, [])
+
+    useEffect(() => {
+      getStations()
+      getSQLCars()
     }, [])
 
     // function nextCar() {
@@ -72,7 +72,11 @@ function FleetManagement() {
     function getSQLCars() {
       axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
       .then((response) => {
-        console.log(response)
+        setSQLCars(response.data)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        alert(error)
       })
     }
 
@@ -80,7 +84,6 @@ function FleetManagement() {
       const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
       const stations = data.data
       setStations(stations)
-      console.log(stations)
     }
     //const stationFields = ['stationID', 'country', 
     //'state', 'county', 'city', 'zip', 'coordinates', 'streetAddress']
@@ -109,33 +112,37 @@ function FleetManagement() {
     }
 
     const addCar = () => {
-      const carIDNum = carLocations.length
+      const d = dayjs()
+      const dateTime = d.toISOString()
+      console.log(dateTime)
       //axios request for sql to add car
       axios.post(`${BASE_API_URI}/cars`,
       {
-        carID: carIDNum,
         carModelID: 1,
-        installDateTime: dayjs().toISOString(),
+        installDatetime: dateTime,
         statusCode: newCarData.statusCode
       }, 
       {withCredentials:true})
       .then((response) => {
-        alert("New Car Created - Car Number" + nextCarNumber)
+        alert(response)
+        console.log(response)
       })
       .catch((error) => {
         alert(error)
       })
 
       //add car to firebase
-      addCarFirebase(carIDNum)
+      addCarFirebase()
 
     }
 
-    function addCarFirebase(carNum) {
-      set(ref(db, '/cars/' + carNum), {
-        carID: carNum,
-        latitute: 43.20663,
-        longitude: -77.68602
+    function addCarFirebase() {
+      const carIDNum = carLocations.length
+      console.log(newCarData.station)
+      set(ref(db, '/cars/' + carIDNum), {
+        carID: carIDNum,
+        lat: 43.20663,
+        lng: -77.68602
       })
     }
 
@@ -175,23 +182,23 @@ function FleetManagement() {
       });
     }
 
-    const handleDeleteCar = (e) => {
-      // delete car from firebase and sql databases 
+    function deleteCar(id) {
+      // delete from sql database
+      axios.delete(`${BASE_API_URI}/cars/${id}`, {withCredentials: true})
+      .then((response) => alert(`Car ${id} deleted successfully`))
+      .catch((error) => console.log(error))
+
+      // firebase
+      // remove(ref(`/cars/${id}`))
     }
 
 
-  function isCarInStation(lat, lng) {
-    //const [currentLoc, setCurrentLoc] = useState("Driving")
-    var currentLoc = "Driving"
-    for(var i = 0; i < stations?.length; i++) {
-        const l = stations[i].coordinates.lat?.toFixed(4)
-        const ln = stations[i].coordinates.lng?.toFixed(4)
-        if(lat === l && lng === ln) {
-          var loc = (i + 1)
-          currentLoc = stations[i].name
-        }
+  function getCarLocation(id) {
+    for(var i = 0; i < carLocations?.length; i++) {
+      if(id === carLocations[i]?.carID) {
+        return String(carLocations[i].lat + ", " + carLocations[i].lng)
+      }
     }
-    return currentLoc
   }
 
 
@@ -311,8 +318,7 @@ function FleetManagement() {
             <Dialog open = {openAddCar} onClose = {handleClose}>
               <DialogTitle>Add Gyrocar</DialogTitle>
               <DialogContent>
-                <p>Car Number: {nextCarNumber}</p>
-                <p class = "mb-4">Created at: {dayjs().toString()}</p>
+                <p>Car Number: {carLocations?.length}</p>
                 <FormControl required fullWidth>
                 <InputLabel id="status-select">Car Status</InputLabel>
                   <Select
@@ -361,23 +367,26 @@ function FleetManagement() {
                         <TableCell>Car ID</TableCell>
                         <TableCell align = "center">Availability</TableCell>
                         <TableCell align = "center">Service History</TableCell>
-                        <TableCell align = "center">Condition</TableCell>
-                        <TableCell align = "center">Coordinates</TableCell>
-                        <TableCell align="right">Current Station</TableCell>
+                        <TableCell align = "center">Current Location</TableCell>
+                        <TableCell align = "center">Actions</TableCell>
+
+                        {/* <TableCell align = "center">Coordinates</TableCell>
+                        <TableCell align="right">Current Station</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {carLocations?.map((car) => {
+                    {SQLCars?.map((car) => {
                         return (
                             <TableRow key = {car.carID}>
                                 <TableCell component="th" scope = "row">
                                     {car.carID}
                                 </TableCell>
-                                <TableCell align = "center">In Service</TableCell>
+                                <TableCell align = "center">{car.statusCode == "RDY" ? "Good Condition - Rentable" : car.statusCode == "IFR" ? "In for Repair" : "On the road - rented"}</TableCell>
                                 <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell>
-                                <TableCell align = "center">Fair</TableCell>
-                                <TableCell align = "center">{car.lat?.toFixed(4)}, {car.lng?.toFixed(4)}</TableCell>
-                                <TableCell align = "right">{isCarInStation(car.lat?.toFixed(4), car.lng?.toFixed(4))}</TableCell>
+                                <TableCell align = "center">{getCarLocation(car.carID)}</TableCell>
+                                <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon/></Button></TableCell>
+                               {/* <TableCell align = "center">{car.lat?.toFixed(4)}, {car.lng?.toFixed(4)}</TableCell>
+                                <TableCell align = "right">{isCarInStation(car.lat?.toFixed(4), car.lng?.toFixed(4))}</TableCell> */}
                             </TableRow>
                         );
                     })}
