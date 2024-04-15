@@ -36,11 +36,28 @@ function FleetManagement() {
     const [carLocations, setCarLocations] = useState()
     const [stations, setStations] = useState()
     const [SQLCars, setSQLCars] = useState()
-    const [newStationData, setNewStationData] = useState({})
+    const [newStationData, setNewStationData] = useState({
+      name: "",
+      streetAddress: "",
+      city: "",
+      county: "",
+      state: "",
+      country: "",
+      zip: "",
+      lat: "",
+      lng:""
+    })
     const [newCarData, setNewCarData] = useState({})
     const [openAdd, setOpenAdd] = useState(false);
     const [openAddCar, setOpenAddCar] = useState(false)
     const {user} = useAuth()
+
+    const [numberStations, setNumberStations] = useState(5)
+    const [numberCars, setNumberCars] = useState(40)
+
+    const {...requiredInputs} = newStationData
+     
+    const canSubmit = [...Object.values(requiredInputs)].every(Boolean)
 
     // Car states:
     // RDY - Ready 
@@ -61,22 +78,16 @@ function FleetManagement() {
     useEffect(() => {
       getStations()
       getSQLCars()
-    }, [])
+    }, [numberStations, numberCars])
 
-    // function nextCar() {
-    //   const nextCar = carLocations?.length
-    //   setNextCarNumber(nextCar)
-    //   return nextCar
-    // }
 
     function getSQLCars() {
       axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
       .then((response) => {
         setSQLCars(response.data)
-        console.log(response.data)
       })
       .catch((error) => {
-        alert(error)
+        console.log(error)
       })
     }
 
@@ -85,10 +96,10 @@ function FleetManagement() {
       const stations = data.data
       setStations(stations)
     }
-    //const stationFields = ['stationID', 'country', 
-    //'state', 'county', 'city', 'zip', 'coordinates', 'streetAddress']
+    
     const addStation = () => {
-      axios.post(`${BASE_API_URI}/stations`, 
+      if(canSubmit) {
+        axios.post(`${BASE_API_URI}/stations`, 
         {
           name: newStationData.name,
           streetAddress: newStationData.streetAddress,
@@ -105,10 +116,15 @@ function FleetManagement() {
         {withCredentials:true})
       .then((response) => {
         alert("New Station - " + newStationData.name + " has been created.")
+        setNumberStations(numberStations + 1)
       })
       .catch((error) => {
         alert(error)
       })
+    } else {
+        alert("Could not add station - please fill out all required fields. ")
+        handleAddStation()
+    }
     }
 
     const addCar = () => {
@@ -162,11 +178,28 @@ function FleetManagement() {
 
     const handleAddStation = () => {
       setOpenAdd(true);
-      setNewStationData({});
+      setNewStationData({
+        name: "",
+        streetAddress: "",
+        city: "",
+        county: "",
+        state: "",
+        country: "",
+        zip: "",
+        lat: "",
+        lng:""
+      });
     };
 
-    const handleDeleteStation = () => {
-      // delete station
+    function deleteStation(id) {
+      axios.delete(`${BASE_API_URI}/stations/${id}`, {withCredentials: true})
+      .then((response) => {
+        alert("This station has been deleted.")
+        setNumberStations(numberStations - 1)
+      })
+      .catch((error) => {
+        alert(error)
+      })
     }
 
     // add cars to SQL and to Firebase Databases
@@ -185,11 +218,13 @@ function FleetManagement() {
     function deleteCar(id) {
       // delete from sql database
       axios.delete(`${BASE_API_URI}/cars/${id}`, {withCredentials: true})
-      .then((response) => alert(`Car ${id} deleted successfully`))
-      .catch((error) => console.log(error))
+      .then((response) => {
+        alert(`Car ${id} deleted successfully`)
 
-      // firebase
-      // remove(ref(`/cars/${id}`))
+        // remove from firebase if successfully removed from SQL
+        remove(ref(db, `/cars/${id}`))
+      })
+      .catch((error) => console.log(error))
     }
 
 
@@ -213,9 +248,7 @@ function FleetManagement() {
                   size = "small" 
                   sx = {{color: "#000180", borderColor: "#000180"}}
                   onClick  = {() => handleAddStation()}
-                  >
-                  Add Station
-                  </Button>
+                  >Add Station</Button>
                 )
               }
             </div>
@@ -283,7 +316,7 @@ function FleetManagement() {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => { addStation(); handleClose();}} color="primary">Add Station</Button>
+                <Button disabled = {!canSubmit} onClick={() => { addStation(); handleClose();}} color="primary">Add Station</Button>
               </DialogActions>
             </Dialog>
             <div class = "grid grid-cols-2 gap-4 py-4">
@@ -295,6 +328,12 @@ function FleetManagement() {
                   <p>{data.city}, {data.state} {data.zip}</p>
                   <p>{data.county} County</p>
                   <p>{data.coordinates.lat}, {data.coordinates.lng}</p>
+                  <Button 
+                    variant = "outlined" 
+                    size = "small" 
+                    onClick = {() => deleteStation(data.stationID)}
+                    sx = {{color: "red", borderColor: "red"}}
+                    >Delete</Button>
                 </div>
               );
             })}
@@ -369,9 +408,6 @@ function FleetManagement() {
                         <TableCell align = "center">Service History</TableCell>
                         <TableCell align = "center">Current Location</TableCell>
                         <TableCell align = "center">Actions</TableCell>
-
-                        {/* <TableCell align = "center">Coordinates</TableCell>
-                        <TableCell align="right">Current Station</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -385,8 +421,6 @@ function FleetManagement() {
                                 <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell>
                                 <TableCell align = "center">{getCarLocation(car.carID)}</TableCell>
                                 <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon/></Button></TableCell>
-                               {/* <TableCell align = "center">{car.lat?.toFixed(4)}, {car.lng?.toFixed(4)}</TableCell>
-                                <TableCell align = "right">{isCarInStation(car.lat?.toFixed(4), car.lng?.toFixed(4))}</TableCell> */}
                             </TableRow>
                         );
                     })}
