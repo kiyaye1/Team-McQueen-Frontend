@@ -2,6 +2,7 @@ import DashCard from "../employee-pages/employee-components/DashCard";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BASE_API_URI from '../config';
+import { useAuth } from "../context/AuthContext";
 
 function FullDashboard({employeeRole}) {
     //0 = customer
@@ -15,6 +16,9 @@ function FullDashboard({employeeRole}) {
     const [totalRDYCustomerRecords, setTotalRDYCustomerRecords] = useState(null);
     const [totalCarRecords, setTotalCarRecords] = useState(null);
     const [totalStationRecords, setTotalStationRecords] = useState(null);
+    const {user} = useAuth()
+    console.log(user)
+    const role = user.role
 
     useEffect(() => {
       fetch(`${BASE_API_URI}/admindashtotals/employees`, {
@@ -106,7 +110,7 @@ function FullDashboard({employeeRole}) {
         .catch(error => console.error('Error:', error));
     }, []);
     
-    if(employeeRole === 1) {
+    if(role === 1) {
       return (
         <div>
           <div class = "mx-16 mt-16 mb-8 text-section-head">Admin Dashboard</div>
@@ -170,19 +174,6 @@ function FullDashboard({employeeRole}) {
               ]}
             />
             </Link>
-            {/* <DashCard
-              title = "Vehicle Information"
-              dataPoints = {[
-                {
-                  number: "40",
-                  caption: "Total Vehicles"
-                },
-                {
-                  number: "32",
-                  caption: "Available for Use"
-                }
-              ]}
-            /> */}
             <Link to = "/fleet-management">
             <DashCard
                 title = "Fleet Management"
@@ -206,7 +197,7 @@ function FullDashboard({employeeRole}) {
         </div>
     
       );
-    } else if(employeeRole === 2) {
+    } else if(role === 2) {
       return (
       <div>
         <div class = "mx-16 mt-16 mb-8 text-section-head">Customer Service Dashboard</div>
@@ -251,7 +242,7 @@ function FullDashboard({employeeRole}) {
         </div>
       </div>
       );
-    } else if(employeeRole === 3) {
+    } else if(role === 3) {
       return (
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Mechanic Dashboard</div>
@@ -294,7 +285,7 @@ function FullDashboard({employeeRole}) {
           </div>
         </div>
       );
-    } else {
+    } else if(role == 4) {
       return (
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Manager Dashboard</div>
