@@ -142,21 +142,17 @@ function FleetManagement() {
       .then((response) => {
         alert(response)
         console.log(response)
+        addCarFirebase(response.data.carID)
       })
       .catch((error) => {
         alert(error)
       })
 
-      //add car to firebase
-      addCarFirebase()
-
     }
 
-    function addCarFirebase() {
-      const carIDNum = carLocations.length
-      console.log(newCarData.station)
-      set(ref(db, '/cars/' + carIDNum), {
-        carID: carIDNum,
+    function addCarFirebase(id) {
+      set(ref(db, '/cars/' + id), {
+        carID: id,
         lat: 43.20663,
         lng: -77.68602
       })
@@ -219,12 +215,15 @@ function FleetManagement() {
       // delete from sql database
       axios.delete(`${BASE_API_URI}/cars/${id}`, {withCredentials: true})
       .then((response) => {
-        alert(`Car ${id} deleted successfully`)
+        alert("Car Number " + id + " was deleted.")
+       
 
         // remove from firebase if successfully removed from SQL
         remove(ref(db, `/cars/${id}`))
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>  {
+        alert("This car could not be deleted yet because it has future reservations associated with it.")
+      })
     }
 
 
@@ -357,7 +356,6 @@ function FleetManagement() {
             <Dialog open = {openAddCar} onClose = {handleClose}>
               <DialogTitle>Add Gyrocar</DialogTitle>
               <DialogContent>
-                <p>Car Number: {carLocations?.length}</p>
                 <FormControl required fullWidth>
                 <InputLabel id="status-select">Car Status</InputLabel>
                   <Select
