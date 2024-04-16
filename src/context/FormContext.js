@@ -43,8 +43,15 @@ export const FormProvider = ({children}) => {
         validated_card: false
     })
 
-     // State to track if terms have been accepted
-     const [termsAccepted, setTermsAccepted] = useState(false);
+    // will eventually need to be able to add mult cards, just adding one for now
+    // paymentCards: {
+    //     0: {
+    //         cardName: "",
+    //         cardNumber: "",
+    //         expirationDate: "",
+    //         cvc: ""
+    //     }
+    // }
 
     const handleChange = e => {
         const type = e.target.type
@@ -178,7 +185,7 @@ export const FormProvider = ({children}) => {
     
     // can submit when required inputs are all fulled in, and when the user is on last page
     // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
-    const canSubmit = page == Object.keys(title).length - 1 && termsAccepted
+    const canSubmit = page == Object.keys(title).length - 1
 
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
@@ -245,8 +252,6 @@ export const FormProvider = ({children}) => {
             setCardccvError,
             handleChange, 
             canSubmit, 
-            termsAccepted,
-            setTermsAccepted,
             disableNext, 
             disablePrev
         }}>

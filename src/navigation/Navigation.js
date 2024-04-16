@@ -14,7 +14,6 @@ import Login from '../main-screens/Login';
 import Profile from '../main-screens/Profile';
 import Reservation from '../main-screens/Reservation';
 import Confirmation from '../main-screens/FormConfirmation';
-import VerifyEmailPage from '../main-screens/VerifyEmailPage';
 import FullDashboard from '../employee-dashboards/Full-Dashboard';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
 import ReservationDetails from "../main-screens/ReservationDetails";
@@ -54,6 +53,10 @@ function Navigation() {
         }
     }, [location.pathname, navigate]);
 
+    function setEmployeeRole(role) {
+        setEmployeeRoleNum(role)
+    }
+
     return (
         <div>
             <InactivityDetector
@@ -66,7 +69,6 @@ function Navigation() {
                 <Route path="/" element={<Layout isLoggedIn={user?.isLoggedIn} isEmployee={user?.isEmployee} />}>
                     <Route index element={<Homepage />} />
                     <Route path="login" element={<Login setEmployeeRole={setEmployeeRole}/>} />
-                    <Route path="verify-email" element={<VerifyEmailPage />} />
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     <Route element={<ProtectedRoute />}>
                         <Route path = "account" element = {<Profile />}/>
@@ -75,7 +77,7 @@ function Navigation() {
                         <Route path = "reservation-confirmation" element = {employeeRoleNum != 0 ? <Unauthorized /> : <ReservationConfirmation />}/>                        
                     </Route>
                     <Route element={<EmployeeRoute />}>
-                    <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
+                        <Route path = "dash" element = {<FullDashboard employeeRole = {employeeRoleNum}/>}/>
                         <Route path = "metrics" element = {<MetricsDashboard />}/>
                         <Route path = "app-metrics" element = {<ApplicationMetrics />}/>
                         <Route path = "rental-metrics" element = {<RentalMetrics />}/>
@@ -85,6 +87,7 @@ function Navigation() {
                         <Route path = "fleet-management" element={employeeRoleNum != 2 && employeeRoleNum != 4 ? <FleetManagement /> : <Unauthorized /> }/>
                         <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>  
                         <Route path = "service-requests" element = {employeeRoleNum != 2 && employeeRoleNum != 4 ? <MechanicServiceRequests/> : <Unauthorized/>}/>                   
+                     
                     </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
