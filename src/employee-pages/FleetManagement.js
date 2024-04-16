@@ -33,31 +33,31 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function FleetManagement() {
-    const [carLocations, setCarLocations] = useState()
-    const [stations, setStations] = useState()
-    const [SQLCars, setSQLCars] = useState()
-    const [newStationData, setNewStationData] = useState({
-      name: "",
-      streetAddress: "",
-      city: "",
-      county: "",
-      state: "",
-      country: "",
-      zip: "",
-      lat: "",
-      lng:""
-    })
+  const [carLocations, setCarLocations] = useState()
+  const [stations, setStations] = useState()
+  const [SQLCars, setSQLCars] = useState()
+  const [newStationData, setNewStationData] = useState({
+    name: "",
+    streetAddress: "",
+    city: "",
+    county: "",
+    state: "",
+    country: "",
+    zip: "",
+    lat: "",
+    lng:""
+  })
     const [newCarData, setNewCarData] = useState({})
-    const [openAdd, setOpenAdd] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
     const [openAddCar, setOpenAddCar] = useState(false)
-    const {user} = useAuth()
+  const {user} = useAuth()
 
-    const [numberStations, setNumberStations] = useState(5)
-    const [numberCars, setNumberCars] = useState(40)
+  const [numberStations, setNumberStations] = useState(5)
+  const [numberCars, setNumberCars] = useState(40)
 
-    const {...requiredInputs} = newStationData
-     
-    const canSubmit = [...Object.values(requiredInputs)].every(Boolean)
+  const {...requiredInputs} = newStationData
+   
+  const canSubmit = [...Object.values(requiredInputs)].every(Boolean)
 
     // Car states:
     // RDY - Ready 
@@ -66,65 +66,65 @@ function FleetManagement() {
 
 
     // Get cars data from firebase
-    useEffect(() => {
-      return onValue(ref(db, '/cars/'), querySnapshot => {
-        // full data snapshot
-        let data = querySnapshot.val()
-        setCarLocations(data)
-      })
+  useEffect(() => {
+    return onValue(ref(db, '/cars/'), querySnapshot => {
+      // full data snapshot
+      let data = querySnapshot.val()
+      setCarLocations(data)
+    })
 
-    }, [])
+  }, [])
 
-    useEffect(() => {
-      getStations()
-      getSQLCars()
+  useEffect(() => {
+    getStations()
+    getSQLCars()
     }, [numberStations, numberCars])
 
 
-    function getSQLCars() {
-      axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
-      .then((response) => {
+  function getSQLCars() {
+    axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
+    .then((response) => {
         setSQLCars(response.data)
       })
       .catch((error) => {
         console.log(error)
-      })
-    }
+    })
+  }
 
-    const getStations = async () => {
-      const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
-      const stations = data.data
-      setStations(stations)
+  const getStations = async () => {
+    const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
+    const stations = data.data
+    setStations(stations)
     }
     
-    const addStation = () => {
-      if(canSubmit) {
-        axios.post(`${BASE_API_URI}/stations`, 
-        {
-          name: newStationData.name,
-          streetAddress: newStationData.streetAddress,
-          city: newStationData.city,
-          county: newStationData.county,
-          state: newStationData.state,
-          country: newStationData.country,
-          zip: newStationData.zip,
-          coordinates: {
-            lat: newStationData.lat,
-            lng: newStationData.lng
-          }
-        }, 
-        {withCredentials:true})
-      .then((response) => {
-        alert("New Station - " + newStationData.name + " has been created.")
-        setNumberStations(numberStations + 1)
-      })
-      .catch((error) => {
-        alert(error)
-      })
-    } else {
-        alert("Could not add station - please fill out all required fields. ")
+  const addStation = () => {
+    if(canSubmit) {
+      axios.post(`${BASE_API_URI}/stations`, 
+      {
+        name: newStationData.name,
+        streetAddress: newStationData.streetAddress,
+        city: newStationData.city,
+        county: newStationData.county,
+        state: newStationData.state,
+        country: newStationData.country,
+        zip: newStationData.zip,
+        coordinates: {
+          lat: newStationData.lat,
+          lng: newStationData.lng
+        }
+      }, 
+      {withCredentials:true})
+    .then((response) => {
+      alert("New Station - " + newStationData.name + " has been created.")
+      setNumberStations(numberStations + 1)
+    })
+    .catch((error) => {
+      alert(error)
+    })
+  } else {
+      alert("Could not add station - please fill out all required fields. ")
         handleAddStation()
-    }
+  }
     }
 
     const addCar = () => {
@@ -143,6 +143,7 @@ function FleetManagement() {
         alert(response)
         console.log(response)
         addCarFirebase(response.data.carID)
+        setNumberCars(numberCars + 1)
       })
       .catch((error) => {
         alert(error)
@@ -216,7 +217,7 @@ function FleetManagement() {
       axios.delete(`${BASE_API_URI}/cars/${id}`, {withCredentials: true})
       .then((response) => {
         alert("Car Number " + id + " was deleted.")
-       
+        setNumberCars(numberCars - 1)
 
         // remove from firebase if successfully removed from SQL
         remove(ref(db, `/cars/${id}`))
