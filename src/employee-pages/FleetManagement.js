@@ -237,7 +237,7 @@ function FleetManagement() {
 
 
     return (
-      <><div class = "mx-16 my-8">
+      <><div class = "mx-16 my-16">
             <h1 class = "text-section-head">Fleet Management</h1>
             <div class = "flex items-center pt-8">
               <h2 class = "text-subhead pr-4">Stations</h2>

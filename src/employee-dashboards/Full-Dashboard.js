@@ -1,5 +1,8 @@
 import DashCard from "../employee-pages/employee-components/DashCard";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import BASE_API_URI from '../config';
+import { useAuth } from "../context/AuthContext";
 
 function FullDashboard({employeeRole}) {
     //0 = customer
@@ -7,10 +10,107 @@ function FullDashboard({employeeRole}) {
     //2 = Customer Service
     //3 = Mechanic
     //4 = Manager
-  
-    console.log(employeeRole)
+    const [totalEmployeeRecords, setTotalEmployeeRecords] = useState(null);
+    const [totalCustomerRecords, setTotalCustomerRecords] = useState(null);
+    const [totalNewCustomerRecords, setTotalNewCustomerRecords] = useState(null);
+    const [totalRDYCustomerRecords, setTotalRDYCustomerRecords] = useState(null);
+    const [totalCarRecords, setTotalCarRecords] = useState(null);
+    const [totalStationRecords, setTotalStationRecords] = useState(null);
+    const {user} = useAuth()
+    console.log(user)
+    const role = user.role
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/employees`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalEmployeeRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
     
-    if(employeeRole === 1) {
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customers`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalCustomerRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customers/new`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalNewCustomerRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customers/completed`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalRDYCustomerRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/cars`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalCarRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/stations`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalStationRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+    
+    if(role === 1) {
       return (
         <div>
           <div class = "mx-16 mt-16 mb-8 text-section-head">Admin Dashboard</div>
@@ -20,17 +120,17 @@ function FullDashboard({employeeRole}) {
                 title = "Customer Approval Requests"
                 dataPoints = {[
                   {
-                    number: "47",
-                    caption: "New Tickets"
+                    number: totalRDYCustomerRecords,
+                    caption: "Completed"
                   },
                   {
-                    number: "10",
+                    number: totalNewCustomerRecords,
                     caption: "In-Progress"
                   }
                 ]}
               />
             </Link>
-            {/* <DashCard
+            <DashCard
               title = "Business Admin Information"
               dataPoints = {[
                 {
@@ -38,8 +138,7 @@ function FullDashboard({employeeRole}) {
                   caption: "Business Admins"
                 }
               ]}
-            /> */}
-            <Link to = "/service-requests">
+            />
             <DashCard
               title = "Service Requests"
               dataPoints = {[
@@ -53,13 +152,12 @@ function FullDashboard({employeeRole}) {
                 }
               ]}
             />
-            </Link>
             <Link to = "/customer-approval/3">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
                   {
-                    number: "129",
+                    number: totalCustomerRecords,
                     caption: "Customers"
                   }
                 ]}
@@ -70,35 +168,22 @@ function FullDashboard({employeeRole}) {
               title = "Employee Information"
               dataPoints = {[
                 {
-                  number: "23",
+                  number: totalEmployeeRecords,
                   caption: "Employees"
                 }
               ]}
             />
             </Link>
-            {/* <DashCard
-              title = "Vehicle Information"
-              dataPoints = {[
-                {
-                  number: "40",
-                  caption: "Total Vehicles"
-                },
-                {
-                  number: "32",
-                  caption: "Available for Use"
-                }
-              ]}
-            /> */}
             <Link to = "/fleet-management">
             <DashCard
                 title = "Fleet Management"
                 dataPoints = {[
                   {
-                    number: "40",
+                    number: totalCarRecords,
                     caption: "Vehicles"
                   },
                   {
-                    number: "4",
+                    number: totalStationRecords,
                     caption: "Stations"
                   },
                   {
@@ -112,7 +197,7 @@ function FullDashboard({employeeRole}) {
         </div>
     
       );
-    } else if(employeeRole === 2) {
+    } else if(role === 2) {
       return (
       <div>
         <div class = "mx-16 mt-16 mb-8 text-section-head">Customer Service Dashboard</div>
@@ -122,11 +207,11 @@ function FullDashboard({employeeRole}) {
                   title = "Customer Approval Requests"
                   dataPoints = {[
                     {
-                      number: "47",
-                      caption: "New Tickets"
+                      number: totalRDYCustomerRecords,
+                      caption: "Completed"
                     },
                     {
-                      number: "10",
+                      number: totalNewCustomerRecords,
                       caption: "In-Progress"
                     }
                   ]}
@@ -137,7 +222,7 @@ function FullDashboard({employeeRole}) {
                 title = "Member Information"
                 dataPoints = {[
                   {
-                    number: "129",
+                    number: totalCustomerRecords,
                     caption: "Customers"
                   }
                 ]}
@@ -157,12 +242,12 @@ function FullDashboard({employeeRole}) {
         </div>
       </div>
       );
-    } else if(employeeRole === 3) {
+    } else if(role === 3) {
       return (
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Mechanic Dashboard</div>
         <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-        <Link to = "/service-requests">
+        <Link to = "/fleet-management/2">
           <DashCard
               title = "Service Requests"
               dataPoints = {[
@@ -178,16 +263,16 @@ function FullDashboard({employeeRole}) {
             />
             </Link>
            
-            <Link to = "/fleet-management">
+            <Link to = "/fleet-management/2">
             <DashCard
                 title = "Fleet Management"
                 dataPoints = {[
                   {
-                    number: "40",
+                    number: totalCarRecords,
                     caption: "Vehicles"
                   },
                   {
-                    number: "4",
+                    number: totalStationRecords,
                     caption: "Stations"
                   },
                   {
@@ -200,7 +285,7 @@ function FullDashboard({employeeRole}) {
           </div>
         </div>
       );
-    } else if(employeeRole === 4) {
+    } else if(role == 4) {
       return (
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Manager Dashboard</div>
@@ -210,7 +295,7 @@ function FullDashboard({employeeRole}) {
                   title = "Employee Information"
                   dataPoints = {[
                     {
-                      number: "23",
+                      number: totalEmployeeRecords,
                       caption: "Employees"
                     }
                   ]}
@@ -221,11 +306,11 @@ function FullDashboard({employeeRole}) {
                   title = "Customer Approval Requests"
                   dataPoints = {[
                     {
-                      number: "47",
-                      caption: "New Tickets"
+                      number: totalRDYCustomerRecords,
+                      caption: "Completed"
                     },
                     {
-                      number: "10",
+                      number: totalNewCustomerRecords,
                       caption: "In-Progress"
                     }
                   ]}
@@ -236,7 +321,7 @@ function FullDashboard({employeeRole}) {
                 title = "Member Information"
                 dataPoints = {[
                   {
-                    number: "129",
+                    number: totalCustomerRecords,
                     caption: "Customers"
                   }
                 ]}

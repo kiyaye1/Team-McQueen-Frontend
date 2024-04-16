@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Table, Box, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   TextField, Button, Select, MenuItem, FormControl, InputLabel, Grid, Typography } from '@mui/material';
-import BASE_API_URI from "../../config";
-import '../../App.css';
+import BASE_API_URI from "../config";
+import '../App.css';
 
 export default function ApplicationMetrics() {
   const [startDate, setStartDate] = useState('');
