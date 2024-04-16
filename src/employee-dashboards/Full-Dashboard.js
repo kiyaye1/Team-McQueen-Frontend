@@ -9,9 +9,6 @@ function FullDashboard({employeeRole}) {
     //2 = Customer Service
     //3 = Mechanic
     //4 = Manager
-  
-    console.log(employeeRole)
-
     const [totalEmployeeRecords, setTotalEmployeeRecords] = useState(null);
     const [totalCustomerRecords, setTotalCustomerRecords] = useState(null);
     const [totalNewCustomerRecords, setTotalNewCustomerRecords] = useState(null);

@@ -100,16 +100,19 @@ function MembersInfo({ customerData }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {currentItems.map((customer) => (
-                            <TableRow key={customer.customerID} class="tr" sx={{align: "center"}}>
-                                <TableCell>{customer.customerID}</TableCell>
-                                <TableCell>{customer.firstName + ' ' + customer.lastName}</TableCell>
-                                <TableCell>{getNestedValue('status.shortDescription', customer)}</TableCell>
-                                <TableCell>
-                                    <Button onClick={() => navigate(`/customer-details/${customer.customerID}`)}>View Details</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {currentItems.map((customer) => {
+                            if(customer.status.statusCode != "PVN") {
+                                return (
+                                <TableRow key={customer.customerID} class="tr" sx={{align: "center"}}>
+                                    <TableCell>{customer.customerID}</TableCell>
+                                    <TableCell>{customer.firstName + ' ' + customer.lastName}</TableCell>
+                                    <TableCell>{getNestedValue('status.shortDescription', customer)}</TableCell>
+                                    <TableCell>
+                                        <Button onClick={() => navigate(`/customer-details/${customer.customerID}`)}>View Details</Button>
+                                    </TableCell>
+                                </TableRow>
+                             );}
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
