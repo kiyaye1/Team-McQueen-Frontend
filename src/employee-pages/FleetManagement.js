@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { db } from '../FirebaseConfig'
 import { ref, onValue, set, remove } from 'firebase/database'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios';
 import BASE_API_URI from "../config";
 import { 
@@ -30,12 +30,10 @@ import { useAuth } from '../context/AuthContext';
 import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
-
 function FleetManagement() {
-  const [carLocations, setCarLocations] = useState()
-  const [stations, setStations] = useState()
-  const [SQLCars, setSQLCars] = useState()
+  const [carLocations, setCarLocations] = useState({})
+  const [stations, setStations] = useState([])
+  const [SQLCars, setSQLCars] = useState([])
   const [newStationData, setNewStationData] = useState({
     name: "",
     streetAddress: "",
@@ -47,9 +45,9 @@ function FleetManagement() {
     lat: "",
     lng:""
   })
-    const [newCarData, setNewCarData] = useState({})
+  const [newCarData, setNewCarData] = useState({})
   const [openAdd, setOpenAdd] = useState(false);
-    const [openAddCar, setOpenAddCar] = useState(false)
+  const [openAddCar, setOpenAddCar] = useState(false)
   const {user} = useAuth()
 
   const [numberStations, setNumberStations] = useState(5)
@@ -64,39 +62,82 @@ function FleetManagement() {
     // IFR - In for repair
     // OTR - On the Road / Reserved
 
+  const [cars, setCars] = useState([]);
+  const [displayedCars, setDisplayedCars] = useState([]);
+  const [orderBy, setOrderBy] = useState('carID');
+  const [order, setOrder] = useState('asc');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState('');
 
     // Get cars data from firebase
   useEffect(() => {
     return onValue(ref(db, '/cars/'), querySnapshot => {
       // full data snapshot
       let data = querySnapshot.val()
-      setCarLocations(data)
+      setCarLocations(data || {})
     })
 
   }, [])
 
   useEffect(() => {
-    getStations()
-    getSQLCars()
-    }, [numberStations, numberCars])
+    const fetchStations = async () => {
+        const response = await axios.get(`${BASE_API_URI}/stations`, {withCredentials: true});
+        setStations(response.data || []);
+    };
+    const fetchCars = async () => {
+        const response = await axios.get(`${BASE_API_URI}/cars`, {withCredentials: true});
+        setSQLCars(response.data || []);
+        setCars(response.data || []);
+        setPage(1);
+        applyFilters();
+    };
+    fetchStations();
+    fetchCars();
+  }, []);
 
+  useEffect(() => {
+    applyFilters();
+  }, [cars, page, limit, order, orderBy, search]);
 
-  function getSQLCars() {
-    axios.get(`${BASE_API_URI}/cars`, {withCredentials:true})
-    .then((response) => {
-        setSQLCars(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-    })
-  }
+  const applyFilters = () => {
+    let filtered = cars.filter(car =>
+      car.carID.toString().includes(search) ||
+      car.statusCode.toLowerCase().includes(search.toLowerCase())
+    );
 
-  const getStations = async () => {
-    const data = await axios.get(`${BASE_API_URI}/stations`, {withCredentials:true})
-    const stations = data.data
-    setStations(stations)
-    }
-    
+    filtered = filtered.sort((a, b) => {
+      const valueA = a[orderBy];
+      const valueB = b[orderBy];
+      if (valueA < valueB) return order === 'asc' ? -1 : 1;
+      if (valueA > valueB) return order === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    const startIndex = (page - 1) * limit;
+    const paginatedItems = filtered.slice(startIndex, startIndex + limit);
+    setDisplayedCars(paginatedItems);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
+
+  const handleChangePage = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeOrderBy = (event) => {
+    setOrderBy(event.target.value);
+    setPage(1);
+  };
+
+  const handleChangeOrder = () => {
+    setOrder(order === 'asc' ? 'desc' : 'asc');
+    setPage(1);
+  };
+ 
   const addStation = () => {
     if(canSubmit) {
       axios.post(`${BASE_API_URI}/stations`, 
@@ -227,7 +268,6 @@ function FleetManagement() {
       })
     }
 
-
   function getCarLocation(id) {
     for(var i = 0; i < carLocations?.length; i++) {
       if(id === carLocations[i]?.carID) {
@@ -235,7 +275,6 @@ function FleetManagement() {
       }
     }
   }
-
 
     return (
       <><div class = "mx-16 my-16">
@@ -353,7 +392,6 @@ function FleetManagement() {
               )}
             </div>
             
-            
             <Dialog open = {openAddCar} onClose = {handleClose}>
               <DialogTitle>Add Gyrocar</DialogTitle>
               <DialogContent>
@@ -367,8 +405,8 @@ function FleetManagement() {
                       onChange = {handleChangeCar}
                       required
                   >
-                    <MenuItem value = "RDY">Ready to Rent</MenuItem>
-                    <MenuItem value = "IFR">Out for Service</MenuItem>
+                    <MenuItem value = "Good Condition - Rentable">Ready to Rent</MenuItem>
+                    <MenuItem value = "In for repair">Out for Service</MenuItem>
                   </Select>
                 </FormControl>
 
@@ -397,36 +435,58 @@ function FleetManagement() {
               </DialogContent>
             </Dialog>
             
-            
+            <Box display="flex" justifyContent="space-between" marginBottom={2} sx={{marginTop: '2em'}}>
+            <div style={{ display: 'flex', gap: '20px' }}>
+              <TextField 
+                  label="Search by ID, or Availability" 
+                  value={search} 
+                  onChange={handleSearchChange}
+                  style={{ width: '225px' }} 
+              />
+              <FormControl>
+                <Select value={orderBy} onChange={handleChangeOrderBy} style={{ width: '190px' }}>
+                  <MenuItem value="carID">Sort By Car ID</MenuItem>
+                  <MenuItem value="statusCode">Sort By Availability</MenuItem>
+                </Select>
+              </FormControl>
+              <Button variant="outlined" onClick={handleChangeOrder}>
+                  {order === 'asc' ? 'Sort Descending' : 'Sort Ascending'}
+              </Button>
+              </div>
+            </Box>
+
             <TableContainer>
             <Table sx={{   }}>
-                <TableHead>
+                <TableHead class = "table-head">
                     <TableRow>
-                        <TableCell>Car ID</TableCell>
-                        <TableCell align = "center">Availability</TableCell>
-                        <TableCell align = "center">Service History</TableCell>
-                        <TableCell align = "center">Current Location</TableCell>
-                        <TableCell align = "center">Actions</TableCell>
+                        <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Car ID</TableCell>
+                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Availability</TableCell>
+                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Service History</TableCell>
+                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Current Location</TableCell>
+                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {SQLCars?.map((car) => {
+                    {displayedCars.map((car) => {
                         return (
-                            <TableRow key = {car.carID}>
+                            <TableRow key = {car.carID} class = "tr">
                                 <TableCell component="th" scope = "row">
                                     {car.carID}
                                 </TableCell>
-                                <TableCell align = "center">{car.statusCode == "RDY" ? "Good Condition - Rentable" : car.statusCode == "IFR" ? "In for Repair" : "On the road - rented"}</TableCell>
+                                <TableCell align = "center">{car.statusCode}</TableCell>
                                 <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell>
                                 <TableCell align = "center">{getCarLocation(car.carID)}</TableCell>
-                                <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon/></Button></TableCell>
+                                <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon color="error"/></Button></TableCell>
                             </TableRow>
                         );
                     })}
                   </TableBody>
               </Table>
               </TableContainer>
-            
+              <Box display="flex" justifyContent="center" mt={2}>
+        <Button onClick={() => handleChangePage(page - 1)} disabled={page === 1}>Previous</Button>
+        <Button onClick={() => handleChangePage(page + 1)} disabled={page * limit >= cars.length}>Next</Button>
+      </Box>
       </div></>
   
     );
