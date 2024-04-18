@@ -53,6 +53,9 @@ export const FormProvider = ({children}) => {
     //     }
     // }
 
+    // State to track if terms have been accepted
+    const [termsAccepted, setTermsAccepted] = useState(false);
+
     const handleChange = e => {
         const type = e.target.type
         const name = e.target.name
@@ -185,7 +188,7 @@ export const FormProvider = ({children}) => {
     
     // can submit when required inputs are all fulled in, and when the user is on last page
     // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
-    const canSubmit = page == Object.keys(title).length - 1
+    const canSubmit = page == Object.keys(title).length - 1 && termsAccepted
 
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
@@ -251,7 +254,9 @@ export const FormProvider = ({children}) => {
             setExpDateError,
             setCardccvError,
             handleChange, 
-            canSubmit, 
+            canSubmit,
+            termsAccepted,
+            setTermsAccepted, 
             disableNext, 
             disablePrev
         }}>
