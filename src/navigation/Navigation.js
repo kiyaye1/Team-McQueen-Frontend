@@ -14,6 +14,7 @@ import Login from '../main-screens/Login';
 import Profile from '../main-screens/Profile';
 import Reservation from '../main-screens/Reservation';
 import Confirmation from '../main-screens/FormConfirmation';
+import VerifyEmailPage from '../main-screens/VerifyEmailPage';
 import FullDashboard from '../employee-dashboards/Full-Dashboard';
 import CustomerServiceFunctions from '../employee-pages/CustomerServiceFunctions';
 import ReservationDetails from "../main-screens/ReservationDetails";
@@ -69,6 +70,7 @@ function Navigation() {
                 <Route path="/" element={<Layout isLoggedIn={user?.isLoggedIn} isEmployee={user?.isEmployee} />}>
                     <Route index element={<Homepage />} />
                     <Route path="login" element={<Login setEmployeeRole={setEmployeeRole}/>} />
+                    <Route path="verify-email" element={<VerifyEmailPage />} />
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     <Route element={<ProtectedRoute />}>
                         <Route path = "account" element = {<Profile />}/>
