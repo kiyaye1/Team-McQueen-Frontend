@@ -25,8 +25,8 @@ import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
 import MechanicServiceRequests from '../employee-pages/MechanicServiceRequests'
 import MetricsDashboard from '../employee-dashboards/MetricsDashboard';
-import ApplicationMetrics from '../employee-pages/employee-components/ApplicationMetrics';
-import RentalMetrics from '../employee-pages/employee-components/RentalMetrics';
+import ApplicationMetrics from '../employee-pages/ApplicationMetrics';
+import RentalMetrics from '../employee-pages/RentalMetrics';
 import InquiryDetails from '../employee-pages/employee-components/InquiryDetails';
 
 function Navigation() {
