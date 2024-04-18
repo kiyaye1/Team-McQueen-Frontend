@@ -130,7 +130,7 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
-            <DashCard
+            {/* <DashCard
               title = "Business Admin Information"
               dataPoints = {[
                 {
@@ -138,20 +138,23 @@ function FullDashboard({employeeRole}) {
                   caption: "Business Admins"
                 }
               ]}
-            />
-            <DashCard
-              title = "Service Requests"
-              dataPoints = {[
-                {
-                  number: "11",
-                  caption: "New Tickets"
-                },
-                {
-                  number: "8",
-                  caption: "In-Progress"
-                }
-              ]}
-            />
+            /> */}
+            <Link to = "/service-requests">
+              <DashCard
+                title = "Service Requests"
+                dataPoints = {[
+                  {
+                    number: "11",
+                    caption: "New Tickets"
+                  },
+                  {
+                    number: "8",
+                    caption: "In-Progress"
+                  }
+                ]}
+              />
+
+            </Link>
             <Link to = "/customer-approval/3">
               <DashCard
                 title = "Member Information"
@@ -247,7 +250,7 @@ function FullDashboard({employeeRole}) {
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Mechanic Dashboard</div>
         <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-        <Link to = "/fleet-management/2">
+        <Link to = "/service-requests">
           <DashCard
               title = "Service Requests"
               dataPoints = {[
@@ -263,7 +266,7 @@ function FullDashboard({employeeRole}) {
             />
             </Link>
            
-            <Link to = "/fleet-management/2">
+            <Link to = "/fleet-management">
             <DashCard
                 title = "Fleet Management"
                 dataPoints = {[
