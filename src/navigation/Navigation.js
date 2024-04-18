@@ -23,7 +23,7 @@ import ReservationConfirmation from '../main-screens/ReservationConfirmation';
 import InactivityDetector from '../hooks/InactivityDetector';
 import FleetManagement from '../employee-pages/FleetManagement';
 import EmployeeManagement from '../employee-pages/EmployeeManagement';
-import MechanicServiceRequests from '../employee-pages/employee-components/MechanicServiceRequests'
+import MechanicServiceRequests from '../employee-pages/MechanicServiceRequests'
 import MetricsDashboard from '../employee-dashboards/MetricsDashboard';
 import ApplicationMetrics from '../employee-pages/employee-components/ApplicationMetrics';
 import RentalMetrics from '../employee-pages/employee-components/RentalMetrics';

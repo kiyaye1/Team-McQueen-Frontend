@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, TextField, Grid, Box, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import BASE_API_URI from '../../config';
+import BASE_API_URI from '../config';
 
 export default function RentalMetrics() {
     const [startDate, setStartDate] = useState('');

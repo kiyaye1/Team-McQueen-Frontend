@@ -3,7 +3,7 @@ import {AccordionDetails} from "@mui/material";
 import { AccordionSummary } from "@mui/material";
 import { FAQInfo } from "../data/faq-data";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ContactForm from "./Contact-Form";
+import ContactForm from "../components/Contact-Form";
 
 
 
