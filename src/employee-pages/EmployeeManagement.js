@@ -15,7 +15,14 @@ function EmployeeFunction() {
   const [employees, setEmployees] = useState([]);
   const [displayedEmployees, setDisplayedEmployees] = useState([]);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    add_employeeID: '',
+    add_employee_firstName: '', 
+    add_employee_lastName: '', 
+    add_employee_emailAddress: '', 
+    add_employee_password: '',
+    add_employee_roleID: ''
+  });
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [orderBy, setOrderBy] = useState('employeeID');
@@ -27,14 +34,19 @@ function EmployeeFunction() {
   const [deleteEmployeeId, setDeleteEmployeeId] = useState(null);
   const { user } = useAuth();
 
+  const {...requiredInputs} = formData
+   
+  const canSubmit = [...Object.values(requiredInputs)].every(Boolean)
+
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URI}/employees`, { withCredentials: true });
+      const response = await axios.get(`${BASE_API_URI}/employees?limit=100`, { withCredentials: true }); // Adjust limit as needed
       setEmployees(response.data);
+      console.log(response.data);
       setPage(1);
       applyFilters();
     } catch (error) {
@@ -95,7 +107,14 @@ function EmployeeFunction() {
 
   const handleAddEmployee = () => {
     setOpenAdd(true);
-    setFormData({});
+    setFormData({
+      add_employeeID: formData.add_employeeID,
+      add_employee_firstName: formData.add_employee_firstName, 
+      add_employee_lastName: formData.add_employee_lastName, 
+      add_employee_emailAddress: formData.add_employee_emailAddress, 
+      add_employee_password: formData.add_employee_password,
+      add_employee_roleID: formData.add_employee_roleID
+    });
     setEditingEmployee(null);
   };
 
@@ -128,16 +147,28 @@ function EmployeeFunction() {
       })
       alert("Employee updated successfully");
       } else {
-        axios({
-          method: 'post',
-          url: `${BASE_API_URI}/employees`,
-          data: formData,
-          withCredentials: true,
-      })
-      alert("Employee added successfully");
-      } 
-      fetchEmployees();
-      handleDialogClose();
+        if(canSubmit) {
+          axios({
+            method: 'post',
+            url: `${BASE_API_URI}/employees`,
+            data: {
+              add_employeeID: formData.add_employeeID,
+              add_employee_firstName: formData.add_employee_firstName, 
+              add_employee_lastName: formData.add_employee_lastName, 
+              add_employee_emailAddress: formData.add_employee_emailAddress, 
+              add_employee_password: formData.add_employee_password,
+              add_employee_roleID: formData.add_employee_roleID
+            },
+            withCredentials: true,
+        })
+        alert("Employee added successfully");
+        fetchEmployees();
+        handleDialogClose();
+        } else {
+          alert("Could not add employee - please fill out all required fields. ")
+            handleAddEmployee()
+      }
+      }  
     } catch (error) {
       console.error('Error adding/editing employee:', error);
     }
@@ -229,7 +260,7 @@ function EmployeeFunction() {
           <TextField margin="dense" name="add_employee_lastName" label="Last Name" fullWidth value={formData.add_employee_lastName || ''} onChange={handleChange} required />
           <TextField margin="dense" name="add_employee_mi" label="Middle Initial" fullWidth value={formData.add_employee_mi || ''} onChange={handleChange} />
           <TextField margin="dense" name="add_employee_suffix" label="Suffix" fullWidth value={formData.add_employee_suffix || ''} onChange={handleChange} />
-          <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} required />          
+          <TextField margin="dense" name="add_employee_title" label="Title" fullWidth value={formData.add_employee_title || ''} onChange={handleChange} />          
           <TextField margin="dense" name="add_employee_emailAddress" label="Email Address" fullWidth value={formData.add_employee_emailAddress || ''} onChange={handleChange} required />
           <TextField margin="dense" name="add_employee_password" label="Password" fullWidth value={formData.add_employee_password || ''} onChange={handleChange} required/>
           <TextField margin="dense" name="add_employee_roleID" label="RoleID (1-Admin 2-Customer Service 3-Mechanic 4-Manager)" fullWidth value={formData.add_employee_roleID || ''} onChange={handleChange} required/>
@@ -237,7 +268,7 @@ function EmployeeFunction() {
         </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose}>Cancel</Button>
-            <Button onClick={() => { handleSubmit(); handleDialogClose(); }} sx={{color: "#000180"}}>Add</Button>
+            <Button onClick={() => { handleSubmit(); }} sx={{color: "#000180"}}>Add</Button>
           </DialogActions>
         </Dialog>
         {/* Edit Dialog */}
