@@ -9,12 +9,14 @@ import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs"
 import {  Dialog, DialogTitle, DialogContent,  DialogActions, FormControl, InputLabel, Select, MenuItem} from '@mui/material'
+import userEvent from "@testing-library/user-event";
 
 // todo: set data in useeffect so it reloads when the data changes
 
 function InquiryDetails() {
 
     const navigate = useNavigate()
+    const {user} = useAuth()
 
     const params = useParams()
     const inquiryID = params.id
@@ -48,13 +50,13 @@ function InquiryDetails() {
         setCarStatus(e.target.value)
     }
 
+  
     const handleSubmit = () => {
-        axios.post(`${BASE_API_URI}/contacts/createMechanicRequests`,
+        axios.post(`${BASE_API_URI}/contacts/MechanicRequests`,
             {
-                requestID: inquiryID,
+                description: inquiry?.description,
                 carID: inquiry?.carID,
-                disposition: inquiry?.description,
-                status: carStatus
+                creatorID: user.userID,
             },
             {withCredentials: true}
         )

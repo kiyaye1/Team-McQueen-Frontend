@@ -28,6 +28,7 @@ import MetricsDashboard from '../employee-dashboards/MetricsDashboard';
 import ApplicationMetrics from '../employee-pages/ApplicationMetrics';
 import RentalMetrics from '../employee-pages/RentalMetrics';
 import InquiryDetails from '../employee-pages/employee-components/InquiryDetails';
+import ServiceRequestDetails from '../employee-pages/employee-components/ServiceRequestDetails';
 
 function Navigation() {
     const { user, logout } = useAuth();
@@ -86,6 +87,7 @@ function Navigation() {
                         <Route path = "customer-details/:id" element = {employeeRoleNum != 3 ? <CustomerDetails/> : <Unauthorized />}/>
                         <Route path = "approval-details/:id" element = {employeeRoleNum != 3 ? <ApprovalDetails/> : <Unauthorized />}/>
                         <Route path = "inquiry-details/:id" element = {employeeRoleNum != 3 ? <InquiryDetails/> : <Unauthorized/>}/>
+                        <Route path = "service-request-details/:id" element = {employeeRoleNum != 3 ? <ServiceRequestDetails/>:<Unauthorized/>}/>
                         <Route path = "fleet-management" element={employeeRoleNum != 2 && employeeRoleNum != 4 ? <FleetManagement /> : <Unauthorized /> }/>
                         <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>  
                         <Route path = "service-requests" element = {employeeRoleNum != 2 && employeeRoleNum != 4 ? <MechanicServiceRequests/> : <Unauthorized/>}/>                   
