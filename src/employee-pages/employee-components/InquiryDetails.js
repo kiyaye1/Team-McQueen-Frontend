@@ -162,7 +162,7 @@ function InquiryDetails() {
                                 name = "carStatus"
                                 value = {carStatus}
                                 label = "Car Status"
-                                onChange = {handleStatusChange}
+                                onChange = {handleInquiryStatusChange}
                                 required
                             >
                         

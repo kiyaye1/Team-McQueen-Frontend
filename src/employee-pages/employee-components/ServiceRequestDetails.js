@@ -20,7 +20,10 @@ function ServiceRequestDetails() {
     const requestID = params.id
     const [request, setRequest] = useState()
     const [carStatus, setCarStatus] = useState()
+    const [requestStatus, setRequestStatus] = useState()
     dayjs.extend(LocalizedFormat)
+
+    const [openChangeStatus, setOpenChangeStatus] = useState(false)
 
     useEffect(() => {
         axios.get(`${BASE_API_URI}/contacts/MechanicRequests`, {withCredentials: true})
@@ -36,6 +39,22 @@ function ServiceRequestDetails() {
             console.log(error)
         })
     }, [])   
+
+    const handleClose = () => {
+        setOpenChangeStatus(false)
+      };
+  
+      const handleStatusChange = (e) => {
+          setCarStatus(e.target.value)
+      }
+  
+      const handleRequestStatusChange = (e) => {
+          setRequestStatus(e.target.value)
+      }
+  
+      const handleChangeStatus = () => {
+  
+      }
     
     return (
       <><div class = "mx-16 my-8">
@@ -44,6 +63,11 @@ function ServiceRequestDetails() {
             
             <p class = "text-body-copy mt-4"><span class = "font-bold">Ticket Number:</span> {requestID}</p>
             <p class = "text-body-copy">Created on {dayjs(request?.createdDatetime).format('LLL')}</p>
+
+            <div class = "flex flex-center mt-4 space-x-4">
+                <p class = "text-body-copy"><span class = "font-bold">Service Status: </span> {request?.requestStatus.name}</p>
+                <Button size = "small" variant = "outlined" onClick = {() => {setOpenChangeStatus(true)}}>Edit Status</Button>
+            </div>
            
            <div class = "grid grid-cols-2 mb-8">
             <div class = "col-span-2 lg:col-span-1 py-4 px-8 rounded-xl border border-border mt-8 text-body-copy grid grid-cols-2 gap-8">
@@ -62,6 +86,37 @@ function ServiceRequestDetails() {
                 </div>
            </div>
 
+
+           <Dialog open = {openChangeStatus} onClose = {handleClose}>
+                <DialogTitle>Create Mechanic Service Request</DialogTitle>
+                <DialogContent>
+                    <div class = "space-y-8 p-4">
+                        <p><span class = "font-bold">Current Status: </span>{request?.requestStatus.name}</p>
+
+                        <FormControl required fullWidth>
+                            <InputLabel id="status-select">Request Status</InputLabel>
+                            <Select
+                                labelId = "status-select"
+                                name = "requestStatus"
+                                value = {requestStatus}
+                                label = "Request Status"
+                                onChange = {handleRequestStatusChange}
+                                required
+                            >
+                        
+                            <MenuItem value = "IFR">In for Repair</MenuItem>
+                            <MenuItem value = "RDY">Available to Rent</MenuItem>
+                    
+                            </Select>
+                        </FormControl>
+                    </div>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => { handleChangeStatus(); handleClose();}} color="primary">Update</Button>
+                </DialogActions>
+            </Dialog>
         
       
       </div></>
