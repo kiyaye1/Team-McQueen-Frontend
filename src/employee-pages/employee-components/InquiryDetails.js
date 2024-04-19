@@ -21,6 +21,8 @@ function InquiryDetails() {
     const params = useParams()
     const inquiryID = params.id
     const [inquiry, setInquiry] = useState()
+    const [inquiryStatus, setInquiryStatus] = useState()
+    const [openChangeStatus, setOpenChangeStatus] = useState(false)
     const [openServiceRequest, setOpenServiceRequest] = useState(false)
     const [carStatus, setCarStatus] = useState()
     dayjs.extend(LocalizedFormat)
@@ -44,10 +46,19 @@ function InquiryDetails() {
     //Function to handle close action for dialogs
     const handleClose = () => {
       setOpenServiceRequest(false);
+      setOpenChangeStatus(false)
     };
 
     const handleStatusChange = (e) => {
         setCarStatus(e.target.value)
+    }
+
+    const handleInquiryStatusChange = (e) => {
+        setInquiryStatus(e.target.value)
+    }
+
+    const handleChangeStatus = () => {
+
     }
 
   
@@ -76,6 +87,12 @@ function InquiryDetails() {
             
             <p class = "text-body-copy mt-4"><span class = "font-bold">Ticket Number:</span> {inquiryID}</p>
             <p class = "text-body-copy">Created on {dayjs(inquiry?.createdDatetime).format('LLL')}</p>
+
+            <div class = "flex flex-center mt-4 space-x-4">
+                <p class = "text-body-copy"><span class = "font-bold">Inquiry Status: </span> {inquiry?.statusID}</p>
+                <Button size = "small" variant = "outlined" onClick = {() => {setOpenChangeStatus(true)}}>Edit Status</Button>
+            </div>
+            
            
            <div class = "grid grid-cols-2 mb-8">
             <div class = "col-span-2 lg:col-span-1 py-4 px-8 rounded-xl border border-border mt-8 text-body-copy grid grid-cols-2 gap-8">
@@ -129,6 +146,37 @@ function InquiryDetails() {
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
                     <Button onClick={() => { handleSubmit(); handleClose();}} color="primary">Update</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open = {openChangeStatus} onClose = {handleClose}>
+                <DialogTitle>Create Mechanic Service Request</DialogTitle>
+                <DialogContent>
+                    <div class = "space-y-8 p-4">
+                        <p><span class = "font-bold">Current Status: </span>{inquiry?.statusID}</p>
+
+                        <FormControl required fullWidth>
+                            <InputLabel id="status-select">Car Status</InputLabel>
+                            <Select
+                                labelId = "status-select"
+                                name = "carStatus"
+                                value = {carStatus}
+                                label = "Car Status"
+                                onChange = {handleStatusChange}
+                                required
+                            >
+                        
+                            <MenuItem value = "IFR">In for Repair</MenuItem>
+                            <MenuItem value = "RDY">Available to Rent</MenuItem>
+                    
+                            </Select>
+                        </FormControl>
+                    </div>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => { handleChangeStatus(); handleClose();}} color="primary">Update</Button>
                 </DialogActions>
             </Dialog>
       
