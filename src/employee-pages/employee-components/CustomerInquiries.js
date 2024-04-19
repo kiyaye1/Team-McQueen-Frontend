@@ -65,21 +65,103 @@ function CustomerInquiries() {
                 </TableHead>
                 <TableBody>
                     {inquiries?.map((row) => {
+
                         dayjs.extend(LocalizedFormat)
                         const dateCreated = dayjs(row.createdDatetime).format('LL')
-                      
-                        return (
-                            <TableRow key = {row.requestID}>
-                                <TableCell align = "left" component="th" scope = "row">
-                                    {row.requestID}
-                                </TableCell>
-                                <TableCell align = "left">{dateCreated}</TableCell>
-                                <TableCell align = "left">{row.type}</TableCell>
-                                <TableCell align = "left">{row.description}</TableCell>
-                                <TableCell align = "left">{row.statusID}</TableCell>
-                                <TableCell align = "right"><Button onClick = {() => navigate(`/inquiry-details/${row.requestID}`)} size = "small" variant = "text">View Request</Button></TableCell>
-                            </TableRow>
-                      );
+
+                        if(row.requestStatus.statusID == 1){
+                          return (
+                              <TableRow key = {row.requestID}>
+                                  <TableCell align = "left" component="th" scope = "row">
+                                      {row.requestID}
+                                  </TableCell>
+                                  <TableCell align = "left">{dateCreated}</TableCell>
+                                  <TableCell align = "left">{row.type}</TableCell>
+                                  <TableCell align = "left">{row.description}</TableCell>
+                                  <TableCell align = "left">{row.requestStatus.name}</TableCell>
+                                  <TableCell align = "right"><Button onClick = {() => navigate(`/inquiry-details/${row.requestID}`)} size = "small" variant = "text">View Request</Button></TableCell>
+                              </TableRow>
+                          );
+                        }
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
+
+
+
+        <h1 class = "mt-8 text-subhead">In Progress Inquiries</h1>
+        <TableContainer component = {Paper}  class = "my-4">
+            <Table sx={{   }}>
+                <TableHead class = "table-head">
+                    <TableRow>
+                        <TableCell align = "left">Ticket Number</TableCell>
+                        <TableCell align = "left">Date Created</TableCell>
+                        <TableCell align = "left">Request Type</TableCell>
+                        <TableCell align = "left">Description</TableCell>
+                        <TableCell align = "left">Status</TableCell>
+                        <TableCell align = "right">Manage</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {inquiries?.map((row) => {
+
+                        dayjs.extend(LocalizedFormat)
+                        const dateCreated = dayjs(row.createdDatetime).format('LL')
+
+                        if(row.requestStatus.statusID == 2){
+                          return (
+                              <TableRow key = {row.requestID}>
+                                  <TableCell align = "left" component="th" scope = "row">
+                                      {row.requestID}
+                                  </TableCell>
+                                  <TableCell align = "left">{dateCreated}</TableCell>
+                                  <TableCell align = "left">{row.type}</TableCell>
+                                  <TableCell align = "left">{row.description}</TableCell>
+                                  <TableCell align = "left">{row.requestStatus.name}</TableCell>
+                                  <TableCell align = "right"><Button onClick = {() => navigate(`/inquiry-details/${row.requestID}`)} size = "small" variant = "text">View Request</Button></TableCell>
+                              </TableRow>
+                          );
+                        }
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
+
+
+        <h1 class = "mt-8 text-subhead">Completed Inquiries</h1>
+        <TableContainer component = {Paper}  class = "my-4">
+            <Table sx={{   }}>
+                <TableHead class = "table-head">
+                    <TableRow>
+                        <TableCell align = "left">Ticket Number</TableCell>
+                        <TableCell align = "left">Date Created</TableCell>
+                        <TableCell align = "left">Request Type</TableCell>
+                        <TableCell align = "left">Description</TableCell>
+                        <TableCell align = "left">Status</TableCell>
+                        <TableCell align = "right">Manage</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {inquiries?.map((row) => {
+
+                        dayjs.extend(LocalizedFormat)
+                        const dateCreated = dayjs(row.createdDatetime).format('LL')
+
+                        if(row.requestStatus.requestID == 1){
+                          return (
+                              <TableRow key = {row.requestID}>
+                                  <TableCell align = "left" component="th" scope = "row">
+                                      {row.requestID}
+                                  </TableCell>
+                                  <TableCell align = "left">{dateCreated}</TableCell>
+                                  <TableCell align = "left">{row.type}</TableCell>
+                                  <TableCell align = "left">{row.description}</TableCell>
+                                  <TableCell align = "left">{row.requestStatus.name}</TableCell>
+                                  <TableCell align = "right"><Button onClick = {() => navigate(`/inquiry-details/${row.requestID}`)} size = "small" variant = "text">View Request</Button></TableCell>
+                              </TableRow>
+                          );
+                        }
                     })}
                 </TableBody>
             </Table>

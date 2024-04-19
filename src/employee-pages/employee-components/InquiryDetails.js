@@ -79,6 +79,12 @@ function InquiryDetails() {
         })
     }
 
+    // const completeRequest = () => {
+    //     axios.patch(`${BASE_API_URI}/updateTicketStatus`, {status: 3}, {withCredentials: true})
+    //     .then((response) => alert(response))
+    //     .catch((error) => alert(error))
+    // }
+
 
     return (
       <><div class = "mx-16 my-8">
@@ -89,7 +95,7 @@ function InquiryDetails() {
             <p class = "text-body-copy">Created on {dayjs(inquiry?.createdDatetime).format('LLL')}</p>
 
             <div class = "flex flex-center mt-4 space-x-4">
-                <p class = "text-body-copy"><span class = "font-bold">Inquiry Status: </span> {inquiry?.statusID}</p>
+                <p class = "text-body-copy"><span class = "font-bold">Inquiry Status: </span> {inquiry?.requestStatus.name}</p>
                 <Button size = "small" variant = "outlined" onClick = {() => {setOpenChangeStatus(true)}}>Edit Status</Button>
             </div>
             
@@ -153,15 +159,15 @@ function InquiryDetails() {
                 <DialogTitle>Create Mechanic Service Request</DialogTitle>
                 <DialogContent>
                     <div class = "space-y-8 p-4">
-                        <p><span class = "font-bold">Current Status: </span>{inquiry?.statusID}</p>
+                        <p><span class = "font-bold">Current Status: </span>{inquiry?.requestStatus.name}</p>
 
                         <FormControl required fullWidth>
-                            <InputLabel id="status-select">Car Status</InputLabel>
+                            <InputLabel id="status-select">Inquiry Status</InputLabel>
                             <Select
                                 labelId = "status-select"
-                                name = "carStatus"
+                                name = "inquiryStatus"
                                 value = {carStatus}
-                                label = "Car Status"
+                                label = "Inquiry Status"
                                 onChange = {handleInquiryStatusChange}
                                 required
                             >
