@@ -43,10 +43,10 @@ const Form = () => {
     const handlePrev = () => setPage(prev => prev - 1)
 
     // set page count up one
-    const handleNext = () => {
+    const handleNext = async () => {
         if(page === 0) {
             //call CustomerInfoValidation from FormContext
-            const errors = CustomerInfoValidation()
+            const errors = await CustomerInfoValidation()
             if(errors) {
                 setFirstNameError(errors.customer_firstName)
                 setLastNameError(errors.customer_lastName)
