@@ -50,18 +50,35 @@ const ContactForm = () => {
             return;
         }
     
-        axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, carID, message})
-        .then((response) => {
-            console.log(response)
-            setName('');
-            setEmail('');
-            setReason('');
-            setMessage('');
-            setCarID(null)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        if(carID) {
+            console.log('car id')
+            axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, carID, message})
+            .then((response) => {
+                console.log(response)
+                setName('');
+                setEmail('');
+                setReason('');
+                setMessage('');
+                setCarID(null)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        } else {
+            console.log("no car id")
+            axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, message})
+            .then((response) => {
+                console.log(response)
+                setName('');
+                setEmail('');
+                setReason('');
+                setMessage('');
+                setCarID(null)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        }
     };
 
     // const handleSubmit = async (e) => {

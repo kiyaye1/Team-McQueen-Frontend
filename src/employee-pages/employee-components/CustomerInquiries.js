@@ -148,7 +148,7 @@ function CustomerInquiries() {
                         dayjs.extend(LocalizedFormat)
                         const dateCreated = dayjs(row.createdDatetime).format('LL')
 
-                        if(row.requestStatus.requestID == 1){
+                        if(row.requestStatus.statusID == 3){
                           return (
                               <TableRow key = {row.requestID}>
                                   <TableCell align = "left" component="th" scope = "row">

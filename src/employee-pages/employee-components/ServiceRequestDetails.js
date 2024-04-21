@@ -21,6 +21,7 @@ function ServiceRequestDetails() {
     const [request, setRequest] = useState()
     const [carStatus, setCarStatus] = useState()
     const [requestStatus, setRequestStatus] = useState()
+    const [dataReload, setDataReload] = useState(1)
     dayjs.extend(LocalizedFormat)
 
     const [openChangeStatus, setOpenChangeStatus] = useState(false)
@@ -38,22 +39,27 @@ function ServiceRequestDetails() {
         .catch((error) => {
             console.log(error)
         })
-    }, [])   
+    }, [dataReload])   
 
-    const handleClose = () => {
+      const handleClose = () => {
         setOpenChangeStatus(false)
       };
   
-      const handleStatusChange = (e) => {
-          setCarStatus(e.target.value)
-      }
+    //   const handleStatusChange = (e) => {
+    //       setCarStatus(e.target.value)
+    //   }
   
       const handleRequestStatusChange = (e) => {
           setRequestStatus(e.target.value)
+          setDataReload(dataReload + 1)
       }
   
       const handleChangeStatus = () => {
-  
+        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, 
+            {requestID: request?.requestID, requestStatusID: requestStatus, carID: request?.car.carID}, 
+            {withCredentials: true})
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error))
       }
     
     return (
@@ -104,8 +110,10 @@ function ServiceRequestDetails() {
                                 required
                             >
                         
-                            <MenuItem value = "IFR">In for Repair</MenuItem>
-                            <MenuItem value = "RDY">Available to Rent</MenuItem>
+                            <MenuItem value = "1">New</MenuItem>
+                            <MenuItem value = "2">In Progress</MenuItem>
+                            <MenuItem value = "3">Done</MenuItem>
+                            <MenuItem value = "0">On Hold</MenuItem>
                     
                             </Select>
                         </FormControl>

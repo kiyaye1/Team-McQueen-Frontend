@@ -49,16 +49,14 @@ function InquiryDetails() {
       setOpenChangeStatus(false)
     };
 
-    const handleStatusChange = (e) => {
-        setCarStatus(e.target.value)
-    }
-
     const handleInquiryStatusChange = (e) => {
         setInquiryStatus(e.target.value)
     }
 
     const handleChangeStatus = () => {
-
+        axios.post(`${BASE_API_URI}/contacts/updateTicketStatus`, {requestID: inquiry?.requestID, newStatus: inquiryStatus}, {withCredentials: true})
+        .then((response) => console.log(response))
+        .catch((error) => alert(error))
     }
 
   
@@ -73,17 +71,18 @@ function InquiryDetails() {
         )
         .then((response) => {
             console.log(response)
+            completeRequest()
         })
         .catch((error) => {
             console.log(error)
         })
     }
 
-    // const completeRequest = () => {
-    //     axios.patch(`${BASE_API_URI}/updateTicketStatus`, {status: 3}, {withCredentials: true})
-    //     .then((response) => alert(response))
-    //     .catch((error) => alert(error))
-    // }
+    const completeRequest = () => {
+        axios.post(`${BASE_API_URI}/contacts/updateTicketStatus`, {requestID: inquiry?.requestID, newStatus: 3}, {withCredentials: true})
+        .then((response) => alert(response))
+        .catch((error) => alert(error))
+    }
 
 
     return (
@@ -115,37 +114,22 @@ function InquiryDetails() {
            </div>
 
             <div class = "space-x-2">
-                <Button variant = "contained">Email Customer</Button>
+            {inquiry?.type == "Vehicle Inquiries" && 
                 <Button variant = "outlined" onClick = {() => setOpenServiceRequest(true)}>Create Service Request</Button>
+            }
             </div>
 
             <Dialog open = {openServiceRequest} onClose = {handleClose}>
                 <DialogTitle>Create Mechanic Service Request</DialogTitle>
                 <DialogContent>
                     <div class = "space-y-4 p-4">
+                        <p>This will create a Mechanic Service Request out of the information submitted by the customer. It will mark the Customer Service Inquiry as completed, and will transfer the information to the Mechanics.</p>
                         <p><span class = "font-bold">Ticket Number: </span>{inquiryID}</p>
                         <p><span class = "font-bold">Car Number: </span>{inquiry?.carID}</p>
                         <div class = "pb-4">
                             <p class = "font-bold">Description:</p>
                             <p>{inquiry?.description}</p>
                         </div>
-
-                        <FormControl required fullWidth>
-                            <InputLabel id="status-select">Car Status</InputLabel>
-                            <Select
-                                labelId = "status-select"
-                                name = "carStatus"
-                                value = {carStatus}
-                                label = "Car Status"
-                                onChange = {handleStatusChange}
-                                required
-                            >
-                        
-                            <MenuItem value = "IFR">In for Repair</MenuItem>
-                            <MenuItem value = "RDY">Available to Rent</MenuItem>
-                    
-                            </Select>
-                        </FormControl>
                     </div>
 
                 </DialogContent>
@@ -172,9 +156,10 @@ function InquiryDetails() {
                                 required
                             >
                         
-                            <MenuItem value = "IFR">In for Repair</MenuItem>
-                            <MenuItem value = "RDY">Available to Rent</MenuItem>
-                    
+                            <MenuItem value = "1">New</MenuItem>
+                            <MenuItem value = "2">In Progress</MenuItem>
+                            <MenuItem value = "3">Done</MenuItem>
+                            <MenuItem value = "0">On Hold</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
