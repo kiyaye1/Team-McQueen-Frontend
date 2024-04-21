@@ -1,5 +1,5 @@
 import BikeWoman from '../assets/bike-woman.jpg'
-import CreateAccount from '../components/HowItWorks';
+import HowItWorks from '../components/HowItWorks';
 import { Button } from '@mui/material';
 import carPhoto from '../assets/teal-car.png';
 import { Grid, Typography } from '@mui/material';
@@ -36,10 +36,10 @@ const Homepage = () => {
       </div>
 
       {/* Create Account section with border and title */}
-      <div className="create-account-section border px-4 py-3 mx-auto mt-8 rounded flex flex-col items-center">
+      <div className="create-account-section border border-border px-4 py-3 mx-auto mt-8 rounded flex flex-col items-center">
         <h2 className="text-section-head mb-8 mt-4">How it works</h2>
         {/* Your CreateAccount component goes here */}
-        <CreateAccount />
+        <HowItWorks />
       </div>
 
       <div className="m-16 lg:mx-32">

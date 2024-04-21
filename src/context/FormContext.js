@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
 import validator from 'validator';
+import axios from 'axios';
+import BASE_API_URI from "../config";
 const { isValid } = require('usdl-regex');
 const valid = require("card-validator");
 
@@ -57,11 +59,52 @@ export const FormProvider = ({children}) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
 
     const handleChange = e => {
-        const { type, name, value, checked } = e.target;
-        setData(prevData => ({
-            ...prevData,
-            [name]: type === "checkbox" ? checked : value
-        }));
+        const type = e.target.type
+        const name = e.target.name
+
+        const value = type == "checkbox"
+            ? e.target.checked
+            : e.target.value 
+
+    
+        setData(prevData => ({...prevData, [name] : value}))
+
+        // Clear the specific error when user modifies the field
+        if (name === 'customer_firstName') {
+            setFirstNameError(''); 
+        }
+        if (name === 'customer_lastName') {
+            setLastNameError(''); 
+        }
+        if (name === 'customer_phoneNumber') {
+            setPhoneNumberError(''); 
+        }
+        if (name === 'customer_emailAddress') {
+            setEmailAddressError(''); 
+        }
+        if (name === 'customer_mailingAddress') {
+            setMailingAddressError(''); 
+        }
+        if (name === 'customer_password') {
+            setPasswordError(''); 
+        }
+        if (name === 'customer_passwordRetype') {
+            setPasswordRetypeError(''); 
+        }
+    }
+
+    const checkEmailUniqueness = async (email) => {
+        try {
+            const response = await axios.post(`${BASE_API_URI}/check-email`, { email });
+            const result = response.data;
+            if (result.status === 400) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error('Error checking email uniqueness:', error);
+            return false;
+        }
     };
 
     // mi and suffix - not required
@@ -91,7 +134,7 @@ export const FormProvider = ({children}) => {
     const [cardccvError, setCardccvError] = useState("");
 
     //Validate custome information
-    const CustomerInfoValidation = () => {
+    const CustomerInfoValidation = async () => {
         let errors = {};
     
         //RegExp pattern for mobile phone numbers
@@ -112,8 +155,14 @@ export const FormProvider = ({children}) => {
             errors.customer_phoneNumber = "Invalid Phone Number"
         
         //Validate whether the given string literal is an email or not
-        if((validator.isEmail(validator.trim(data.customer_emailAddress))) != true) 
-            errors.customer_emailAddress = "Invalid Email"
+        if (!validator.isEmail(data.customer_emailAddress.trim())) {
+            errors.customer_emailAddress = "Invalid Email";
+        } else {
+            const isUnique = await checkEmailUniqueness(data.customer_emailAddress);
+            if (!isUnique) {
+                errors.customer_emailAddress = "Email is not unique. Please use a different email.";
+            }
+        }
 
         //Validate whether mailing address is provided or not
         if ((validator.isEmpty(validator.trim(data.customer_mailingAddress))) === true) 
@@ -181,8 +230,10 @@ export const FormProvider = ({children}) => {
     
         return Object.keys(errors).length === 0 ? null : errors;
     }
-
-    const canSubmit = page === Object.keys(title).length - 1 && termsAccepted;
+    
+    // can submit when required inputs are all fulled in, and when the user is on last page
+    // const canSubmit = [...Object.values(requiredInputs)].every(Boolean) && page == Object.keys(title).length - 1
+    const canSubmit = page == Object.keys(title).length - 1 && termsAccepted
 
     // checking all inputs that start with 'customer', except for non required ones
     // determine if user can go to next page
@@ -248,9 +299,9 @@ export const FormProvider = ({children}) => {
             setExpDateError,
             setCardccvError,
             handleChange, 
-            canSubmit, 
-            termsAccepted, 
-            setTermsAccepted,
+            canSubmit,
+            termsAccepted,
+            setTermsAccepted, 
             disableNext, 
             disablePrev
         }}>
@@ -261,4 +312,3 @@ export const FormProvider = ({children}) => {
 }
 
 export default FormContext;
-

@@ -131,11 +131,11 @@ function Reservation() {
                     label = "Pick Up Location"
                     variant = "standard"
                 >
-                <MenuItem value = {1}>Northwest</MenuItem>
-                <MenuItem value = {2}>Northeast</MenuItem>
-                <MenuItem value = {3}>Center City</MenuItem>
-                <MenuItem value = {4}>Southeast</MenuItem>
-                <MenuItem value = {5}>Airport</MenuItem>
+                {stations?.map((data, key) => {
+                    return(
+                        <MenuItem key = {key} value = {data.stationID}>{data.name}</MenuItem>
+                    );
+                })}
                 </Select>
             </FormControl>
 
@@ -149,11 +149,12 @@ function Reservation() {
                     label = "Drop Off Location"
                     variant = "standard"
                 >
-                <MenuItem value = {1}>Northwest</MenuItem>
-                <MenuItem value = {2}>Northeast</MenuItem>
-                <MenuItem value = {3}>Center City</MenuItem>
-                <MenuItem value = {4}>Southeast</MenuItem>
-                <MenuItem value = {5}>Airport</MenuItem>
+                {stations?.map((data, key) => {
+                    return(
+                        <MenuItem key = {key} value = {data.stationID}>{data.name}</MenuItem>
+                    );
+                })}
+
                 </Select>
             </FormControl>
 

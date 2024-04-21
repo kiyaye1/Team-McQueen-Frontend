@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import BASE_API_URI from "../../config";
+import { useAuth } from "../../context/AuthContext";
 
 // todo: set data in useeffect so it reloads when the data changes
 
@@ -16,14 +17,26 @@ function CustomerDetails(props) {
     const customerId = params.id
     const [customer, setCustomer] = useState()
 
+    const [reservations, setReservations] = useState([])
+    const {user} = useAuth()
+
     useEffect(() => {
       getData()
+      getReservations()
     }, [])
 
     const getData = async () => {
         const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, {withCredentials:true})
         setCustomer(data.data)
         console.log(data.data)
+    }
+
+    function getReservations() {
+      axios.get(`${BASE_API_URI}/reservations`, { withCredentials: true })
+        .then(response => {
+          setReservations(response.data);
+        })
+        .catch(error => console.log(error));
     }
 
     function suspendCustomer() {
@@ -54,7 +67,7 @@ function CustomerDetails(props) {
         <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate(-1)}>Back to Customer List</Button>
 
         <div class = "w-full flex justify-between">
-          <h1 class = "text-section-head">{customer?.firstName + " " + customer?.middleInitial + " " + customer?.lastName}</h1>
+          <h1 class = "text-section-head">{customer?.firstName + " " + (customer?.middleInitial ? customer?.middleInitial : "") + " " + customer?.lastName}</h1>
           <div>
             <Button variant = "outlined" onClick = {() => terminateCustomer()}>Terminate </Button>
             <Button onClick = {() => suspendCustomer()}>Suspend</Button>
@@ -92,15 +105,18 @@ function CustomerDetails(props) {
           </p>
         </div>
 
-        <div class = "my-8">
-          <h2 class = "text-subhead">Upcoming Reservations</h2>
-          <p>No upcoming reservations</p>
-        </div>
-
-        <div>
-          <h2 class = "text-subhead">Past Reservations</h2>
-          <p>No previous reservations.</p>
-        </div>
+        {/* <div class = "my-8">
+          <h2 class = "text-subhead">Reservations</h2>
+          {reservations?.filter(data => data.customer.customerID === user.userID).map((data, key) => (
+          <div className="mb-8" key={key}>
+            <p>Reservation ID: {data.reservationID}</p>
+            <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
+            <p>Start Station: {data.startStation.stationID}</p>
+            <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
+            <p>End Station: {data.endStation.stationID}</p>
+          </div>
+        ))}  
+        </div> */}
       </div></>
   
     );
