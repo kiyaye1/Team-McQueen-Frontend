@@ -44,8 +44,15 @@ function Profile() {
     setNewPhone(e.target.value)
   }
 
+  // edit profile information
   const handleEdit = () => {
-   // handle edit 
+   axios.patch(`${BASE_API_URI}/customers/${user.userID}`, 
+    {emailAddress: newEmail, phoneNumber: newPhone}, 
+    {withCredentials: true}) 
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => console.log(error))
   }
   
 
@@ -109,21 +116,18 @@ function Profile() {
             <DialogTitle>Edit Profile Details</DialogTitle>
             <DialogContent>
                 <TextField 
-                autoFocus 
+                required
                 margin="dense" 
-                name="emailAddress" 
                 label="Email Address" 
                 fullWidth
-                value={newEmail} 
-                onChange={handleEmailChange} /> 
-                
+                value={newEmail || user.emailAddress} 
+                onChange={handleEmailChange}/> 
                 <TextField 
                 autoFocus 
                 margin="dense" 
-                name="name" 
-                label="Station Name" 
+                label="Phone Number" 
                 fullWidth 
-                value={newPhone} 
+                value={newPhone || user.xtra} 
                 onChange={handlePhoneNumberChange} /> 
             </DialogContent>
             <DialogActions>

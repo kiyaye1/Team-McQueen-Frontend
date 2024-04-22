@@ -268,7 +268,7 @@ function EmployeeFunction() {
         </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose}>Cancel</Button>
-            <Button onClick={() => { handleSubmit(); handleDialogClose(); }} sx={{color: "#000180"}}>Add</Button>
+            <Button onClick={() => { handleSubmit(); }} sx={{color: "#000180"}}>Add</Button>
           </DialogActions>
         </Dialog>
         {/* Edit Dialog */}
