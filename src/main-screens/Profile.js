@@ -15,12 +15,13 @@ function Profile() {
   const [customer, setCustomer] = useState();
   const [reservations, setReservations] = useState([]);
   const [openEdit, setOpenEdit] = useState(false)
-  const [newEmail, setNewEmail] = useState("")
-  const [newPhone, setNewPhone] = useState("")
+  const [newEmail, setNewEmail] = useState(user.emailAddress)
+  const [newPhone, setNewPhone] = useState(user.xtra)
 
   useEffect(() => {
     if (user.role === 0) {
       getReservations();
+      getUserInformation()
     }
   }, []);
 
@@ -30,6 +31,17 @@ function Profile() {
         setReservations(response.data);
       })
       .catch(error => console.log(error));
+  }
+
+  function getUserInformation() {
+    axios.get(`${BASE_API_URI}/customers/${user.userID}`, {withCredentials: true})
+    .then((response) => {
+      console.log(response.data)
+      setCustomer(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 
   const handleClose = () => {
@@ -65,8 +77,8 @@ function Profile() {
         <div class = "col-span-1 space-y-4">
           <div className="text-body-copy">
             <h5><span class = 'font-bold'>Name:</span> {user.firstName + " " + user.lastName}</h5>
-            <h5><span class = 'font-bold'>Email:</span> {user.emailAddress}</h5>
-            <h5><span class = 'font-bold'>Phone Number:</span> {user.xtra}</h5>
+            <h5><span class = 'font-bold'>Email:</span> {newEmail}</h5>
+            <h5><span class = 'font-bold'>Phone Number:</span> {newPhone}</h5>
           </div>
          
           <div class = "space-x-2">

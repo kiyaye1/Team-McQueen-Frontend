@@ -105,7 +105,7 @@ function CustomerDetails(props) {
           </p>
         </div>
 
-        {/* <div class = "my-8">
+        <div class = "my-8">
           <h2 class = "text-subhead">Reservations</h2>
           {reservations?.filter(data => data.customer.customerID === user.userID).map((data, key) => (
           <div className="mb-8" key={key}>
@@ -116,7 +116,7 @@ function CustomerDetails(props) {
             <p>End Station: {data.endStation.stationID}</p>
           </div>
         ))}  
-        </div> */}
+        </div>
       </div></>
   
     );
