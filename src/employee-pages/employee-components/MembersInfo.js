@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Box, TextField, Container, FormControl, InputLabel, Select, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import BASE_API_URI from '../../config';
 
-function MembersInfo({ customerData }) {
+function MembersInfo() {
     const navigate = useNavigate();
+    const [customerData, setCustomerData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortField, setSortField] = useState('customerID');
     const [sortOrder, setSortOrder] = useState('ascending');
     const [currentPage, setCurrentPage] = useState(0);  // Start from page 0 like in RequestsTable
     const itemsPerPage = 10;
+
+    useEffect(() => {
+        getData()
+    }, [])
+  
+    const getData = async () => {
+        const data = await axios.get(`${BASE_API_URI}/customers`, {withCredentials:true})
+        setCustomerData(data.data) 
+    }
 
     const handleChangeSearch = (event) => {
         setSearchTerm(event.target.value.toLowerCase());
@@ -61,8 +73,8 @@ function MembersInfo({ customerData }) {
     };
 
     return (
-        <Container className="my-2">
-            <h1 class="text-section-head pb-8">Members</h1>
+        <Container className="my-8">
+        <h1 class = "text-section-head pb-8">Members</h1>
             <Box display="flex" justifyContent="space-between" marginBottom={2}>
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <TextField

@@ -1,7 +1,7 @@
 import {TextField} from "@mui/material";
 import {Select} from "@mui/material";
 import {Button, MenuItem} from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import {FormControl} from "@mui/material";
 import BASE_API_URI from "../config";
@@ -14,9 +14,15 @@ const ContactForm = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
-
+    const [isVehicleInquiry, setIsVehicleInquiry] = useState(false) 
+    const [carID, setCarID] = useState(null)
+    
     const handleNameChange = (e) => {
         setName(e.target.value);
+    }
+
+    const handleCarIdChange = (e) => {
+        setCarID(e.target.value)
     }
 
     const handleEmailChange = (e) => {
@@ -25,6 +31,11 @@ const ContactForm = () => {
 
     const handleReasonChange = (e) => {
         setReason(e.target.value);
+        if(e.target.value == "Vehicle Inquiries") {
+            setIsVehicleInquiry(true)
+        } else {
+            setIsVehicleInquiry(false)
+        }
     }
 
     const handleMessageChange = (e) => {
@@ -39,20 +50,34 @@ const ContactForm = () => {
             return;
         }
     
-        try {
-            await axios.post(`${BASE_API_URI}/contacts/createContacts`, { name, email, reason, message }, { withCredentials: true });
-            alert('Your message has been sent!');
-            // Reset form fields
-            setName('');
-            setEmail('');
-            setReason('');
-            setMessage('');
-        } catch (error) {
-            console.error(error);
-            console.error('Error sending message:', error);
-            alert('Failed to send the message.');
+        if(carID) {
+            axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, carID, message})
+            .then((response) => {
+                console.log(response)
+                setName('');
+                setEmail('');
+                setReason('');
+                setMessage('');
+                setCarID(null)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        } else {
+            axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, message})
+            .then((response) => {
+                console.log(response)
+                setName('');
+                setEmail('');
+                setReason('');
+                setMessage('');
+                setCarID(null)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
         }
-    };
+    }
 
     return (
     <div class = "grid grid-cols-1 lg:grid-cols-3 md: grid-cols-2 py-8 gap-16">
@@ -90,12 +115,25 @@ const ContactForm = () => {
                 >
                     <MenuItem value = "Website feedback">Website Feedback</MenuItem>
                     <MenuItem value = "General Feedback">General Feedback</MenuItem>
-                    <MenuItem value = "Vehicle Inquiries">Vehicle Inquiries</MenuItem>
+                    <MenuItem value = "Vehicle Inquiries">Vehicle Inquiries or Service Requests</MenuItem>
                     <MenuItem value = "General Questions">General Questions</MenuItem>
                 </Select>
             </FormControl>
             
             </div>
+            {isVehicleInquiry && (
+                <div>
+                    <TextField 
+                        label = "Car Number"
+                        variant = "outlined"
+                        value = {carID}
+                        onChange = {handleCarIdChange}
+                        sx = {{marginRight:1, width: '100%', backgroundColor: 'white', borderRadius: '4px'}}
+                        helperText="If you are having an issue with a car, please provide the car number from your reservation."
+                    />
+                </div>
+            )}
+
             <div>
             <TextField 
                 label = "Send us a Message!"
