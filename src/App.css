@@ -46,11 +46,11 @@
 }
 
 .table-head {
-    background-color: #AFDBF5;
+    background-color: #9d9dd9;
 }
 
 .tr:hover {
-    background-color: #AFDBF5;
+    background-color: #f2f2ff;
     cursor: pointer; 
 }
 /************************************************************************/
