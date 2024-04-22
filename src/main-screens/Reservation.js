@@ -65,7 +65,7 @@ function Reservation() {
         axios.request(config)
         .then((response) => {
             console.log("Response")
-            console.log(response.data)
+            console.log(response)
             setReservationResult(response.data)
         })
         .catch((error) => {

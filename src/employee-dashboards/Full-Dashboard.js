@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BASE_API_URI from '../config';
 import { useAuth } from "../context/AuthContext";
+import axios from 'axios'
 
 function FullDashboard({employeeRole}) {
     //0 = customer
@@ -22,10 +23,16 @@ function FullDashboard({employeeRole}) {
     const [totalNewInquiryRecords, setTotalNewInquiryRecords] = useState(null);
     const [totalInProgressInquiryRecords, setTotalInProgressInquiryRecords] = useState(null);
     const [totalCompletedInquiryRecords, setTotalCompletedInquiryRecords] = useState(null);
+    const [hourlyRate, setHourlyRate] = useState(null)
 
     const {user} = useAuth()
     console.log(user)
     const role = user.role
+
+    useEffect(() => {
+      axios.get(`${BASE_API_URI}/hourlyrate/current`, {withCredentials: true})
+      .then((response) => console.log(response))
+    })
 
     useEffect(() => {
       fetch(`${BASE_API_URI}/admindashtotals/employees`, {

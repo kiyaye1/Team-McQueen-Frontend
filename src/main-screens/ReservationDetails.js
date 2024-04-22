@@ -138,7 +138,7 @@ function ReservationDetails() {
 
             <div class = "border border-border rounded-xl p-4">
                 <h3 class = "text-card-title">Cost</h3>
-                <h5>${(selectedResult.costPerHour * searchQuery.reservationTime).toFixed(2)}</h5>
+                <h5>${selectedResult.cost}</h5>
             </div>
 
         </div>
