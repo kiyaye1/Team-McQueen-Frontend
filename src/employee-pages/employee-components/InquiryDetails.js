@@ -86,7 +86,7 @@ function InquiryDetails() {
 
     return (
       <><div class = "mx-16 my-8">
-            <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate('/customer-approval/2')}>Back to Inquiry List</Button>
+            <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate('/customer-inquiries')}>Back to Inquiry List</Button>
             <h1 class = "text-section-head">Inquiry Ticket</h1>
             
             <p class = "text-body-copy mt-4"><span class = "font-bold">Ticket Number:</span> {inquiryID}</p>
@@ -113,9 +113,8 @@ function InquiryDetails() {
            </div>
 
             <div class = "space-x-2">
-            {inquiry?.type == "Vehicle Inquiries" && 
+                <Button variant = "contained">Email Customer</Button>
                 <Button variant = "outlined" onClick = {() => setOpenServiceRequest(true)}>Create Service Request</Button>
-            }
             </div>
 
             <Dialog open = {openServiceRequest} onClose = {handleClose}>

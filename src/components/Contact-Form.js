@@ -77,30 +77,7 @@ const ContactForm = () => {
                 console.log(error)
             })
         }
-    };
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-        
-    //     if (!validator.isEmail(email)) {
-    //         alert('Please enter a valid email address.');
-    //         return;
-    //     }
-    
-    //     try {
-    //         await axios.post(`${BASE_API_URI}/contacts/createContacts`, { name, email, reason, message }, { withCredentials: true });
-    //         alert('Your message has been sent!');
-    //         // Reset form fields
-    //         setName('');
-    //         setEmail('');
-    //         setReason('');
-    //         setMessage('');
-    //     } catch (error) {
-    //         console.error(error);
-    //         console.error('Error sending message:', error);
-    //         alert('Failed to send the message.');
-    //     }
-    // };
+    }
 
     return (
     <div class = "grid grid-cols-1 lg:grid-cols-3 md: grid-cols-2 py-8 gap-16">

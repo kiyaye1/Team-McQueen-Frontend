@@ -15,8 +15,6 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
         setCurrentPage(0); // Reset to first page when search changes
     };
 
-    console.log(customerData)
-
     const handleChangeOrderBy = (event) => {
         setSortField(event.target.value);
     };

@@ -1,5 +1,6 @@
-import { TextField, Button } from "@mui/material";
+import { TextField, Checkbox, FormControlLabel, Typography, Link} from "@mui/material";
 import useFormContext from "../hooks/useFormContext";
+
 
 
 function CreditCardInfo() {
@@ -9,7 +10,9 @@ function CreditCardInfo() {
       cardNameError,
       cardNumberError,
       expDateError,
-      cardccvError
+      cardccvError,
+      termsAccepted,
+      setTermsAccepted
     } = useFormContext()
 
 
@@ -68,6 +71,23 @@ function CreditCardInfo() {
               <Button variant="contained" sx={{m:1, backgroundColor: '#000180'}}>Save Card</Button>
               <Button variant="text" sx = {{color: '#000180'}}>Add New Card</Button>
           </div> */}
+      {/* Terms and Conditions Checkbox with PDF Link */}
+      <div className="col-span-3">
+            <FormControlLabel
+                  control={
+                      <Checkbox
+                          checked={termsAccepted}
+                          onChange={(e) => setTermsAccepted(e.target.checked)}
+                          color="primary"
+                      />
+                  }
+                  label={
+                    <Typography>
+                        I agree to the <Link href="https://mcqueen-gyrocar.com/files/TermsAndConditions.pdf" target="_blank" color="secondary">Terms and Conditions</Link>.
+                    </Typography>
+                }
+              />
+          </div>
       </div>
     </div> 
     );

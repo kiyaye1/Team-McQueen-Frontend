@@ -7,7 +7,7 @@ import AboutUs from '../main-screens/About-us';
 import Faq from '../main-screens/Faq';
 import Contact from '../main-screens/Contact';
 import Register from '../main-screens/Register';
-// import VerifyEmailPage from '../main-screens/VerifyEmailPage';
+import VerifyEmailPage from '../main-screens/VerifyEmailPage';
 import Confirmation from '../main-screens/FormConfirmation';
 import Login from '../main-screens/Login';
 import ProtectedRoute from './ProtectedRoute'; 
@@ -74,7 +74,7 @@ function Navigation() {
                 <Route path="/" element={<Layout isLoggedIn={user?.isLoggedIn} isEmployee={user?.isEmployee} />}>
                     <Route index element={<Homepage />} />
                     <Route path="login" element={<Login setEmployeeRole={setEmployeeRole}/>} />
-                    {/* <Route path="verify-email" element={<VerifyEmailPage />} /> */}
+                    <Route path="verify-email" element={<VerifyEmailPage />} />
                     <Route path = "registration-confirmation" element = {<Confirmation/>}/>
                     <Route element={<ProtectedRoute />}>
                         <Route path = "account" element = {<Profile />}/>

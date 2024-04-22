@@ -33,6 +33,8 @@ const Form = () => {
         setExpDateError,
         setCardccvError, 
         canSubmit,
+        termsAccepted, 
+        setTermsAccepted,
         disablePrev,
         disableNext
     } = useFormContext()
@@ -41,10 +43,10 @@ const Form = () => {
     const handlePrev = () => setPage(prev => prev - 1)
 
     // set page count up one
-    const handleNext = () => {
+    const handleNext = async () => {
         if(page === 0) {
             //call CustomerInfoValidation from FormContext
-            const errors = CustomerInfoValidation()
+            const errors = await CustomerInfoValidation()
             if(errors) {
                 setFirstNameError(errors.customer_firstName)
                 setLastNameError(errors.customer_lastName)
@@ -86,6 +88,12 @@ const Form = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         console.log("submit")
+
+        // Check if terms and conditions have been accepted
+        if (!termsAccepted) {
+            alert("You must agree to the Terms and Conditions to proceed.");
+            return;  // Stop the form submission if terms are not accepted
+        }
         
         //call CreditCardInfoValidation from FormContext
         const errors = CreditCardInfoValidation()
@@ -141,28 +149,35 @@ const Form = () => {
         const cardData = valid.expirationDate(data.cardExpirationDate);
         try {
             token = await stripe.tokens.create({
-              card: {
-                number: data.cardNumber,
-                exp_month: cardData.month,
-                exp_year: cardData.year,
-                cvc: data.cardccv
-              },
+                card: {
+                    number: data.cardNumber,
+                    exp_month: cardData.month,
+                    exp_year: cardData.year,
+                    cvc: data.cardccv
+                },
             });
-          } catch (error) {
+        } catch (error) {
             console.error('Error creating token:', error);
-            return;
-          }
-        let step3 = await axios.post(`${BASE_API_URI}/signup/postCCI/${step1.data.customerID}`,
-            {
-                cardToken: token.id
-            }
-        );
-        if (step3.status != 200) {
-            console.error("Error in step 3");
             return;
         }
 
-        navigate('/registration-confirmation')
+        try {
+            let step3 = await axios.post(`${BASE_API_URI}/signup/postCCI/${step1.data.customerID}`,
+            {
+                cardToken: token.id
+            });
+
+            if (step3.status === 200) {
+                alert("Thank you for your registration. Please check your email to verify it.");
+                navigate('/');
+            } else {
+                console.error("Error in step 3");
+                return;
+            }
+        } catch (error) {
+            console.error("Error during form submission", error);
+            alert("An error occurred during registration. Please try again.");
+        }
     }
 
     const content = (
