@@ -9,7 +9,6 @@ import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs"
 import {  Dialog, DialogTitle, DialogContent,  DialogActions, FormControl, InputLabel, Select, MenuItem} from '@mui/material'
-import userEvent from "@testing-library/user-event";
 
 // todo: set data in useeffect so it reloads when the data changes
 

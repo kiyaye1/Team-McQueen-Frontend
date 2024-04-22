@@ -51,7 +51,6 @@ const ContactForm = () => {
         }
     
         if(carID) {
-            console.log('car id')
             axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, carID, message})
             .then((response) => {
                 console.log(response)
@@ -65,7 +64,6 @@ const ContactForm = () => {
                 console.log(error)
             })
         } else {
-            console.log("no car id")
             axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, message})
             .then((response) => {
                 console.log(response)

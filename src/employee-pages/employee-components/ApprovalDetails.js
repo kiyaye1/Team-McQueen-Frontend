@@ -30,10 +30,10 @@ function ApprovalDetails() {
     }
 
     function suspendCustomer() {
-        axios.patch(`${BASE_API_URI}customers/${customerId}`, {
+        axios.patch(`${BASE_API_URI}/customers/${customerId}`, {
             statusCode: "SPD"
         }, {withCredentials:true})
-        .then(response => console.log(response))
+        .then(response => alert("Customer has been Suspended."))
         .catch(error => console.log(error))
       }
 
@@ -44,7 +44,6 @@ function ApprovalDetails() {
     const getData = async () => {
         const data = await axios.get(`${BASE_API_URI}/customers/${customerId},`, {withCredentials:true})
         setCustomer(data.data)
-        console.log(data.data)
     }
 
     

@@ -16,6 +16,13 @@ function FullDashboard({employeeRole}) {
     const [totalRDYCustomerRecords, setTotalRDYCustomerRecords] = useState(null);
     const [totalCarRecords, setTotalCarRecords] = useState(null);
     const [totalStationRecords, setTotalStationRecords] = useState(null);
+    const [totalNewServiceRequestRecords, setTotalNewServiceRequestRecords] = useState(null);
+    const [totalInProgressServiceRequestRecords, setTotalInProgressServiceRequestRecords] = useState(null);
+    const [totalCompletedServiceRequestRecords, setTotalCompletedServiceRequestRecords] = useState(null);
+    const [totalNewInquiryRecords, setTotalNewInquiryRecords] = useState(null);
+    const [totalInProgressInquiryRecords, setTotalInProgressInquiryRecords] = useState(null);
+    const [totalCompletedInquiryRecords, setTotalCompletedInquiryRecords] = useState(null);
+
     const {user} = useAuth()
     console.log(user)
     const role = user.role
@@ -109,13 +116,103 @@ function FullDashboard({employeeRole}) {
         })
         .catch(error => console.error('Error:', error));
     }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/service-requests/new`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalNewServiceRequestRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/service-requests/in-progress`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalInProgressServiceRequestRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/service-requests/completed`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalCompletedServiceRequestRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customer-inquiries/new`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalNewInquiryRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customer-inquiries/in-progress`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalInProgressInquiryRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+      fetch(`${BASE_API_URI}/admindashtotals/customer-inquiries/completed`, {
+        method: 'GET',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+        .then(data => {
+          setTotalCompletedInquiryRecords(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
     
     if(role === 1) {
       return (
         <div>
           <div class = "mx-16 mt-16 mb-8 text-section-head">Admin Dashboard</div>
           <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-            <Link to = "/customer-approval/1">
+            <Link to = "/customer-approvals">
               <DashCard
                 title = "Customer Approval Requests"
                 dataPoints = {[
@@ -130,6 +227,25 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
+            <Link to = "/customer-inquiries">
+              <DashCard
+                title = "Customer Inquiries"
+                dataPoints = {[
+                  {
+                    number: totalNewInquiryRecords,
+                    caption: "New Inquiries"
+                  },
+                  {
+                    number: totalInProgressInquiryRecords,
+                    caption: "In-Progress"
+                  },
+                  {
+                    number: totalCompletedInquiryRecords,
+                    caption: "Completed"
+                  }
+                ]}
+              />
+              </Link>
             <DashCard
               title = "Business Admin Information"
               dataPoints = {[
@@ -144,18 +260,22 @@ function FullDashboard({employeeRole}) {
                 title = "Service Requests"
                 dataPoints = {[
                   {
-                    number: "11",
+                    number: totalNewServiceRequestRecords,
                     caption: "New Tickets"
                   },
                   {
-                    number: "8",
+                    number: totalInProgressServiceRequestRecords,
                     caption: "In-Progress"
+                  },
+                  {
+                    number: totalCompletedServiceRequestRecords,
+                    caption: "Completed"
                   }
                 ]}
               />
 
              </Link>
-            <Link to = "/customer-approval/3">
+            <Link to = "/members-info">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
@@ -205,7 +325,7 @@ function FullDashboard({employeeRole}) {
       <div>
         <div class = "mx-16 mt-16 mb-8 text-section-head">Customer Service Dashboard</div>
         <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-          <Link to = "/customer-approval/1">
+          <Link to = "/customer-approvals">
                 <DashCard
                   title = "Customer Approval Requests"
                   dataPoints = {[
@@ -220,7 +340,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval/3">
+            <Link to = "/members-info">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
@@ -231,17 +351,25 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
-            <Link to = "/customer-approval/2">
+            <Link to = "/customer-inquiries">
               <DashCard
                 title = "Customer Inquiries"
                 dataPoints = {[
                   {
-                    number: "5",
-                    caption: "Open Inquiries"
+                    number: totalNewInquiryRecords,
+                    caption: "New Inquiries"
+                  },
+                  {
+                    number: totalInProgressInquiryRecords,
+                    caption: "In-Progress"
+                  },
+                  {
+                    number: totalCompletedInquiryRecords,
+                    caption: "Completed"
                   }
                 ]}
               />
-            </Link>
+              </Link>
         </div>
       </div>
       );
@@ -250,23 +378,27 @@ function FullDashboard({employeeRole}) {
       <div>
       <div class = "mx-16 mt-16 mb-8 text-section-head">Mechanic Dashboard</div>
         <div class = "mx-16 grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-        <Link to = "service-requests">
+        <Link to = "/service-requests">
           <DashCard
               title = "Service Requests"
               dataPoints = {[
                 {
-                  number: "11",
+                  number: totalNewServiceRequestRecords,
                   caption: "New Tickets"
                 },
                 {
-                  number: "8",
+                  number: totalInProgressServiceRequestRecords,
                   caption: "In-Progress"
+                },
+                {
+                  number: totalCompletedServiceRequestRecords,
+                  caption: "Completed"
                 }
               ]}
             />
             </Link>
            
-            <Link to = "/fleet-management/2">
+            <Link to = "/fleet-management">
             <DashCard
                 title = "Fleet Management"
                 dataPoints = {[
@@ -304,7 +436,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval/1">
+            <Link to = "/customer-approvals">
                 <DashCard
                   title = "Customer Approval Requests"
                   dataPoints = {[
@@ -319,7 +451,7 @@ function FullDashboard({employeeRole}) {
                   ]}
                 />
             </Link>
-            <Link to = "/customer-approval/3">
+            <Link to = "/members-info">
               <DashCard
                 title = "Member Information"
                 dataPoints = {[
@@ -330,13 +462,21 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
             </Link>
-            <Link to = "/customer-approval/2">
+            <Link to = "/customer-inquiries">
               <DashCard
                 title = "Customer Inquiries"
                 dataPoints = {[
                   {
-                    number: "5",
-                    caption: "Open Inquiries"
+                    number: totalNewInquiryRecords,
+                    caption: "New Inquiries"
+                  },
+                  {
+                    number: totalInProgressInquiryRecords,
+                    caption: "In-Progress"
+                  },
+                  {
+                    number: totalCompletedInquiryRecords,
+                    caption: "Completed"
                   }
                 ]}
               />
