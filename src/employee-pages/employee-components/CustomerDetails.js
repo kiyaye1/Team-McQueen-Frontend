@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import BASE_API_URI from "../../config";
 import { useAuth } from "../../context/AuthContext";
+import dayjs from 'dayjs'
+import LocalizedFormat from 'dayjs'
 
 // todo: set data in useeffect so it reloads when the data changes
 
@@ -28,13 +30,13 @@ function CustomerDetails(props) {
     const getData = async () => {
         const data = await axios.get(`${BASE_API_URI}/customers/${customerId}`, {withCredentials:true})
         setCustomer(data.data)
-        console.log(data.data)
     }
 
     function getReservations() {
       axios.get(`${BASE_API_URI}/reservations`, { withCredentials: true })
         .then(response => {
           setReservations(response.data);
+          console.log(response)
         })
         .catch(error => console.log(error));
     }
@@ -107,15 +109,38 @@ function CustomerDetails(props) {
 
         <div class = "my-8">
           <h2 class = "text-subhead">Reservations</h2>
-          {reservations?.filter(data => data.customer.customerID === user.userID).map((data, key) => (
-          <div className="mb-8" key={key}>
-            <p>Reservation ID: {data.reservationID}</p>
-            <p>Scheduled Start Time: {data.scheduledStartDatetime}</p>
-            <p>Start Station: {data.startStation.stationID}</p>
-            <p>Scheduled End Time: {data.scheduledEndDatetime}</p>
-            <p>End Station: {data.endStation.stationID}</p>
-          </div>
-        ))}  
+          {reservations?.filter(data => data.customer.customerID === customer?.customerID).map((data, key) => {
+            console.log("inside reservation filter")
+              dayjs.extend(LocalizedFormat)
+              const startDate = dayjs(data.scheduledStartDatetime).format('LLL')
+              const endDate = dayjs(data.scheduledEndDatetime).format('LLL')
+              
+              return (
+                  <div className="border border-border mt-4 p-4 rounded-xl" key={key}>
+                    {dayjs().isBefore(startDate) && (
+                      <div class = "pb-2">
+                        <p class = "text-blue-primary font-bold text-sm">Upcoming</p>
+                      </div>
+                    )}
+                    {dayjs().isAfter(startDate) && !dayjs().isBefore(endDate) && (
+                      <div class = "pb-2">
+                        <p class = "text-blue-primary font-bold text-sm">Completed</p>
+                      </div>
+                    )}
+                    {dayjs().isAfter(startDate) && dayjs().isBefore(endDate) &&(
+                      <div class = "pb-2">
+                        <p class = "text-blue-primary font-bold text-sm">In Progress</p>
+                      </div>
+                    )}
+                    <h4 class = "font-bold">{String(startDate)} - {String(endDate)}</h4>
+                    <p class = "text-body-copy"><span class = "font-bold">Reservation Number:</span> {data.reservationID}</p>
+                    <p class = "text-body-copy"><span class = "font-bold">Start:</span> {data.startStation.name} - {data.startStation.city} {data.startStation.state}</p>
+                    <p class = "text-body-copy"><span class = "font-bold">End:</span> {data.endStation.name} - {data.endStation.city} {data.endStation.state}</p>
+                  </div>
+              )
+            
+            })
+          }
         </div>
       </div></>
   

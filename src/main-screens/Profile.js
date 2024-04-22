@@ -102,7 +102,7 @@ function Profile() {
                         <p class = "text-blue-primary font-bold text-sm">Upcoming</p>
                       </div>
                     )}
-                    {dayjs().isAfter(startDate) && (
+                    {dayjs().isAfter(startDate) && !dayjs().isBefore(endDate) && (
                       <div class = "pb-2">
                         <p class = "text-blue-primary font-bold text-sm">Completed</p>
                       </div>

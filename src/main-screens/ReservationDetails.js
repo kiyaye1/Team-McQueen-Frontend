@@ -8,6 +8,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useAuth } from '../context/AuthContext';
 import BASE_API_URI from "../config";
+import LocalizedFormat from 'dayjs'
 
 function ReservationDetails() {
     const { user } = useAuth();
@@ -16,6 +17,8 @@ function ReservationDetails() {
     const searchQuery = search.searchQuery
     const selectedResult = result.data
     console.log(selectedResult)
+
+    dayjs.extend(LocalizedFormat)
 
 
     const navigate = useNavigate()
@@ -119,9 +122,9 @@ function ReservationDetails() {
             <div class = "border border-border rounded-xl p-4">
                 <h3 class = "text-card-title">Pick Up and Drop Off</h3>
                 <h5>{getStationName(searchQuery.pickup_location)}</h5>
-                <p>{searchQuery.pickup_datetime.$d.toISOString()}</p>
+                <p>{dayjs(searchQuery.pickup_datetime.$d.toISOString()).format("LLL")}</p>
                 <h5>{getStationName(searchQuery.dropoff_location)}</h5>
-                <p>{searchQuery.dropoff_datetime.$d.toISOString()}</p>
+                <p>{dayjs(searchQuery.dropoff_datetime.$d.toISOString()).format("LLL")}</p>
             </div>
 
             <div class = "col-span-2 border border-border rounded-xl p-4">
