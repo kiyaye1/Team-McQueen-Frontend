@@ -31,7 +31,10 @@ function FullDashboard({employeeRole}) {
 
     useEffect(() => {
       axios.get(`${BASE_API_URI}/hourlyrate/current`, {withCredentials: true})
-      .then((response) => console.log(response))
+      .then((response) => {
+        setHourlyRate(response.data.hourlyRate)
+      })
+      .catch((error) => console.log(error))
     })
 
     useEffect(() => {
@@ -313,6 +316,20 @@ function FullDashboard({employeeRole}) {
                   }
                 ]}
               />
+            </Link>
+            <Link to = "/price-information">
+              <DashCard 
+                title = "Reservation Pricing"
+                dataPoints = {[
+                  {
+                    number: hourlyRate,
+                    caption: "Price per Hour - Rochester"
+                  },
+                  {
+                    number: 120,
+                    caption: "Daily Maximum - Rochester"
+                  }
+                ]}/>
             </Link>
           </div>
         </div>

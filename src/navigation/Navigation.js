@@ -33,6 +33,7 @@ import ApplicationMetrics from '../employee-pages/ApplicationMetrics';
 import RentalMetrics from '../employee-pages/RentalMetrics';
 import Unauthorized from '../main-screens/Unauthorized';
 import InactivityDetector from '../hooks/InactivityDetector';
+import PriceInformation from '../employee-pages/employee-components/PriceInformation';
 
 function Navigation() {
     const { user, logout } = useAuth();
@@ -97,7 +98,8 @@ function Navigation() {
                         <Route path = "service-requests" element = {employeeRoleNum != 2 && employeeRoleNum != 4 ? <MechanicServiceRequests/> : <Unauthorized/>}/>
                         <Route path = "service-request-details/:id" element = {employeeRoleNum != 3 ? <ServiceRequestDetails/>:<Unauthorized/>}/>
                         <Route path = "fleet-management" element={employeeRoleNum != 2 && employeeRoleNum != 4 ? <FleetManagement /> : <Unauthorized /> }/>
-                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/>  
+                        <Route path = "employee-management" element = {employeeRoleNum != 2 && employeeRoleNum != 3 ? <EmployeeManagement/> : <Unauthorized />}/> 
+                        <Route path = "price-information" element = {employeeRoleNum == 1 ? <PriceInformation/> : <Unauthorized/>}/> 
                     </Route>
                     <Route path = "faq" element = {<Faq/>}/>
                     <Route path = "contact" element = {<Contact/>}/>
