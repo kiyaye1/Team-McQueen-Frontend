@@ -1,7 +1,7 @@
 import BASE_API_URI from "../../config";
 import axios from 'axios'
 import { useEffect } from "react";
-import { FormControl, Box, MenuItem, Select, InputLabel, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField} from "@mui/material"
+import { FormControl, Box, MenuItem, Container, Select, InputLabel, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField} from "@mui/material"
 import { useState } from "react";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs"
@@ -24,6 +24,8 @@ function CustomerInquiries() {
     const [currentPageCompleted, setCurrentPageCompleted] = useState(0);
     const [searchQueryMechanic, setSearchQueryMechanic] = useState('');
     const [currentPageMechanic, setCurrentPageMechanic] = useState(0);
+
+    const {user} = useAuth()
 
     const recordsPerPage = 5;
     
@@ -97,7 +99,7 @@ function CustomerInquiries() {
       .catch((error) => console.log(error))
     }
 
-    const filteredNew = inquiries.filter(inquiry =>
+    const filteredNew = inquiries?.filter(inquiry =>
         inquiry.requestStatus.statusID === 1 && (
             inquiry.description.toLowerCase().includes(searchQueryNew.toLowerCase()) ||
             inquiry.requestID.toString().includes(searchQueryNew) ||
@@ -105,9 +107,9 @@ function CustomerInquiries() {
             inquiry.type.toLowerCase().includes(searchQueryNew.toLowerCase())
         )
     );
-    const currentPageDataNew = filteredNew.slice(currentPageNew * recordsPerPage, (currentPageNew + 1) * recordsPerPage);
+    const currentPageDataNew = filteredNew?.slice(currentPageNew * recordsPerPage, (currentPageNew + 1) * recordsPerPage);
     
-    const filteredInProgress = inquiries.filter(inquiry =>
+    const filteredInProgress = inquiries?.filter(inquiry =>
         inquiry.requestStatus.statusID === 2 && (
             inquiry.description.toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
             inquiry.requestID.toString().includes(searchQueryInProgress) ||
@@ -115,9 +117,9 @@ function CustomerInquiries() {
             inquiry.type.toLowerCase().includes(searchQueryInProgress.toLowerCase())
         )
     );
-    const currentPageDataInProgress = filteredInProgress.slice(currentPageInProgress * recordsPerPage, (currentPageInProgress + 1) * recordsPerPage);
+    const currentPageDataInProgress = filteredInProgress?.slice(currentPageInProgress * recordsPerPage, (currentPageInProgress + 1) * recordsPerPage);
     
-    const filteredCompleted = inquiries.filter(inquiry =>
+    const filteredCompleted = inquiries?.filter(inquiry =>
         inquiry.requestStatus.statusID === 3 && (
             inquiry.description.toLowerCase().includes(searchQueryCompleted.toLowerCase()) ||
             inquiry.requestID.toString().includes(searchQueryCompleted) ||
@@ -125,16 +127,16 @@ function CustomerInquiries() {
             inquiry.type.toLowerCase().includes(searchQueryCompleted.toLowerCase())
         )
     );
-    const currentPageDataCompleted = filteredCompleted.slice(currentPageCompleted * recordsPerPage, (currentPageCompleted + 1) * recordsPerPage);
+    const currentPageDataCompleted = filteredCompleted?.slice(currentPageCompleted * recordsPerPage, (currentPageCompleted + 1) * recordsPerPage);
     
-    const filteredMechanic = serviceReq.filter(request =>
+    const filteredMechanic = serviceReq?.filter(request =>
         request.car.carID.toString().toLowerCase().includes(searchQueryMechanic.toLowerCase()) ||
         request.requestStatus.name.toString().toLowerCase().includes(searchQueryMechanic.toLowerCase()) ||
         request.requestID.toString().includes(searchQueryMechanic) ||
         dayjs(request.createdDatetime).format('LL').toString().toLowerCase().includes(searchQueryMechanic.toLowerCase()) ||
         request.car.status.shortDescription.toLowerCase().includes(searchQueryMechanic.toLowerCase())
     );
-    const currentPageDataMechanic = filteredMechanic.slice(currentPageMechanic * recordsPerPage, (currentPageMechanic + 1) * recordsPerPage);
+    const currentPageDataMechanic = filteredMechanic?.slice(currentPageMechanic * recordsPerPage, (currentPageMechanic + 1) * recordsPerPage);
     
     const handleNavigate = (id) => {
         navigate(`/inquiry-details/${id}`);
@@ -180,7 +182,7 @@ function CustomerInquiries() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {currentPageDataNew.map((inquiry) => (
+                            {currentPageDataNew?.map((inquiry) => (
                                 <TableRow key={inquiry.requestID} class = "tr">
                                     <TableCell>{inquiry.requestID}</TableCell>
                                     <TableCell>{dayjs(inquiry.createdDatetime).format('LL')}</TableCell>
@@ -197,7 +199,7 @@ function CustomerInquiries() {
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
                     <Button onClick={() => setCurrentPageNew(currentPageNew - 1)} disabled={currentPageNew === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew.length}>Next</Button>
+                    <Button onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew?.length}>Next</Button>
                 </Box>
             </div>
 
@@ -230,7 +232,7 @@ function CustomerInquiries() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {currentPageDataInProgress.map((inquiry) => (
+                            {currentPageDataInProgress?.map((inquiry) => (
                                 <TableRow key={inquiry.requestID} class = "tr">
                                     <TableCell>{inquiry.requestID}</TableCell>
                                     <TableCell>{dayjs(inquiry.createdDatetime).format('LL')}</TableCell>
@@ -247,7 +249,7 @@ function CustomerInquiries() {
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
                     <Button onClick={() => setCurrentPageInProgress(currentPageInProgress - 1)} disabled={currentPageInProgress === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress.length}>Next</Button>
+                    <Button onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress?.length}>Next</Button>
                 </Box>
             </div>
 
@@ -280,7 +282,7 @@ function CustomerInquiries() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {currentPageDataCompleted.map((inquiry) => (
+                            {currentPageDataCompleted?.map((inquiry) => (
                                 <TableRow key={inquiry.requestID} class = "tr">
                                     <TableCell>{inquiry.requestID}</TableCell>
                                     <TableCell>{dayjs(inquiry.createdDatetime).format('LL')}</TableCell>
@@ -297,7 +299,7 @@ function CustomerInquiries() {
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
                     <Button onClick={() => setCurrentPageCompleted(currentPageCompleted - 1)} disabled={currentPageCompleted === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted.length}>Next</Button>
+                    <Button onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted?.length}>Next</Button>
                 </Box>
             </div>
 
@@ -330,7 +332,7 @@ function CustomerInquiries() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {currentPageDataMechanic.map((request) => (
+                            {currentPageDataMechanic?.map((request) => (
                                 <TableRow key={request.requestID} class = "tr">
                                     <TableCell>{request.requestID}</TableCell>
                                     <TableCell>{dayjs(request.createdDatetime).format('LL')}</TableCell>
@@ -347,7 +349,7 @@ function CustomerInquiries() {
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
                     <Button onClick={() => setCurrentPageMechanic(currentPageMechanic - 1)} disabled={currentPageMechanic === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageMechanic(currentPageMechanic + 1)} disabled={(currentPageMechanic + 1) * recordsPerPage >= filteredMechanic.length}>Next</Button>
+                    <Button onClick={() => setCurrentPageMechanic(currentPageMechanic + 1)} disabled={(currentPageMechanic + 1) * recordsPerPage >= filteredMechanic?.length}>Next</Button>
                 </Box>
             </div>
 
