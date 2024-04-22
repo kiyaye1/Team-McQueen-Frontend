@@ -17,13 +17,17 @@ function Profile() {
   const [openEdit, setOpenEdit] = useState(false)
   const [newEmail, setNewEmail] = useState(user.emailAddress)
   const [newPhone, setNewPhone] = useState(user.xtra)
+  const [changeInfo, setChangeInfo] = useState(1)
 
   useEffect(() => {
     if (user.role === 0) {
       getReservations();
-      getUserInformation()
     }
   }, []);
+
+  useEffect(() => {
+    getUserInformation()
+  }, [changeInfo])
 
   function getReservations() {
     axios.get(`${BASE_API_URI}/reservations`, { withCredentials: true })
@@ -63,6 +67,7 @@ function Profile() {
     {withCredentials: true}) 
     .then((response) => {
       console.log(response)
+      setChangeInfo(changeInfo + 1)
     })
     .catch((error) => console.log(error))
   }
@@ -77,8 +82,8 @@ function Profile() {
         <div class = "col-span-1 space-y-4">
           <div className="text-body-copy">
             <h5><span class = 'font-bold'>Name:</span> {user.firstName + " " + user.lastName}</h5>
-            <h5><span class = 'font-bold'>Email:</span> {newEmail}</h5>
-            <h5><span class = 'font-bold'>Phone Number:</span> {newPhone}</h5>
+            <h5><span class = 'font-bold'>Email:</span> {customer?.emailAddress}</h5>
+            <h5><span class = 'font-bold'>Phone Number:</span> {customer?.phoneNumber}</h5>
           </div>
          
           <div class = "space-x-2">
@@ -102,7 +107,7 @@ function Profile() {
                         <p class = "text-blue-primary font-bold text-sm">Upcoming</p>
                       </div>
                     )}
-                    {dayjs().isAfter(startDate) && !dayjs().isBefore(endDate) && (
+                    {dayjs().isAfter(endDate) && (
                       <div class = "pb-2">
                         <p class = "text-blue-primary font-bold text-sm">Completed</p>
                       </div>
