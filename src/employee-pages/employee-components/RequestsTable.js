@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Container, FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs"
 import { useNavigate } from 'react-router-dom';
 
 function RequestsTable({ customerData, statusFilter, tableTitle }) {
@@ -25,18 +27,22 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
 
     const sortData = (data) => {
         return [...data].sort((a, b) => {
-            if (a[sortField] < b[sortField]) {
-                return sortOrder === 'ascending' ? -1 : 1;
-            } else if (a[sortField] > b[sortField]) {
-                return sortOrder === 'ascending' ? 1 : -1;
+            if (sortField === 'createdDatetime') {
+                const dateA = dayjs(a[sortField]).valueOf();
+                const dateB = dayjs(b[sortField]).valueOf();
+                return (dateA < dateB) ? (sortOrder === 'ascending' ? -1 : 1) : (dateA > dateB ? (sortOrder === 'ascending' ? 1 : -1) : 0);
+            } else {
+                const strA = String(a[sortField]).toLowerCase();
+                const strB = String(b[sortField]).toLowerCase();
+                return (strA < strB) ? (sortOrder === 'ascending' ? -1 : 1) : (strA > strB ? (sortOrder === 'ascending' ? 1 : -1) : 0);
             }
-            return 0;
         });
     };
 
     const filteredAndSortedCustomers = sortData(customerData.filter(customer =>
         customer.status.statusCode === statusFilter &&
         (customer.customerID.toString().includes(searchTerm) ||
+        (dayjs(customer.createdDatetime).format('LLL').toString().toLowerCase().includes(searchTerm.toLowerCase())) ||
         (customer.firstName + ' ' + customer.lastName).toLowerCase().includes(searchTerm))
     ));
 
@@ -60,10 +66,10 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
             <Box display="flex" justifyContent="space-between" marginBottom={2}>
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <TextField
-                        label="Search by Name or ID"
+                        label="Search by ID, Name, or Created Date Time"
                         value={searchTerm}
                         onChange={handleChangeSearch}
-                        style={{ width: '250px' }}
+                        style={{ width: '350px' }}
                     />
                     <FormControl>
                         <InputLabel>Sort By</InputLabel>
@@ -75,6 +81,7 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
                             <MenuItem value="customerID">Customer ID</MenuItem>
                             <MenuItem value="firstName">First Name</MenuItem>
                             <MenuItem value="lastName">Last Name</MenuItem>
+                            <MenuItem value="createdDatetime">Created Date Time</MenuItem>
                         </Select>
                     </FormControl>
                     <Button variant="outlined" onClick={handleChangeOrder}>
@@ -89,6 +96,7 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
                             <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Customer ID</TableCell>
                             <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Customer Name</TableCell>
                             <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Status</TableCell>
+                            <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Created Date Time</TableCell>
                             <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -98,6 +106,7 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
                                 <TableCell>{customer.customerID}</TableCell>
                                 <TableCell>{customer.firstName + ' ' + customer.lastName}</TableCell>
                                 <TableCell>{customer.status.shortDescription}</TableCell>
+                                <TableCell>{dayjs(customer.createdDatetime).format('LLL')}</TableCell>
                                 <TableCell>
                                     <Button onClick={() => navigate(
                                         customer.status.statusCode === "PVN" ? 
