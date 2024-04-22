@@ -113,7 +113,6 @@ function InquiryDetails() {
            </div>
 
             <div class = "space-x-2">
-                <Button variant = "contained">Email Customer</Button>
                 <Button variant = "outlined" onClick = {() => setOpenServiceRequest(true)}>Create Service Request</Button>
             </div>
 

@@ -246,15 +246,6 @@ function FullDashboard({employeeRole}) {
                 ]}
               />
               </Link>
-            <DashCard
-              title = "Business Admin Information"
-              dataPoints = {[
-                {
-                  number: "3",
-                  caption: "Business Admins"
-                }
-              ]}
-            />
              <Link to = "/service-requests">
               <DashCard
                 title = "Service Requests"
