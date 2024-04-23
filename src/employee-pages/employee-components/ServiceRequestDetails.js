@@ -62,7 +62,7 @@ function ServiceRequestDetails() {
   
       const submitFixDescription = async(e) => {
         e.preventDefault()
-        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, fixDescription: fixDescription}, {withCredentials: true})
+        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, fixDescription: fixDescription, assignedToID: user.userID}, {withCredentials: true})
         .then((response) => {
             console.log(response)
             setDataReload(dataReload + 1)
@@ -70,21 +70,6 @@ function ServiceRequestDetails() {
         })
         .catch((error) => console.log(error))
       }
-
-    //   const completeRequest = () => {
-    //     axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, requestStatusId: 3, carID: request?.car.carID}, {withCredentials: true})
-    //     .then((response) => {
-    //         alert("Request Completed.")
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //         alert("There was an error processing your request. Please try again later.")
-    //     })
-    //   }
-
-    //   const handleStatusChange = (e) => {
-    //       setCarStatus(e.target.value)
-    //   }
   
       const handleRequestStatusChange = (e) => {
           setRequestStatus(e.target.value)
