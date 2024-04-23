@@ -88,11 +88,13 @@ function CustomerInquiries() {
     }
 
     const handleCreateInquiry = () => {
-      axios.post(`${BASE_API_URI}/contacts/MechanicRequests`, 
+      axios.post(`${BASE_API_URI}/contacts/createContacts`, 
       {
-        description: newMechanicData.description,
-        carID: newMechanicData.carID,
-        creatorID: user.userID
+        name: newInquiryData.name,
+        carID: newInquiryData.carID,
+        email: newInquiryData.email,
+        reason: newInquiryData.reason,
+        message: newInquiryData.message
       },
       {withCredentials: true})
       .then((response) => console.log(response))
@@ -111,10 +113,10 @@ function CustomerInquiries() {
     
     const filteredInProgress = inquiries?.filter(inquiry =>
         inquiry.requestStatus.statusID === 2 || inquiry.requestStatus.statusID === 0 && (
-            inquiry.description.toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
-            inquiry.requestID.toString().includes(searchQueryInProgress) ||
+            inquiry.description?.toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
+            inquiry.requestID?.toString().includes(searchQueryInProgress) ||
             dayjs(inquiry.createdDatetime).format('LL').toString().toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
-            inquiry.type.toLowerCase().includes(searchQueryInProgress.toLowerCase())
+            inquiry.type?.toLowerCase().includes(searchQueryInProgress.toLowerCase())
         )
     );
     const currentPageDataInProgress = filteredInProgress?.slice(currentPageInProgress * recordsPerPage, (currentPageInProgress + 1) * recordsPerPage);
