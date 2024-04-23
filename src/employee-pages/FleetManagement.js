@@ -25,7 +25,6 @@ import {
   Select, 
   MenuItem } from '@mui/material';
   import {Dialog} from '@mui/material';
-import userEvent from '@testing-library/user-event';
 import { useAuth } from '../context/AuthContext';
 import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -84,6 +83,7 @@ function FleetManagement() {
     const fetchStations = async () => {
         const response = await axios.get(`${BASE_API_URI}/stations`, {withCredentials: true});
         setStations(response.data || []);
+        console.log(stations)
     };
     const fetchCars = async () => {
         const response = await axios.get(`${BASE_API_URI}/cars`, {withCredentials: true});
@@ -271,9 +271,25 @@ function FleetManagement() {
   function getCarLocation(id) {
     for(var i = 0; i < carLocations?.length; i++) {
       if(id === carLocations[i]?.carID) {
-        return String(carLocations[i].lat + ", " + carLocations[i].lng)
+        return {lat: carLocations[i].lat, lng: carLocations[i].lng}
       }
     }
+  }
+
+  function isCarInStation(lat, lng) {
+    //const [currentLoc, setCurrentLoc] = useState("Driving")
+    var currentLoc = "Driving"
+    for(var i = 0; i < stations?.length; i++) {
+        const l = stations[i].coordinates.lat.toFixed(4)
+        const ln = stations[i].coordinates.lng.toFixed(4)
+        console.log(l,ln)
+        console.log(lat,lng)
+        if(lat.toFixed(4) === l && lng.toFixed(4) === ln) {
+          console.log("Match")
+          currentLoc = stations[i].name
+        }
+    }
+    return currentLoc
   }
 
     return (
@@ -461,21 +477,25 @@ function FleetManagement() {
                     <TableRow>
                         <TableCell sx={{fontWeight: "bold", fontSize: "1em"}}>Car ID</TableCell>
                         <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Availability</TableCell>
-                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Service History</TableCell>
+                        {/* <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Service History</TableCell> */}
                         <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Current Location</TableCell>
+                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Station</TableCell>
                         <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {displayedCars.map((car) => {
+                      const location = getCarLocation(car.carID)
+                      console.log(car)
                         return (
                             <TableRow key = {car.carID} class = "tr">
                                 <TableCell component="th" scope = "row">
                                     {car.carID}
                                 </TableCell>
-                                <TableCell align = "center">{car.statusCode}</TableCell>
-                                <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell>
-                                <TableCell align = "center">{getCarLocation(car.carID)}</TableCell>
+                                <TableCell align = "center">{car.statusCode === "RDY" ? "Available to Rent" : "In for Repair"}</TableCell>
+                                {/* <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell> */}
+                                <TableCell align = "center">{location?.lat}, {location?.lng}</TableCell>
+                                <TableCell align = "center">{isCarInStation(location?.lat, location?.lng)}</TableCell>
                                 <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon color="error"/></Button></TableCell>
                             </TableRow>
                         );
