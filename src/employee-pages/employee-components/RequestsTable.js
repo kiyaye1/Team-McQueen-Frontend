@@ -61,9 +61,9 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
     };
 
     return (
-        <Container className="my-2">
-            <h1 class="text-section-head pb-8">{tableTitle}</h1>
-            <Box display="flex" justifyContent="space-between" marginBottom={2}>
+        <>
+            <h3 class="text-subhead pr-4">{tableTitle}</h3>
+            <Box display="flex" justifyContent="space-between" marginBottom={2} marginTop={3}>
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <TextField
                         label="Search by ID, Name, or Created Date Time"
@@ -125,7 +125,7 @@ function RequestsTable({ customerData, statusFilter, tableTitle }) {
                 <Button onClick={handlePreviousPage} disabled={currentPage === 0}>Previous</Button>
                 <Button onClick={handleNextPage} disabled={indexOfLastItem >= filteredAndSortedCustomers.length}>Next</Button>
             </Box>
-        </Container>
+        </>
     );
 }
 
