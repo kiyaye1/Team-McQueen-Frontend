@@ -44,6 +44,7 @@ function Reservation() {
         scheduledStartDatetime: pickup_datetime.toISOString(),
         scheduledEndDatetime: dropoff_datetime.toISOString(),
         startStationID: pickup_location,
+        endStationID: dropoff_location,
         coordinates: {
             lat: 43.0848,
             lng: -77.6715
