@@ -30,7 +30,7 @@ import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function FleetManagement() {
-  const [carLocations, setCarLocations] = useState({})
+  const [carLocations, setCarLocations] = useState()
   const [stations, setStations] = useState([])
   const [SQLCars, setSQLCars] = useState([])
   const [newStationData, setNewStationData] = useState({
@@ -74,9 +74,9 @@ function FleetManagement() {
     return onValue(ref(db, '/cars/'), querySnapshot => {
       // full data snapshot
       let data = querySnapshot.val()
-      setCarLocations(data || {})
+      setCarLocations(data)
+      console.log(data)
     })
-
   }, [])
 
   useEffect(() => {
@@ -171,7 +171,6 @@ function FleetManagement() {
     const addCar = () => {
       const d = dayjs()
       const dateTime = d.toISOString()
-      console.log(dateTime)
       //axios request for sql to add car
       axios.post(`${BASE_API_URI}/cars`,
       {
@@ -282,10 +281,7 @@ function FleetManagement() {
     for(var i = 0; i < stations?.length; i++) {
         const l = stations[i].coordinates.lat.toFixed(4)
         const ln = stations[i].coordinates.lng.toFixed(4)
-        console.log(l,ln)
-        console.log(lat,lng)
-        if(lat.toFixed(4) === l && lng.toFixed(4) === ln) {
-          console.log("Match")
+        if(lat === l && lng === ln) {
           currentLoc = stations[i].name
         }
     }
@@ -486,7 +482,7 @@ function FleetManagement() {
                 <TableBody>
                     {displayedCars.map((car) => {
                       const location = getCarLocation(car.carID)
-                      console.log(car)
+                      console.log(location)
                         return (
                             <TableRow key = {car.carID} class = "tr">
                                 <TableCell component="th" scope = "row">
@@ -494,8 +490,8 @@ function FleetManagement() {
                                 </TableCell>
                                 <TableCell align = "center">{car.statusCode === "RDY" ? "Available to Rent" : "In for Repair"}</TableCell>
                                 {/* <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell> */}
-                                <TableCell align = "center">{location?.lat}, {location?.lng}</TableCell>
-                                <TableCell align = "center">{isCarInStation(location?.lat, location?.lng)}</TableCell>
+                                <TableCell align = "center">{location?.lat.toFixed(4)}, {location?.lng.toFixed(4)}</TableCell>
+                                <TableCell align = "center">{isCarInStation(location?.lat.toFixed(4), location?.lng.toFixed(4))}</TableCell>
                                 <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon color="error"/></Button></TableCell>
                             </TableRow>
                         );
