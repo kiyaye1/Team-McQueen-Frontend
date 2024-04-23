@@ -47,8 +47,8 @@ function MapResults({search, result, searchQuery}) {
                                         <p class = "text-sm text-body-copy">{data.carsAvailable.length} cars available</p>
                                     </div>
                                     <div class = "col-span-1 text-right text-teal-secondary font-bold">
-                                        <p>${data.costPerHour} per hour</p>
-                                        <p>Total Cost: ${data.cost}</p>
+                                        <p>{data.costPerHour} per hour</p>
+                                        <p>Total Cost: ${data.cost ? data.cost : "0"}</p>
                                     </div>
                                     
                                 </div>
