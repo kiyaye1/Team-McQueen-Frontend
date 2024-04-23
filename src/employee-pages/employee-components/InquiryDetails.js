@@ -140,7 +140,7 @@ function InquiryDetails() {
             </Dialog>
 
             <Dialog open = {openChangeStatus} onClose = {handleClose}>
-                <DialogTitle>Create Mechanic Service Request</DialogTitle>
+                <DialogTitle>Change Inquiry Status</DialogTitle>
                 <DialogContent>
                     <div class = "space-y-8 p-4">
                         <p><span class = "font-bold">Current Status: </span>{inquiry?.requestStatus.name}</p>

@@ -379,12 +379,12 @@ function FleetManagement() {
                   <p>{data.city}, {data.state} {data.zip}</p>
                   <p>{data.county} County</p>
                   <p>{data.coordinates.lat}, {data.coordinates.lng}</p>
-                  <Button 
+                  {user.role === 1 && (<Button 
                     variant = "outlined" 
                     size = "small" 
                     onClick = {() => deleteStation(data.stationID)}
                     sx = {{color: "red", borderColor: "red"}}
-                    >Delete</Button>
+                    >Delete</Button>)}
                 </div>
               );
             })}
@@ -476,7 +476,7 @@ function FleetManagement() {
                         {/* <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Service History</TableCell> */}
                         <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Current Location</TableCell>
                         <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Station</TableCell>
-                        <TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Actions</TableCell>
+                        {user.role === 1 && (<TableCell align = "center" sx={{fontWeight: "bold", fontSize: "1em"}}>Actions</TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -492,7 +492,7 @@ function FleetManagement() {
                                 {/* <TableCell align = "center"><Button size = "small">Service Log</Button></TableCell> */}
                                 <TableCell align = "center">{location?.lat.toFixed(4)}, {location?.lng.toFixed(4)}</TableCell>
                                 <TableCell align = "center">{isCarInStation(location?.lat.toFixed(4), location?.lng.toFixed(4))}</TableCell>
-                                <TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon color="error"/></Button></TableCell>
+                                {user.role === 1 && (<TableCell align = "center"><Button onClick = {() => deleteCar(car.carID)}><DeleteIcon color="error"/></Button></TableCell>)}
                             </TableRow>
                         );
                     })}

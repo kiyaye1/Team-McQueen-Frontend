@@ -52,8 +52,8 @@ function MembersInfo() {
 
     const filteredAndSortedCustomers = sortData(customerData.filter(customer => {
         return (
-            customer.customerID.toString().includes(searchTerm) ||
-            (customer.firstName + ' ' + customer.lastName).toLowerCase().includes(searchTerm) ||
+            customer?.customerID.toString().includes(searchTerm) ||
+            (customer?.firstName + ' ' + customer?.lastName).toLowerCase().includes(searchTerm) ||
             getNestedValue('status.shortDescription', customer).toLowerCase().includes(searchTerm)
         );
     }));
@@ -115,12 +115,12 @@ function MembersInfo() {
                         {currentItems.map((customer) => {
                             if(customer.status.statusCode != "PVN") {
                                 return (
-                                <TableRow key={customer.customerID} class="tr" sx={{align: "center"}}>
-                                    <TableCell>{customer.customerID}</TableCell>
-                                    <TableCell>{customer.firstName + ' ' + customer.lastName}</TableCell>
+                                <TableRow key={customer?.customerID} class="tr" sx={{align: "center"}}>
+                                    <TableCell>{customer?.customerID}</TableCell>
+                                    <TableCell>{customer?.firstName + ' ' + customer?.lastName}</TableCell>
                                     <TableCell>{getNestedValue('status.shortDescription', customer)}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => navigate(`/customer-details/${customer.customerID}`)}>View Details</Button>
+                                        <Button onClick={() => navigate(`/customer-details/${customer?.customerID}`)}>View Details</Button>
                                     </TableCell>
                                 </TableRow>
                              );}
