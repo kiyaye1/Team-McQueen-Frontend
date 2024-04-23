@@ -101,8 +101,8 @@ function ServiceRequests() {
       <Container className="my-8">
         <div>
         <div class = "">
-          <h1 class = "text-section-head">Mechanic Service Requests</h1>
-          <Button onClick = {() => handleOpenAddRequest()} size = "small" variant = "closed" sx = {{float: "right", backgroundColor: "#000180", color: "white"}}>Create Request</Button>
+          <h1 class = "text-section-head pb-8">Mechanic Service Requests</h1>
+          <Button onClick = {() => handleOpenAddRequest()} size = "small" variant = "contained" sx = {{float: "right", backgroundColor: "#000180", color: "white"}}>Create Request</Button>
         </div>
           <h3 class="text-subhead pr-4">New Requests</h3>
           <Box display="flex" justifyContent="space-between" marginBottom={2} marginTop={3}>
