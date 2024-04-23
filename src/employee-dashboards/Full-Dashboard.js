@@ -23,7 +23,8 @@ function FullDashboard({employeeRole}) {
     const [totalNewInquiryRecords, setTotalNewInquiryRecords] = useState(null);
     const [totalInProgressInquiryRecords, setTotalInProgressInquiryRecords] = useState(null);
     const [totalCompletedInquiryRecords, setTotalCompletedInquiryRecords] = useState(null);
-    const [hourlyRate, setHourlyRate] = useState(null)
+    const [hourlyRate, setHourlyRate] = useState(0)
+    const [dailyMax, setDailyMax] = useState(0)
 
     const {user} = useAuth()
     console.log(user)
@@ -35,7 +36,14 @@ function FullDashboard({employeeRole}) {
         setHourlyRate(response.data.hourlyRate)
       })
       .catch((error) => console.log(error))
+
+      axios.get(`${BASE_API_URI}/dailyMax`, {withCredentials: true})
+      .then((response) => {
+        setDailyMax(response.data.dailyMax)
+      })
+      .catch((error) => console.log(error))
     })
+
 
     useEffect(() => {
       fetch(`${BASE_API_URI}/admindashtotals/employees`, {
@@ -320,23 +328,13 @@ function FullDashboard({employeeRole}) {
             <Link to = "/price-information">
               <DashCard 
                 title = "Reservation Pricing"
-                //dataPoints = {[
-                  //{
-                    //number: hourlyRate,
-                    //caption: "Price per Hour - Rochester"
-                  //},
-                  //{
-                    //number: 120,
-                    //caption: "Daily Maximum - Rochester"
-                  //}
-                //]}/>
                 dataPoints = {[
                   {
                     number: '$' + hourlyRate,
                     caption: <span>
                     Price per Hour - Rochester<br/><br/>
                     <strong style={{ color: '#000180', fontWeight: 'bold' }}>
-                      $120.00 - Daily Maximum
+                      ${dailyMax.toFixed(2)} - Daily Maximum
                     </strong>
                   </span>
                   }
