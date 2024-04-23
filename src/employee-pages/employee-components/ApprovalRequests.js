@@ -19,7 +19,7 @@ function ApprovalRequests() {
   }
 
   return (
-    <Container className="my-16"> 
+    <Container className="my-8"> 
       <h1 class="text-section-head pb-8">Customer Approval Requests</h1>
       {/*<h1>New Requests</h1>*/}
       <RequestsTable

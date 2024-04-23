@@ -1,7 +1,15 @@
 import carImage from '../assets/full-car-teal.jpg'
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function AboutUs() {
+
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    navigate('/signup');
+  };
+  
     return (
       <><div class = "">
       <div class = "w-full bg-gray5 px-16 py-16">
@@ -24,8 +32,8 @@ function AboutUs() {
       <div class = "w-full bg-purple-accent text-center">
         <div class = "p-16 mx-16 mt-24">
           <h1 class = "text-section-head mb-8">Get Going Now</h1>
-          <Button variant = "contained" sx = {{backgroundColor: "#000180"}}>
-            Sign Up
+          <Button variant="contained" onClick={handleSignUpClick} sx={{ backgroundColor: "#000180" }}>
+                Sign Up
           </Button>
         </div>
       </div>

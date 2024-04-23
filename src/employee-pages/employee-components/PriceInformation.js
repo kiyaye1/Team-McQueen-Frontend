@@ -46,7 +46,7 @@ function PriceInformation() {
         <div class = "p-8 border border-border rounded-xl space-y-2">
             <h3 class = "pb-2 text-subhead">Rochester Pricing</h3>
             <p><span class = "font-bold">Price per Hour: </span>${hourlyRate}</p>
-            <p class = "pb-2"><span class = "font-bold">Daily Maximum: </span>$120</p>
+            <p class = "pb-2"><span class = "font-bold">Daily Maximum: </span>$120.00</p>
             <Button onClick = {() => setOpenEditRate(true)} variant = "outlined">Edit Hourly Rate</Button>
         </div>
       </div>
@@ -54,7 +54,7 @@ function PriceInformation() {
       <Dialog open = {openEditRate} onClose = {handleClose}>
         <DialogTitle>Change Hourly Rate - Rochester</DialogTitle>
         <DialogContent>
-            <TextField margin="dense" label="Hourly Rate" fullWidth value={newRate || hourlyRate} onChange={handleRateChange} required/>
+            <TextField margin="dense" label="Hourly Rate in Dollars" fullWidth value={newRate || hourlyRate} onChange={handleRateChange} required/>
         </DialogContent>
         <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>

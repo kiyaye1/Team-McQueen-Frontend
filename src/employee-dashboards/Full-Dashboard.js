@@ -320,15 +320,27 @@ function FullDashboard({employeeRole}) {
             <Link to = "/price-information">
               <DashCard 
                 title = "Reservation Pricing"
+                //dataPoints = {[
+                  //{
+                    //number: hourlyRate,
+                    //caption: "Price per Hour - Rochester"
+                  //},
+                  //{
+                    //number: 120,
+                    //caption: "Daily Maximum - Rochester"
+                  //}
+                //]}/>
                 dataPoints = {[
                   {
-                    number: hourlyRate,
-                    caption: "Price per Hour - Rochester"
-                  },
-                  {
-                    number: 120,
-                    caption: "Daily Maximum - Rochester"
+                    number: '$' + hourlyRate,
+                    caption: <span>
+                    Price per Hour - Rochester<br/><br/>
+                    <strong style={{ color: '#000180', fontWeight: 'bold' }}>
+                      $120.00 - Daily Maximum
+                    </strong>
+                  </span>
                   }
+                  
                 ]}/>
             </Link>
           </div>
