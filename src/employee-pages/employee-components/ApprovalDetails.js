@@ -27,7 +27,7 @@ function ApprovalDetails() {
         // Send email
         sendApprovalEmail();
       })
-      .catch(error => console.log(error))
+      .catch(error => alert("There was an error approving this customer. Please try again later."))
     }
 
     function suspendCustomer() {
@@ -35,7 +35,7 @@ function ApprovalDetails() {
             statusCode: "SPD"
         }, {withCredentials:true})
         .then(response => alert("Customer has been Suspended."))
-        .catch(error => console.log(error))
+        .catch(error => alert("There was an error suspending this customer. Please try again later."))
       }
 
     useEffect(() => {

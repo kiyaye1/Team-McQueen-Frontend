@@ -37,14 +37,14 @@ function CustomerInquiries() {
                 setInquiries(response.data);
                 console.log(response.data);
             })
-            .catch(error => console.log(error));
+            .catch(error => alert("There was an error fetching data for this page."));
 
         axios.get(`${BASE_API_URI}/contacts/MechanicRequests`, {withCredentials: true})
             .then(response => {
                 setServiceReq(response.data);
                 console.log(response.data)
             })
-            .catch(error => console.log(error));
+            .catch(error =>alert("There was an error fetching data for this page."));
     }, []);
 
     // adding mechanic request
@@ -110,7 +110,7 @@ function CustomerInquiries() {
     const currentPageDataNew = filteredNew?.slice(currentPageNew * recordsPerPage, (currentPageNew + 1) * recordsPerPage);
     
     const filteredInProgress = inquiries?.filter(inquiry =>
-        inquiry.requestStatus.statusID === 2 && (
+        inquiry.requestStatus.statusID === 2 || inquiry.requestStatus.statusID === 0 && (
             inquiry.description.toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
             inquiry.requestID.toString().includes(searchQueryInProgress) ||
             dayjs(inquiry.createdDatetime).format('LL').toString().toLowerCase().includes(searchQueryInProgress.toLowerCase()) ||
@@ -204,7 +204,7 @@ function CustomerInquiries() {
             </div>
 
             <div>
-                <h3 class="text-subhead pr-4">In Progress Inquiries</h3>
+                <h3 class="text-subhead pr-4">In Progress and On Hold Inquiries</h3>
                 <Box display="flex" justifyContent="space-between" marginBottom={2} marginTop={3}>
                     <div style={{ display: 'flex' }}>
                         <TextField

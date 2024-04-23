@@ -34,7 +34,7 @@ function ServiceRequests() {
         console.log(response.data)
       })
       .catch((error) => {
-        console.log(error)
+        alert("There was an error fetching the data for this page. Please try again later.")
       })
     }, [])
 

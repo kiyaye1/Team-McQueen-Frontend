@@ -23,7 +23,7 @@ function InquiryDetails() {
     const [inquiryStatus, setInquiryStatus] = useState()
     const [openChangeStatus, setOpenChangeStatus] = useState(false)
     const [openServiceRequest, setOpenServiceRequest] = useState(false)
-    const [carStatus, setCarStatus] = useState()
+    const [refreshData, setRefreshData] = useState(1)
     dayjs.extend(LocalizedFormat)
 
     useEffect(() => {
@@ -40,7 +40,7 @@ function InquiryDetails() {
         .catch((error) => {
             console.log(error)
         })
-    }, [])    
+    }, [refreshData])    
     
     //Function to handle close action for dialogs
     const handleClose = () => {
@@ -54,8 +54,11 @@ function InquiryDetails() {
 
     const handleChangeStatus = () => {
         axios.post(`${BASE_API_URI}/contacts/updateTicketStatus`, {requestID: inquiry?.requestID, newStatus: inquiryStatus}, {withCredentials: true})
-        .then((response) => alert("Ticket status has been updated. "))
-        .catch((error) => console.log(error))
+        .then((response) => {
+            setRefreshData(refreshData + 1)
+            alert("Ticket status has been updated. ")
+        })
+        .catch((error) => alert("There was an issue updating the ticket. Please try again later."))
     }
 
   
@@ -147,7 +150,7 @@ function InquiryDetails() {
                             <Select
                                 labelId = "status-select"
                                 name = "inquiryStatus"
-                                value = {carStatus}
+                                value = {inquiryStatus}
                                 label = "Inquiry Status"
                                 onChange = {handleInquiryStatusChange}
                                 required

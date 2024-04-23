@@ -38,7 +38,7 @@ function CustomerDetails(props) {
           setReservations(response.data);
           console.log(response)
         })
-        .catch(error => console.log(error));
+        .catch(error => alert("There was an error fetching data for this page."));
     }
 
     function suspendCustomer() {
@@ -49,7 +49,7 @@ function CustomerDetails(props) {
         console.log(response)
         alert("Customer suspended: " + response.data);
       })
-      .catch(error => console.log(error))
+      .catch(error => alert("There was an error suspending this customer. Please try again later."))
     }
 
     function terminateCustomer() {
@@ -60,7 +60,7 @@ function CustomerDetails(props) {
           console.log(response)
           alert("Customer banned: " + response.data);
         })
-        .catch(error => console.log(error))
+        .catch(error => alert("There was an error banning this customer. Please try again later."))
     }
     
 

@@ -53,7 +53,7 @@ const ContactForm = () => {
         if(carID) {
             axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, carID, message})
             .then((response) => {
-                console.log(response)
+                alert("Inquiry was created successfully.")
                 setName('');
                 setEmail('');
                 setReason('');
@@ -61,12 +61,12 @@ const ContactForm = () => {
                 setCarID(null)
             })
             .catch((error) => {
-                console.log(error)
+                alert("There was an error creating this inquiry. Please try again later. ")
             })
         } else {
             axios.post(`${BASE_API_URI}/contacts/createContacts`, {name, email, reason, message})
             .then((response) => {
-                console.log(response)
+                alert("Inquiry was created successfully.")
                 setName('');
                 setEmail('');
                 setReason('');
@@ -74,7 +74,7 @@ const ContactForm = () => {
                 setCarID(null)
             })
             .catch((error) => {
-                console.log(error)
+                alert("There was an error creating this inquiry. Please try again later. ")
             })
         }
     }
