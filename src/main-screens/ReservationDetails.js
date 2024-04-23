@@ -98,7 +98,7 @@ function ReservationDetails() {
                 }
             })
             .catch((error) => {
-                console.log(error)
+               alert("There was an error processing your request. " + error)
             })
     }
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, TextField} from "@mui/material";
 import BASE_API_URI from "../../config";
 import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
@@ -22,6 +22,10 @@ function ServiceRequestDetails() {
     const [carStatus, setCarStatus] = useState()
     const [requestStatus, setRequestStatus] = useState()
     const [dataReload, setDataReload] = useState(1)
+    const [fixDescription, setFixDescription] = useState('')
+    const [isFixDescription, setIsFixDescription] = useState(false)
+    const {user} = useAuth()
+
     dayjs.extend(LocalizedFormat)
 
     const [openChangeStatus, setOpenChangeStatus] = useState(false)
@@ -29,10 +33,15 @@ function ServiceRequestDetails() {
     useEffect(() => {
         axios.get(`${BASE_API_URI}/contacts/MechanicRequests`, {withCredentials: true})
         .then((response) => {
-            console.log(response)
             for(var i = 0; i < response.data.length; i++) {
                 if(response.data[i].requestID == requestID) {
                     setRequest(response.data[i])
+                    if(response.data[i].fixDescription) {
+                        console.log("There is a fix Description")
+                        setIsFixDescription(true)
+                    } else {
+                        setIsFixDescription(false) 
+                    }
                 }
             }
         })
@@ -44,7 +53,33 @@ function ServiceRequestDetails() {
       const handleClose = () => {
         setOpenChangeStatus(false)
       };
+
+      const handleChangeFixDescription = (e) => {
+        setFixDescription(e.target.value)
+      }
   
+      const submitFixDescription = async(e) => {
+        e.preventDefault()
+        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, fixDescription: fixDescription, assignedToID: user.userID}, {withCredentials: true})
+        .then((response) => {
+            console.log(response)
+            setDataReload(dataReload + 1)
+            setFixDescription(null)
+        })
+        .catch((error) => console.log(error))
+      }
+
+      const completeRequest = () => {
+        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, requestStatusId: 3, carID: request?.car.carID}, {withCredentials: true})
+        .then((response) => {
+            alert("Request Completed.")
+        })
+        .catch((error) => {
+            console.log(error)
+            alert("There was an error processing your request. Please try again later.")
+        })
+      }
+
     //   const handleStatusChange = (e) => {
     //       setCarStatus(e.target.value)
     //   }
@@ -64,18 +99,18 @@ function ServiceRequestDetails() {
     
     return (
       <><div class = "mx-16 my-8">
-            <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate(-1)}>Back to Service Requests</Button>
+            <Button sx = {{marginBottom: '16px'}} onClick = {() => navigate('/service-requests')}>Back to Service Requests</Button>
             <h1 class = "text-section-head">Car Service Request Ticket</h1>
             
             <p class = "text-body-copy mt-4"><span class = "font-bold">Ticket Number:</span> {requestID}</p>
             <p class = "text-body-copy">Created on {dayjs(request?.createdDatetime).format('LLL')}</p>
 
-            <div class = "flex flex-center mt-4 space-x-4">
+            <div class = "flex flex-center mt-4 space-x-2">
                 <p class = "text-body-copy"><span class = "font-bold">Service Status: </span> {request?.requestStatus.name}</p>
-                <Button size = "small" variant = "outlined" onClick = {() => {setOpenChangeStatus(true)}}>Edit Status</Button>
+                <Button size = "small" sx = {{borderColor: "#000180", color: "#000180"}} variant = "outlined" onClick = {() => {setOpenChangeStatus(true)}}>Edit Status</Button>
             </div>
            
-           <div class = "grid grid-cols-2 mb-8">
+           <div class = "grid grid-cols-2 gap-4 mb-8">
             <div class = "col-span-2 lg:col-span-1 py-4 px-8 rounded-xl border border-border mt-8 text-body-copy grid grid-cols-2 gap-8">
                     <div class = "space-y-2">
                         <p><span class = "font-bold">Car Number: </span>{request?.car.carID}</p>
@@ -90,11 +125,31 @@ function ServiceRequestDetails() {
                         {/* <p>{request?.description}</p> */}
                     </div>
                 </div>
+
+                <div class = "col-span-2 lg:col-span-1 space-y-4 py-4 px-8 rounded-xl border border-border mt-8 text-body-copy gap-8">
+                       {isFixDescription && (<p><span class = "font-bold">Fix Description: </span>{request?.fixDescription}</p>)}
+                        <form class = "space-y-4" onSubmit = {submitFixDescription}>
+                            <TextField
+                                label = "Edit Fix Description"
+                                helperText = "You must describe the fix before marking this inquiry as complete. "
+                                value = {fixDescription}
+                                onChange = {handleChangeFixDescription}
+                                fullWidth
+                            />
+                            <Button sx = {{borderColor: "#000180", color: "#000180"}} type = "submit" size = "small" variant = "outlined">Update</Button>
+                        </form>
+
+                    </div>
            </div>
+
+           
+
+            
+           <Button sx = {{backgroundColor: "#000180"}}  disabled = {!isFixDescription} onClick = {() => completeRequest()} variant = "contained">Mark Complete</Button>
 
 
            <Dialog open = {openChangeStatus} onClose = {handleClose}>
-                <DialogTitle>Create Mechanic Service Request</DialogTitle>
+                <DialogTitle>Edit Mechanic Request Status</DialogTitle>
                 <DialogContent>
                     <div class = "space-y-8 p-4">
                         <p><span class = "font-bold">Current Status: </span>{request?.requestStatus.name}</p>
@@ -112,7 +167,6 @@ function ServiceRequestDetails() {
                         
                             <MenuItem value = "1">New</MenuItem>
                             <MenuItem value = "2">In Progress</MenuItem>
-                            <MenuItem value = "3">Done</MenuItem>
                             <MenuItem value = "0">On Hold</MenuItem>
                     
                             </Select>

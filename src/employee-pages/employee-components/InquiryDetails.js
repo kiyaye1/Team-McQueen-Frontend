@@ -54,8 +54,8 @@ function InquiryDetails() {
 
     const handleChangeStatus = () => {
         axios.post(`${BASE_API_URI}/contacts/updateTicketStatus`, {requestID: inquiry?.requestID, newStatus: inquiryStatus}, {withCredentials: true})
-        .then((response) => console.log(response))
-        .catch((error) => alert(error))
+        .then((response) => alert("Ticket status has been updated. "))
+        .catch((error) => console.log(error))
     }
 
   
@@ -79,8 +79,8 @@ function InquiryDetails() {
 
     const completeRequest = () => {
         axios.post(`${BASE_API_URI}/contacts/updateTicketStatus`, {requestID: inquiry?.requestID, newStatus: 3}, {withCredentials: true})
-        .then((response) => alert(response))
-        .catch((error) => alert(error))
+        .then((response) => alert("The ticket has been transferred to the Mechanics. "))
+        .catch((error) => console.log(error))
     }
 
 

@@ -98,10 +98,10 @@ function ServiceRequests() {
     // split by new, inprogress, and completed
 
     return (
-      <Container className="my-8">
+      <Container className="my-16">
         <div>
-        <div class = "">
-          <h1 class = "text-section-head">Mechanic Service Requests</h1>
+        <div>
+          <h1 class = "pb-8 text-section-head">Mechanic Service Requests</h1>
           <Button onClick = {() => handleOpenAddRequest()} size = "small" variant = "closed" sx = {{float: "right", backgroundColor: "#000180", color: "white"}}>Create Request</Button>
         </div>
           <h3 class="text-subhead pr-4">New Requests</h3>
@@ -139,7 +139,7 @@ function ServiceRequests() {
                     <TableCell>{request.car.status.shortDescription}</TableCell>
                     <TableCell>{request.requestStatus.name}</TableCell>
                     <TableCell align="right">
-                      <Button onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
+                      <Button sx = {{color: "#000180"}} onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -147,8 +147,8 @@ function ServiceRequests() {
             </Table>
           </TableContainer>
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button onClick={() => setCurrentPageNew(currentPageNew - 1)} disabled={currentPageNew === 0}>Previous</Button>
-            <Button onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew.length}>Next</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageNew(currentPageNew - 1)} disabled={currentPageNew === 0}>Previous</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew.length}>Next</Button>
           </Box>
         </div>
         
@@ -189,7 +189,7 @@ function ServiceRequests() {
                     <TableCell>{request.car.status.shortDescription}</TableCell>
                     <TableCell>{request.requestStatus.name}</TableCell>
                     <TableCell align="right">
-                      <Button onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
+                      <Button sx = {{color: "#000180"}} onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -197,8 +197,8 @@ function ServiceRequests() {
             </Table>
           </TableContainer>
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button onClick={() => setCurrentPageInProgress(currentPageInProgress - 1)} disabled={currentPageInProgress === 0}>Previous</Button>
-            <Button onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress.length}>Next</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageInProgress(currentPageInProgress - 1)} disabled={currentPageInProgress === 0}>Previous</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress.length}>Next</Button>
           </Box>
         </div>
 
@@ -239,7 +239,7 @@ function ServiceRequests() {
                     <TableCell>{request.car.status.shortDescription}</TableCell>
                     <TableCell>{request.requestStatus.name}</TableCell>
                     <TableCell align="right">
-                      <Button onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
+                      <Button sx = {{color: "#000180"}} onClick={() => navigate(`/service-request-details/${request.requestID}`)} size="small">View Request</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -247,8 +247,8 @@ function ServiceRequests() {
             </Table>
           </TableContainer>
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button onClick={() => setCurrentPageCompleted(currentPageCompleted - 1)} disabled={currentPageCompleted === 0}>Previous</Button>
-            <Button onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted.length}>Next</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageCompleted(currentPageCompleted - 1)} disabled={currentPageCompleted === 0}>Previous</Button>
+            <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted.length}>Next</Button>
           </Box>
         </div>
 

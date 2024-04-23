@@ -190,7 +190,7 @@ function CustomerInquiries() {
                                     <TableCell>{inquiry.description}</TableCell>
                                     <TableCell>{inquiry.requestStatus.name}</TableCell>
                                     <TableCell align="right">
-                                        <Button onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
+                                        <Button sx = {{color: "#000180"}}  onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -198,8 +198,8 @@ function CustomerInquiries() {
                     </Table>
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
-                    <Button onClick={() => setCurrentPageNew(currentPageNew - 1)} disabled={currentPageNew === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew?.length}>Next</Button>
+                    <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageNew(currentPageNew - 1)} disabled={currentPageNew === 0}>Previous</Button>
+                    <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageNew(currentPageNew + 1)} disabled={(currentPageNew + 1) * recordsPerPage >= filteredNew?.length}>Next</Button>
                 </Box>
             </div>
 
@@ -240,7 +240,7 @@ function CustomerInquiries() {
                                     <TableCell>{inquiry.description}</TableCell>
                                     <TableCell>{inquiry.requestStatus.name}</TableCell>
                                     <TableCell align="right">
-                                        <Button onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
+                                        <Button sx = {{color: "#000180"}} onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -248,8 +248,8 @@ function CustomerInquiries() {
                     </Table>
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
-                    <Button onClick={() => setCurrentPageInProgress(currentPageInProgress - 1)} disabled={currentPageInProgress === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress?.length}>Next</Button>
+                    <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageInProgress(currentPageInProgress - 1)} disabled={currentPageInProgress === 0}>Previous</Button>
+                    <Button sx = {{color: "#000180"}}  onClick={() => setCurrentPageInProgress(currentPageInProgress + 1)} disabled={(currentPageInProgress + 1) * recordsPerPage >= filteredInProgress?.length}>Next</Button>
                 </Box>
             </div>
 
@@ -290,7 +290,7 @@ function CustomerInquiries() {
                                     <TableCell>{inquiry.description}</TableCell>
                                     <TableCell>{inquiry.requestStatus.name}</TableCell>
                                     <TableCell align="right">
-                                        <Button onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
+                                        <Button sx = {{color: "#000180"}} onClick={() => handleNavigate(inquiry.requestID)} size="small" variant="text">View Request</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -298,8 +298,8 @@ function CustomerInquiries() {
                     </Table>
                 </TableContainer>
                 <Box display="flex" justifyContent="center" mt={2}>
-                    <Button onClick={() => setCurrentPageCompleted(currentPageCompleted - 1)} disabled={currentPageCompleted === 0}>Previous</Button>
-                    <Button onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted?.length}>Next</Button>
+                    <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageCompleted(currentPageCompleted - 1)} disabled={currentPageCompleted === 0}>Previous</Button>
+                    <Button sx = {{color: "#000180"}} onClick={() => setCurrentPageCompleted(currentPageCompleted + 1)} disabled={(currentPageCompleted + 1) * recordsPerPage >= filteredCompleted?.length}>Next</Button>
                 </Box>
             </div>
 
