@@ -35,11 +35,13 @@ function ServiceRequestDetails() {
         .then((response) => {
             for(var i = 0; i < response.data.length; i++) {
                 if(response.data[i].requestID == requestID) {
+                    console.log(response.data[i])
                     setRequest(response.data[i])
                     if(response.data[i].fixDescription) {
-                        console.log("There is a fix Description")
+                        console.log('is fix description')
                         setIsFixDescription(true)
                     } else {
+                        console.log('no fix description')
                         setIsFixDescription(false) 
                     }
                 }
@@ -60,25 +62,25 @@ function ServiceRequestDetails() {
   
       const submitFixDescription = async(e) => {
         e.preventDefault()
-        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, fixDescription: fixDescription, assignedToID: user.userID}, {withCredentials: true})
+        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, fixDescription: fixDescription}, {withCredentials: true})
         .then((response) => {
             console.log(response)
             setDataReload(dataReload + 1)
-            setFixDescription(null)
+            setFixDescription('')
         })
         .catch((error) => console.log(error))
       }
 
-      const completeRequest = () => {
-        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, requestStatusId: 3, carID: request?.car.carID}, {withCredentials: true})
-        .then((response) => {
-            alert("Request Completed.")
-        })
-        .catch((error) => {
-            console.log(error)
-            alert("There was an error processing your request. Please try again later.")
-        })
-      }
+    //   const completeRequest = () => {
+    //     axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, {requestID: request?.requestID, requestStatusId: 3, carID: request?.car.carID}, {withCredentials: true})
+    //     .then((response) => {
+    //         alert("Request Completed.")
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //         alert("There was an error processing your request. Please try again later.")
+    //     })
+    //   }
 
     //   const handleStatusChange = (e) => {
     //       setCarStatus(e.target.value)
@@ -86,15 +88,21 @@ function ServiceRequestDetails() {
   
       const handleRequestStatusChange = (e) => {
           setRequestStatus(e.target.value)
-          setDataReload(dataReload + 1)
       }
   
       const handleChangeStatus = () => {
-        axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, 
-            {requestID: request?.requestID, requestStatusID: requestStatus, carID: request?.car.carID}, 
+        if(isFixDescription == false && requestStatus == 3) {
+            alert("Please submit a fix description before completing the request.")
+        } else {
+            axios.patch(`${BASE_API_URI}/contacts/MechanicRequests`, 
+            {requestID: request.requestID, requestStatusID: requestStatus}, 
             {withCredentials: true})
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error))
+            .then((response) => {
+                setDataReload(dataReload + 1)
+                alert("Status changed successfully")
+            })
+            .catch((error) => alert("There was a problem processing your request. Please try again later. "))
+        }
       }
     
     return (
@@ -145,7 +153,7 @@ function ServiceRequestDetails() {
            
 
             
-           <Button sx = {{backgroundColor: "#000180"}}  disabled = {!isFixDescription} onClick = {() => completeRequest()} variant = "contained">Mark Complete</Button>
+           {/* <Button sx = {{backgroundColor: "#000180"}}  disabled = {!isFixDescription} onClick = {() => completeRequest()} variant = "contained">Mark Complete</Button> */}
 
 
            <Dialog open = {openChangeStatus} onClose = {handleClose}>
@@ -167,6 +175,7 @@ function ServiceRequestDetails() {
                         
                             <MenuItem value = "1">New</MenuItem>
                             <MenuItem value = "2">In Progress</MenuItem>
+                            <MenuItem value = "3">Completed</MenuItem>
                             <MenuItem value = "0">On Hold</MenuItem>
                     
                             </Select>
