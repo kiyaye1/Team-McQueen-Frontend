@@ -103,7 +103,7 @@ function CustomerInquiries() {
 
     const filteredNew = inquiries?.filter(inquiry =>
         inquiry.requestStatus.statusID === 1 && (
-            inquiry.description.toLowerCase().includes(searchQueryNew.toLowerCase()) ||
+            inquiry.description?.toLowerCase().includes(searchQueryNew.toLowerCase()) ||
             inquiry.requestID.toString().includes(searchQueryNew) ||
             dayjs(inquiry.createdDatetime).format('LL').toString().toLowerCase().includes(searchQueryNew.toLowerCase()) ||
             inquiry.type.toLowerCase().includes(searchQueryNew.toLowerCase())
