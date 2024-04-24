@@ -84,7 +84,7 @@ function CustomerInquiries() {
 
     const handleInquiryChange = (event) => {
       const {name, value} = event.target;
-      setNewMechanicData(prev => ({...prev, [name]: value}))
+      setNewInquiryData(prev => ({...prev, [name]: value}))
     }
 
     const handleCreateInquiry = () => {
